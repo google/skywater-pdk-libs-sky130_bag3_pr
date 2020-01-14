@@ -1,3 +1,8 @@
-# skywater130_release
+# skywater130
 
-open-source release of skywater130 primitives.
+skywater130 primitives for [BAG](https://github.com/bluecheetah/bag).
+
+## Licensing
+
+This library is licensed under the Apache-2.0 license.  See [here](LICENSE) for full text of the 
+Apache license.

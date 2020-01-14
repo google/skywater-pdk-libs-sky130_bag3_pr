@@ -1,0 +1,90 @@
+license	VLSL_UseNextLicense	string	"always"
+license	ADEL_UseNextLicense	string	"always"
+license	VLSXL_UseNextLicense	string	"always"
+license	VSEL_UseNextLicense	string	"always"
+
+asimenv.startup	simulator	string	"spectre"
+; Allows you to use multibit buses in stimulus files [#in_bits<0>], [#in_bits<1>], etc
+asimenv         mappingMode     string  "oss"
+
+; have CDF term Order update whenever the symbol is updated
+auCore.misc     updateCDFtermOrder boolean t
+ihdl            maxNetNameLength   int  16000
+
+layout	stopLevel	int	32
+layout	dotsOn	boolean	t
+layout	useTrueBBox	boolean	t
+layout	xSnapSpacing	float	0.001
+layout	ySnapSpacing	float	0.001
+layout	displayPinNames	boolean	t
+
+; enable partial selection by defeault
+layout partialSelect boolean t
+
+; when move/copy/creating rectangles, automatically use the current mouse-over point.
+ui infix boolean t
+
+; set layout property dimension
+layout propEditorWidth int 500
+layout propEditorHeight int 580
+
+; set roman as default label font
+layout   labelFontStyle cyclic "roman"
+
+; disable connectivity reference dialog box
+layoutXL  lxSchematicDefaultApp  cyclic "None"
+
+; turn off via stack selection
+graphic       viaStackSelection       boolean nil
+
+; correct schematic/symbol port order automatically.
+; this makes DARPA cosim demo look good.
+schematic disablePortOrderPopup boolean t
+
+; default waveform display setup
+viva.trace lineStyle string "solid"
+viva.trace lineThickness string "thick"
+viva.rectGraph foreground string "black"
+viva.rectGraph background string "white"
+viva.axis majorGridForeground string "black"
+viva.axis minorGridForeground string "gray"
+viva.axis foreground string "black"
+viva.axis background string "white"
+viva.axis font string "Default,14,-1,5,75,0,0,0,0,0"
+viva.graphLabel font string "Default,14,-1,5,75,0,0,0,0,0"
+; viva.probe font string "Default,14,-1,5,75,0,0,0,0,0"
+; viva.traceLegend font string "Default,14,-1,5,75,0,0,0,0,0"
+
+; LSF setup parameters
+
+; default job name
+; asimenv.distributed userDefinedJobName string  "virtuoso_lsf"
+
+; use .cdsenv variables default and do not bring up job parameter form
+asimenv.distributed autoJobSubmit  boolean  t
+
+; set LSF resource string
+; asimenv.distributed selectLsfResourceString  boolean  t
+; asimenv.distributed lsfResourceString string "[ptile=4]"
+
+; set LSF queue name
+asimenv.distributed queueName  string  "normal"
+
+; use ssh for connection
+asimenv.distributed remoteShell string "ssh"
+
+; block ADE/Ocean until all jobs have finished
+asimenv.distributed block boolean  t
+
+; LSF jobs log directory
+; asimenv.distributed logsDir string "./LSF_logs"
+
+; delete job after it's complete; allows job name recycling
+; asimenv.distributed deleteJob boolean t
+
+; if you submit a job with the same name, delete old data
+; asimenv.distributed removeJobData boolean t
+
+; number of processors to use for LSF
+asimenv.distributed selectLsfNoOfProcessors boolean t
+asimenv.distributed lsfNoOfProcessors string "4"

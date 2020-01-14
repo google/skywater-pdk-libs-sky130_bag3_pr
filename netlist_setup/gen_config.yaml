@@ -1,0 +1,51 @@
+header:
+  CDL:
+    includes: ["${BAG_TECH_CONFIG_DIR}/calibre_setup/source.added"]
+  SPECTRE:
+    includes: []
+  VERILOG:
+    includes: []
+  SYSVERILOG:
+    includes: []
+
+mos:
+  CDL:
+    - [l, l*1.0e6]
+    - [w, w*1.0e6]
+    - [m, nf]
+    - [mult, 1]
+  SPECTRE:
+    - [l, l * 1.0e6]
+    - [w, w * 1.0e6]
+    - [m, nf]
+    - [mult, 1]
+  VERILOG: []
+  SYSVERILOG: []
+  types:
+    - [nmos4_hv, nhv]
+    - [nmos4_hvesd, nhvesd]
+    - [nmos4_svt, nshort]
+    - [nmos4_lvt, nlowvt]
+    - [nmos4_standard, nshort]
+    - [pmos4_hv, phv]
+    - [pmos4_hvesd, phvesd]
+    - [pmos4_svt, pshort]
+    - [pmos4_lvt, plowvt]
+    - [pmos4_hvt, phighvt]
+    - [pmos4_standard, pshort]
+
+diode:
+  CDL: []
+  SPECTRE: []
+  VERILOG: []
+  SYSVERILOG: []
+  static: False
+  types: []
+  port_order: {}
+
+res_metal:
+  CDL: []
+  SPECTRE: []
+  VERILOG: []
+  SYSVERILOG: []
+  types: []

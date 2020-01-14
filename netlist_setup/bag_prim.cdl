@@ -1,0 +1,55 @@
+
+.SUBCKT nmos4_hv B D G S
+*.PININFO B:B D:B G:B S:B
+MM0 D G S B nhv l=l*1.0e6 w=w*1.0e6 m=nf mult=1
+.ENDS
+
+.SUBCKT nmos4_hvesd B D G S
+*.PININFO B:B D:B G:B S:B
+MM0 D G S B nhvesd l=l*1.0e6 w=w*1.0e6 m=nf mult=1
+.ENDS
+
+.SUBCKT nmos4_svt B D G S
+*.PININFO B:B D:B G:B S:B
+MM0 D G S B nshort l=l*1.0e6 w=w*1.0e6 m=nf mult=1
+.ENDS
+
+.SUBCKT nmos4_lvt B D G S
+*.PININFO B:B D:B G:B S:B
+MM0 D G S B nlowvt l=l*1.0e6 w=w*1.0e6 m=nf mult=1
+.ENDS
+
+.SUBCKT nmos4_standard B D G S
+*.PININFO B:B D:B G:B S:B
+MM0 D G S B nshort l=l*1.0e6 w=w*1.0e6 m=nf mult=1
+.ENDS
+
+.SUBCKT pmos4_hv B D G S
+*.PININFO B:B D:B G:B S:B
+MM0 D G S B phv l=l*1.0e6 w=w*1.0e6 m=nf mult=1
+.ENDS
+
+.SUBCKT pmos4_hvesd B D G S
+*.PININFO B:B D:B G:B S:B
+MM0 D G S B phvesd l=l*1.0e6 w=w*1.0e6 m=nf mult=1
+.ENDS
+
+.SUBCKT pmos4_svt B D G S
+*.PININFO B:B D:B G:B S:B
+MM0 D G S B pshort l=l*1.0e6 w=w*1.0e6 m=nf mult=1
+.ENDS
+
+.SUBCKT pmos4_lvt B D G S
+*.PININFO B:B D:B G:B S:B
+MM0 D G S B plowvt l=l*1.0e6 w=w*1.0e6 m=nf mult=1
+.ENDS
+
+.SUBCKT pmos4_hvt B D G S
+*.PININFO B:B D:B G:B S:B
+MM0 D G S B phighvt l=l*1.0e6 w=w*1.0e6 m=nf mult=1
+.ENDS
+
+.SUBCKT pmos4_standard B D G S
+*.PININFO B:B D:B G:B S:B
+MM0 D G S B pshort l=l*1.0e6 w=w*1.0e6 m=nf mult=1
+.ENDS

@@ -1,0 +1,60 @@
+
+subckt nmos4_hv B D G S
+parameters l w nf
+MM0 D G S B nhv l=l * 1.0e6 w=w * 1.0e6 m=nf mult=1
+ends nmos4_hv
+
+subckt nmos4_hvesd B D G S
+parameters l w nf
+MM0 D G S B nhvesd l=l * 1.0e6 w=w * 1.0e6 m=nf mult=1
+ends nmos4_hvesd
+
+subckt nmos4_svt B D G S
+parameters l w nf
+MM0 D G S B nshort l=l * 1.0e6 w=w * 1.0e6 m=nf mult=1
+ends nmos4_svt
+
+subckt nmos4_lvt B D G S
+parameters l w nf
+MM0 D G S B nlowvt l=l * 1.0e6 w=w * 1.0e6 m=nf mult=1
+ends nmos4_lvt
+
+subckt nmos4_standard B D G S
+parameters l w nf
+MM0 D G S B nshort l=l * 1.0e6 w=w * 1.0e6 m=nf mult=1
+ends nmos4_standard
+
+subckt pmos4_hv B D G S
+parameters l w nf
+MM0 D G S B phv l=l * 1.0e6 w=w * 1.0e6 m=nf mult=1
+ends pmos4_hv
+
+subckt pmos4_hvesd B D G S
+parameters l w nf
+MM0 D G S B phvesd l=l * 1.0e6 w=w * 1.0e6 m=nf mult=1
+ends pmos4_hvesd
+
+subckt pmos4_svt B D G S
+parameters l w nf
+MM0 D G S B pshort l=l * 1.0e6 w=w * 1.0e6 m=nf mult=1
+ends pmos4_svt
+
+subckt pmos4_lvt B D G S
+parameters l w nf
+MM0 D G S B plowvt l=l * 1.0e6 w=w * 1.0e6 m=nf mult=1
+ends pmos4_lvt
+
+subckt pmos4_hvt B D G S
+parameters l w nf
+MM0 D G S B phighvt l=l * 1.0e6 w=w * 1.0e6 m=nf mult=1
+ends pmos4_hvt
+
+subckt pmos4_standard B D G S
+parameters l w nf
+MM0 D G S B pshort l=l * 1.0e6 w=w * 1.0e6 m=nf mult=1
+ends pmos4_standard
+
+subckt ideal_balun d c p n
+    K0 d 0 p c transformer n1=2
+    K1 d 0 c n transformer n1=2
+ends ideal_balun
