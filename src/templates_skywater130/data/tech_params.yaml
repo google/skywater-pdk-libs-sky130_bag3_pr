@@ -180,7 +180,7 @@ len_min:
     md_al_list: []
 
 margins:
-  well: 40
+  well: [40, 40]
 
 # transistor DRC rules.
 mos:

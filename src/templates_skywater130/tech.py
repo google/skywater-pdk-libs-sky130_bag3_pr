@@ -13,10 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Tuple, Optional
+from typing import Tuple, Optional, Mapping
 
 from pybag.core import BBox
-from pybag.enum import BoundaryType
 
 from bag.util.immutable import Param
 from bag.layout.tech import TechInfo
@@ -43,15 +42,19 @@ class TechInfoSkywater130(TechInfo):
         if edge2 is None:
             dev_type = edge1['dev_type']
             if dev_type is DeviceType.MOS:
-                well_margin: int = edge1['well_margin']
-                well_sp: int = self.config['margins']['well']
-                return max(well_sp - well_margin, 0)
+                margins: Mapping[str, int] = edge1['margins']
+                table: Mapping[str, Tuple[int, int]] = self.config['margins']
+                max_sp = 0
+                for name, val in margins.items():
+                    sp_tot = -(-table[name][is_vertical] // 2)
+                    max_sp = max(sp_tot - val, max_sp)
+                return max_sp
             else:
                 # TODO: implement this
-                raise NotImplementedError('Not implemented yet, see developer')
+                raise ValueError('Not implemented yet, see developer.')
         else:
             # TODO: implement this
-            raise NotImplementedError('Not implemented yet, see developer')
+            raise ValueError('Not implemented yet, see developer.')
 
     def add_cell_boundary(self, template: TemplateBase, box: BBox) -> None:
         if box.is_physical():

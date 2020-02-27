@@ -209,27 +209,24 @@ class MOSTechSkywater130(MOSTech):
         md_bot_vency = m1_info.via_bot_enc
         m1_vency = m1_info.via_top_enc
 
-        if mos_type.is_substrate:
-            raise ValueError('Not implemented yet.')
-        else:
-            po_yl = po_spy2
-            po_yh_gate = po_yl + po_h_gate
-            po_yc_gate = (po_yl + po_yh_gate) // 2
-            gm1_yh = po_yc_gate + v0_h // 2 + m1_vency
-            gm1_yl = min(po_yc_gate - v0_h // 2 - m1_vency, gm1_yh - m1_h_min)
-            # fix mg_imp spacing
-            imp_yl = max(imp_h_min2, po_yc_gate + mg_h // 2 + mg_imp_spy)
-            od_yl = imp_yl + imp_od_ency
+        po_yl = po_spy2
+        po_yh_gate = po_yl + po_h_gate
+        po_yc_gate = (po_yl + po_yh_gate) // 2
+        gm1_yh = po_yc_gate + v0_h // 2 + m1_vency
+        gm1_yl = min(po_yc_gate - v0_h // 2 - m1_vency, gm1_yh - m1_h_min)
+        # fix mg_imp spacing
+        imp_yl = max(imp_h_min2, po_yc_gate + mg_h // 2 + mg_imp_spy)
+        od_yl = imp_yl + imp_od_ency
 
-            dm1_yl = gm1_yh + m1_spy
-            dv0_yl = dm1_yl + m1_vency
-            dmd_yl = dv0_yl - md_bot_vency
-            dvc_yl = dmd_yl + md_top_vency
-            od_yl = max(od_yl, dvc_yl - od_vency)
+        dm1_yl = gm1_yh + m1_spy
+        dv0_yl = dm1_yl + m1_vency
+        dmd_yl = dv0_yl - md_bot_vency
+        dvc_yl = dmd_yl + md_top_vency
+        od_yl = max(od_yl, dvc_yl - od_vency)
 
-            od_yh = od_yl + w
-            po_yh = od_yh + po_od_exty
-            blk_yh = max(od_yh + imp_od_ency + imp_h_min2, po_yh + po_spy2)
+        od_yh = od_yl + w
+        po_yh = od_yh + po_od_exty
+        blk_yh = max(od_yh + imp_od_ency + imp_h_min2, po_yh + po_spy2)
 
         blk_yh = -(-blk_yh // blk_p) * blk_p
 
@@ -364,7 +361,7 @@ class MOSTechSkywater130(MOSTech):
             num_m = fg + 1 - num_s - num_d
             m_info = (m_xc, num_m, wire_pitch)
             self._draw_ds_conn(builder, d0_info, d1_info, od_y, md_y, num_vc, num_v0,
-                               m_xc, num_m, conn_pitch)
+                               m_xc, num_m, wire_pitch)
         else:
             m_info = None
 
@@ -672,8 +669,8 @@ class MOSTechSkywater130(MOSTech):
         add_base(builder, row_type, threshold, (blk_rect.yl, blk_rect.yl), blk_rect,
                  well_x=(well_xl, blk_w))
 
-        x_margins = dict(well=well_xl, base=blk_rect.xl)
-        y_margins = dict(well=well_yl, base=blk_rect.yl)
+        x_margins = dict(well=well_xl)
+        y_margins = dict(well=well_yl)
         edgel = ImmutableSortedDict(dict(dev_type=DeviceType.MOS, lch=lch, margins=x_margins))
         edgeb = ImmutableSortedDict(dict(dev_type=DeviceType.MOS, lch=lch, margins=y_margins))
         return CornerLayInfo(builder.get_info(blk_rect), (0, 0), edgel, edgeb)
