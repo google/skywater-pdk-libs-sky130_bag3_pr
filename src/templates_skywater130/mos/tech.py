@@ -156,7 +156,7 @@ class MOSTechSkywater130(MOSTech):
         return ConnInfo(w, len_min, sp_le, orient, v_w, v_h, v_sp, v_bot_enc, v_top_enc)
 
     def can_short_adj_tracks(self, conn_layer: int) -> bool:
-        return True
+        return False
 
     def get_track_specs(self, conn_layer: int, top_layer: int) -> List[TrackSpec]:
         assert conn_layer == 1, 'currently only work for conn_layer = 1'

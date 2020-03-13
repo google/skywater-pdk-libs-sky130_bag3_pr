@@ -194,7 +194,7 @@ mos:
   # source/drain pitch is computed as val[0] + val[1] * lch_unit
   sd_pitch_constants:
     lch: [30, .inf]
-    val: [[86, 0], [42, 1]]
+    val: [[172, 0], [42, 1]]
   # drain connection info
   d_wire_info:
     bot_layer: 0
