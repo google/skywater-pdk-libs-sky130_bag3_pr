@@ -13,13 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Tuple, FrozenSet, List
+from typing import Tuple, Optional, FrozenSet, List, Mapping, Any
 
 from dataclasses import dataclass
+from itertools import chain
 
 from pybag.enum import Orient2D
-from pybag.core import BBox
+from pybag.core import COORD_MAX, BBox
 
+from bag.util.immutable import ImmutableSortedDict, ImmutableList, Param
 from bag.layout.tech import TechInfo
 from bag.layout.routing.grid import TrackSpec
 from bag.util.immutable import ImmutableSortedDict, ImmutableList, Param
@@ -32,8 +34,9 @@ from xbase.layout.mos.data import (
     MOSRowSpecs, MOSRowInfo, BlkExtInfo, MOSEdgeInfo, MOSLayInfo, ExtWidthInfo, LayoutInfo,
     ExtEndLayInfo, RowExtInfo
 )
-
 from ..util import add_base, get_arr_edge_dim
+
+MConnInfoType = Tuple[int, int, Orient2D, int, Tuple[str, str]]
 
 
 @dataclass(eq=True, frozen=True)
@@ -85,8 +88,8 @@ class ConnInfo:
 class MOSTechSkywater130(MOSTech):
     ignore_vm_sp_le_layers: FrozenSet[str] = frozenset(('m1',))
 
-    def __init__(self, tech_info: TechInfo, lch: int, mos_entry_name: str = 'mos') -> None:
-        MOSTech.__init__(self, tech_info, lch, mos_entry_name)
+    def __init__(self, tech_info: TechInfo, lch: int, arr_options: Mapping[str, Any]) -> None:
+        MOSTech.__init__(self, tech_info, lch, arr_options) 
 
     @property
     def blk_h_pitch(self) -> int:
