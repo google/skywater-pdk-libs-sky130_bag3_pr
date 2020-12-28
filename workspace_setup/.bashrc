@@ -4,6 +4,8 @@ export PYTHONPATH=""
 ### Setup BAG
 source .bashrc_bag
 
+export PDK_HOME=/tools/commercial/skywater/swtech130/skywater-src-nda/s8/V1.3.0
+
 # location of various tools
 export CDS_INST_DIR=/tools/cadence/ICADVM/ICADVM181
 export PVS_HOME=/tools/cadence/PVS/PVS151
