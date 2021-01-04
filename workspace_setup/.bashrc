@@ -7,6 +7,7 @@ source .bashrc_bag
 export PDK_HOME=/tools/commercial/skywater/swtech130/skywater-src-nda/s8/V1.3.0
 
 # location of various tools
+export MGC_HOME=/tools/mentor/calibre/current
 export CDS_INST_DIR=/tools/cadence/ICADVM/ICADVM181
 export PVS_HOME=/tools/cadence/PVS/PVS151
 export SPECTRE_HOME=/tools/cadence/SPECTRE/SPECTRE181_ISR7
@@ -26,6 +27,7 @@ export OA_PLUGIN_PATH=${OA_CDS_ROOT}/data/plugins:${OA_PLUGIN_PATH:-}
 export OA_BIT=64
 
 # PATH setup
+export PATH=${MGC_HOME}/bin:${PATH}
 export PATH=${PVS_HOME}/bin:${PATH}
 export PATH=${QRC_HOME}/bin:${PATH}
 export PATH=${CDS_INST_DIR}/tools/plot/bin:${PATH}
