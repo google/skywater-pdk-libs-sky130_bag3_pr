@@ -65,8 +65,8 @@ width_intervals:
     - [[60, .inf]]
     - [[60, 2001]]
   5:
-    - [[320, .inf]]
-    - [[320, .inf]]
+    - [[284, .inf]]
+    - [[284, .inf]]
 
 # mapping from tuple of via layers to via ID.
 via_id:
@@ -207,7 +207,7 @@ mos:
     bot_layer: 0
     # wire_w, is_horiz, v_w, v_h, v_sp, v_bot_enc, v_top_enc
     info_list:
-      - [34, True, 34, 34, 34, 16, 16]
+      - [34, True, 34, 34, 34, 10, 10]
       - [52, False, 34, 34, 38, 8, 12]
 
   # minimum horizontal space between OD, in resolution units
@@ -218,8 +218,8 @@ mos:
   od_spy_gr: 4000
   # maximum vertical space between OD, in resolution units
   od_spy_max: 4000
-  # set by via enclosure
-  od_po_extx: 56
+  # set by via enclosure, licon.5
+  od_po_extx: 96
 
   # poly.2
   po_spy: 42
@@ -249,7 +249,8 @@ mos:
 
   grid_info:
     - [1, 52, 1]
-    - [3, 66, 2]
+    - [3, 66, 1]
+    - [5, 284, 1]
 
 fill: {}
 
