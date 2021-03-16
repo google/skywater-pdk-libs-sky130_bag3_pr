@@ -1,0 +1,21 @@
+# cadence base libraries
+DEFINE     analogLib    $CDSHOME/tools/dfII/etc/cdslib/artist/analogLib
+DEFINE     basic        $CDSHOME/tools/dfII/etc/cdslib/basic
+
+# technology base libraries
+DEFINE     s8phirs_10r  $BAG_TECH_CONFIG_DIR/workspace_setup/PDK/VirtuosoOA/libs/s8phirs_10r
+# legacy libraries
+DEFINE	   tech		$BAG_TECH_CONFIG_DIR/workspace_setup/PDK/VirtuosoOA/libs/tech 
+DEFINE	   technology_library		$BAG_TECH_CONFIG_DIR/workspace_setup/PDK/VirtuosoOA/libs/technology_library 
+DEFINE	   s8rf		$BAG_TECH_CONFIG_DIR/workspace_setup/PDK/VirtuosoOA/libs/s8rf 
+DEFINE	   s8rf2	$BAG_TECH_CONFIG_DIR/workspace_setup/PDK/VirtuosoOA/libs/s8rf2 
+DEFINE	   s8rf2_dv	$BAG_TECH_CONFIG_DIR/workspace_setup/PDK/VirtuosoOA/libs/s8rf2_dv
+
+ASSIGN tech DISPLAY Invisible 
+ASSIGN technology_library DISPLAY Invisible 
+#ASSIGN s8rf DISPLAY Invisible 
+#ASSIGN s8rf2 DISPLAY Invisible 
+#ASSIGN s8rf2_dv DISPLAY Invisible 
+
+# BAG Libraries
+INCLUDE $BAG_WORK_DIR/cds.lib.bag

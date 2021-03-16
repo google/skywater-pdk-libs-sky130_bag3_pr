@@ -1,0 +1,60 @@
+# python/IDE files
+*.pyc
+__pycache__
+venv
+
+# Pycharm files
+.idea/workspace.xml
+.idea/usage.statistics.xml
+.idea/tasks.xml
+
+# misc edit/log files
+*~
+*.log
+IPOPT.out
+lsyncd.status
+
+# misc BAG files
+bag_sim
+bag_stimuli
+gen_outputs
+BAG_server_port.txt
+BAG_sim_server_port.txt
+pytest_output
+
+
+# misc configuration/history files
+.ipython
+.jupyter
+.ipynb_checkpoints
+
+# generated files/directories
+calibre_run
+gen_libs
+pvs_run
+cds.lib
+BAGTMP
+spectre_run
+cdl_netlist
+netlist
+sim
+gen_output
+
+# cadence files
+.abstract
+.cadence
+*.cdslck
+.calibreviewsetup
+.tmp_*
+libManager.log.*
+abstract*
+
+# calibre files
+.cgidrcdb
+.cgilvsdb
+calibreview.setup
+
+# pvs files
+.QRC.run
+.preRcx.Last.State
+.qrc.Last.state

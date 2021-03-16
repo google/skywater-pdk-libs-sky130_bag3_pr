@@ -1,0 +1,47 @@
+// Copyright 2019-2021 SkyWater PDK Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// This code is *alternatively* available under a BSD-3-Clause license, see
+// details in the README.md at the top level and the license text at
+// https://github.com/google/skywater-pdk-libs-sky130_bag3_pr/blob/master/LICENSE.alternative
+//
+// SPDX-License-Identifier: BSD-3-Clause OR Apache 2.0
+*drcRulesFile: ${PDK_HOME}/DRC/Calibre/s8_drcRules
+*drcRunDir: ${BAG_WORK_DIR}/calibre_run/drc/myLib/myCell
+*drcLayoutPaths: myCell.calibre.db
+*drcLayoutPrimary: myCell
+*drcLayoutLibrary: myLib
+*drcLayoutView: layout
+*drcLayoutGetFromViewer: 1
+*drcResultsFile: myCell.drc.results
+*drcIncludeCmdsType: SVRF
+*drcSVRFCmds: {DRC KEEP EMPTY NO} {} {} {} {} {} {}
+*drcSummaryFile: myCell.drc.summary
+*drcViewSummary: 0
+*drcDFMDefaultsResultsFile: aib_mstr.dfmDefaults.db
+*cmnWarnLayoutOverwrite: 0
+*cmnPromptSaveRunset: 0
+*cmnShowOptions: 1
+*cmnSaveRunsetChanges: 0
+*cmnVConnectColon: 1
+*cmnDontWaitForLicense: 0
+*cmnRunMT: 1
+*cmnRunHyper: 1
+*cmnTemplate_RN: $BAG_WORK_DIR/calibre_run/drc/%L/%l
+*cmnSlaveHosts: {use {}} {hostName {}} {cpuCount {}} {a32a64 {}} {rsh {}} {maxMem {}} {workingDir {}} {layerDir {}} {mgcLibPath {}} {launchName {}}
+*cmnLSFSlaveTbl: {use 1} {totalCpus 1} {minCpus 1} {architecture {{}}} {minMemory {{}}} {resourceOptions {{}}} {submitOptions {{}}}
+*cmnGridSlaveTbl: {use 1} {totalCpus 1} {minCpus 1} {architecture {{}}} {minMemory {{}}} {resourceOptions {{}}} {submitOptions {{}}}
+*cmnFDILayoutLibrary: myLib
+*cmnFDILayoutView: layout
+*cmnFDIDEFLayoutPath: myCell.def
