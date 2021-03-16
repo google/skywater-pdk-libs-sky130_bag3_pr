@@ -1,0 +1,23 @@
+# This is the list of significant contributors.
+#
+# This does **not** necessarily list everyone who has contributed code,
+# especially since many employees of one corporation may be contributing.
+# To see the full list of contributors, see the revision history in
+# source control.
+
+# Companies
+Google LLC (google.com)
+BlueCheetah Analog (bcanalog.com)
+SkyWater Technology Foundry (skywatertechnology.com)
+efabless corporation (efabless.com)
+
+# Individuals
+tansell@google.com, me@mith.ro (Tim 'mithro' Ansell)
+pgron@google.com (Per Grön)
+ethanmoon@google.com (Per Grön)
+kevin.kelley@skywatertechnology.com, kevin.kelly@skywater.tools (Kevin Kelley)
+ayan@bcanalog.com (Ayan Biswas)
+elad@bcanalog.com (Elad Alon)
+eric@bcanalog.com, pkerichang@gmail.com (Eric Chang)
+krishna@bcanalog.com (Krishna Settaluri)
+nathan@bcanalog.com (Nathan Narevsky)
