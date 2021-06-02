@@ -135,9 +135,10 @@ via:
         - [.inf, [[62, 62]]]
 
 # minimum wire spacing rule.  Space is measured orthogonal to wire direction.
+# should be in resolution units
 sp_min:
   [met1, drawing]: &sp_min_1x
-    - [.inf, 28]
+    - [.inf, 100]
   [met2, drawing]: *sp_min_1x
   [met3, drawing]: &sp_min_2x
     - [.inf, 60]
@@ -148,7 +149,7 @@ sp_min:
 # minimum line-end spacing rule.  Space is measured parallel to wire direction.
 sp_le_min:
   [met1, drawing]: &sp_le_min_1x
-    - [.inf, 28]
+    - [.inf, 100] #change from 28
   [met2, drawing]: *sp_le_min_1x
   [met3, drawing]: &sp_le_min_2x
     - [.inf, 60]
