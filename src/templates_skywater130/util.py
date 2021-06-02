@@ -81,9 +81,13 @@ def add_base_mos(builder: LayoutInfoBuilder, row_type: MOSType, threshold: str, 
                 builder.add_rect_arr(well_lp, BBox(well_x[0], rect.yl, well_x[1], rect.yh))
             
         #draw the respective implant called    
-        if (row_type is MOSType.nch or MOSType.ntap):
+        if (row_type is MOSType.nch):
             builder.add_rect_arr(('nsdm', 'drawing'),  BBox(rect.xl, imp_y[0], rect.xh, imp_y[1]))
-        elif (row_type is MOSType.pch or MOSType.ptap):
+        elif (row_type is MOSType.pch):
+            builder.add_rect_arr(('psdm', 'drawing'),  BBox(rect.xl, imp_y[0], rect.xh, imp_y[1]))
+        elif (row_type is MOSType.ntap):
+            builder.add_rect_arr(('nsdm', 'drawing'),  BBox(rect.xl, imp_y[0], rect.xh, imp_y[1]))
+        elif (row_type is MOSType.ptap):
             builder.add_rect_arr(('psdm', 'drawing'),  BBox(rect.xl, imp_y[0], rect.xh, imp_y[1]))
 
         thres_lp = _get_thres_lp(row_type, threshold)
