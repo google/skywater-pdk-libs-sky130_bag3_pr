@@ -101,16 +101,17 @@ class MOSTechSkywater130(MOSTech):
 
     @property
     def min_sep_col(self) -> int:
-        return self._get_od_sep_col(self.mos_config['od_spx'])
+        #return self._get_od_sep_col(self.mos_config['od_spx'])
 
-        #felicia commented out
-        #lch = self.lch
-        #sd_pitch = self.sd_pitch
-        #od_po_extx = self.od_po_extx
+        #felicia copied
+        lch = self.lch
+        sd_pitch = self.sd_pitch
+        od_po_extx = self.od_po_extx
 
-        #od_spx: int = self.mos_config['od_spx']
-
-        #return -(-(od_spx + lch + 2 * od_po_extx) // sd_pitch) - 1
+        od_spx: int = self.mos_config['od_spx']
+        imp_od_encx: int = self.mos_config['imp_od_encx']
+        ans = -(-(od_spx + lch + 2 * od_po_extx + 2*imp_od_encx) // sd_pitch) - 1
+        return ans + (ans & 1)
 
     @property
     def sub_sep_col(self) -> int:
@@ -163,7 +164,8 @@ class MOSTechSkywater130(MOSTech):
     @property
     def well_w_edge(self) -> int:
         imp_od_encx: int = self.mos_config['imp_od_encx']
-        return -(self.sd_pitch - self.lch) // 2 + self.od_po_extx + imp_od_encx
+        nwell_imp: int = self.mos_config['nwell_imp']
+        return -(self.sd_pitch - self.lch) // 2 + self.od_po_extx + nwell_imp + imp_od_encx
 
     def get_conn_info(self, conn_layer: int, is_gate: bool) -> ConnInfo:
         mconf = self.mos_config
@@ -542,9 +544,11 @@ class MOSTechSkywater130(MOSTech):
                            0, seg + 1, sd_pitch)
 
         # draw base
-        bbox = BBox(0, 0, seg * sd_pitch, height)
+        # add extra imp)od_encx for ntap and ptap
+        imp_od_encx: int = self.mos_config['imp_od_encx']
+        bbox = BBox(0-2*imp_od_encx, 0, seg * sd_pitch + 2*imp_od_encx, height)
         add_base_mos(builder, sub_type, threshold, imp_y, bbox, is_sub=True)
-
+        
         edge_info = MOSEdgeInfo(mos_type=sub_type, imp_y=imp_y, has_od=True)
         be = BlkExtInfo(row_type, row_info.threshold, guard_ring, ImmutableList([(seg, sub_type)]),
                         ImmutableSortedDict())
@@ -786,7 +790,7 @@ class MOSTechSkywater130(MOSTech):
         # draw base
         imp_od_encx: int = self.mos_config['imp_od_encx']
         bbox = BBox(od_xl-imp_od_encx, 0, od_xh+imp_od_encx, row_info.height)
-
+        
         #if drawing tap cells, flip the implant type so its opposite of row
         if is_sub:
             if (row_info.row_type is MOSType.nch):

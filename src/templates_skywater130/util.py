@@ -73,7 +73,8 @@ def add_base_mos(builder: LayoutInfoBuilder, row_type: MOSType, threshold: str, 
 
     if rect.is_physical():
         # only draw nwells if not a tap cell and pch, or is tap cell and nch
-        if ((not row_type.is_pwell) and (not is_sub)) or (is_sub and row_type is MOSType.nch):
+        if ((not row_type.is_pwell) and (not is_sub)) \
+                or (is_sub and (row_type is MOSType.nch or row_type is MOSType.ntap) ):
             well_lp = ('nwell', 'drawing')
             if well_x is None:
                 builder.add_rect_arr(well_lp, rect)
