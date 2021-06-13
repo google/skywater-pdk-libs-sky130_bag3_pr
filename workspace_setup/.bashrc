@@ -4,7 +4,11 @@ export PYTHONPATH=""
 ### Setup BAG
 source .bashrc_bag
 
-export PDK_HOME=/tools/commercial/skywater/swtech130/skywater-src-nda/s8/V1.3.0
+export PDK_HOME=/tools/commercial/skywater/swtech130/skywater-src-nda/s8/V2.0.0
+export SW_PDK_ROOT=/tools/commercial/skywater
+export SW_IP_HOME=${SW_PDK_ROOT}/s8_ip
+export METAL_STACK="s8phirs_10r"
+
 
 # location of various tools
 export MGC_HOME=/tools/mentor/calibre/current
