@@ -26,9 +26,6 @@ def add_base(builder: LayoutInfoBuilder, row_type: MOSType, threshold: str, imp_
     # draws nwell, n+ implant (ndsm) and p+ implant (pdsm)
     # for non mos devices (corners, edges, etc)
 
-    # felicia: this can probably be merged with add_base_mos, but makes the implants
-    # under the mos devices too long currently if the contents of add_base_mos 
-    # are just copied over
     pimp_lp = ('psdm', 'drawing')
     if rect.is_physical():
         if not row_type.is_pwell:
@@ -38,29 +35,6 @@ def add_base(builder: LayoutInfoBuilder, row_type: MOSType, threshold: str, imp_
             else:
                 builder.add_rect_arr(well_lp, BBox(well_x[0], rect.yl, well_x[1], rect.yh))
             
-            
-        #if row_type.is_n_plus:
-         #   builder.add_rect_arr(('nsdm', 'drawing'), rect)
-        #elif (row_type is MOSType.pch):
-        #    builder.add_rect_arr(('psdm', 'drawing'), rect)
-        #else:
-
-         #   nimp_lp = ('nsdm', 'drawing')
-            """
-            if rect.yl < imp_y[0]:
-                builder.add_rect_arr(nimp_lp, BBox(rect.xl, rect.yl, rect.xh, imp_y[0]))
-                print("n implant for rect.yl < imp_y[0]")
-                print([rect.xl, rect.yl, rect.xh, imp_y[0]])
-            if imp_y[1] < rect.yh:
-                builder.add_rect_arr(nimp_lp, BBox(rect.xl, imp_y[1], rect.xh, rect.yh))
-                print("n implant for imp_y[1] < rect.yh")
-                print([rect.xl, imp_y[1], rect.xh, rect.yh])
-            """
-
-            #if imp_y[0] < imp_y[1]:
-                #builder.add_rect_arr(pimp_lp, BBox(rect.xl, imp_y[0], rect.xh, imp_y[1]))
-                #print("p implant for imp_y[0] < imp_y[1]")               
-                #print([rect.xl, imp_y[0], rect.xh, imp_y[1]])
         thres_lp = _get_thres_lp(row_type, threshold)
         if thres_lp[0] != '':
             builder.add_rect_arr(thres_lp, rect)

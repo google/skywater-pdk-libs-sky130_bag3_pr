@@ -23,12 +23,12 @@ imp_layers:
 
 # mapping from metal layer ID to layer/purpose pair that defines
 # a metal resistor.
-res_metal_layer_table: {}
-#  1: [!!python/tuple ['m1res', 'drawing']]
-#  2: [!!python/tuple ['m2res', 'drawing']]
-#  3: [!!python/tuple ['m3res', 'drawing']]
-#  4: [!!python/tuple ['m4res', 'drawing']]
-#  5: [!!python/tuple ['m5res', 'drawing']]
+res_metal_layer_table:
+  1: [!!python/tuple ['met1', 'res']]
+  2: [!!python/tuple ['met2', 'res']]
+  3: [!!python/tuple ['met3', 'res']]
+  4: [!!python/tuple ['met4', 'res']]
+  5: [!!python/tuple ['met5', 'res']]
 
 # mapping from metal layer ID to layer/purpose pair that
 # defines metal exclusion region.
@@ -48,6 +48,7 @@ lay_purp_list: &lp_list
   3: [!!python/tuple ['met3', 'drawing']]
   4: [!!python/tuple ['met4', 'drawing']]
   5: [!!python/tuple ['met5', 'drawing']]
+  6: [!!python/tuple ['capm', 'drawing']]
 
 dum_lay_purp_list: *lp_list
 
@@ -67,6 +68,10 @@ width_intervals:
   5:
     - [[284, .inf]]
     - [[284, .inf]]
+  
+  6:
+    - [[60, .inf]]
+    - [[60, 2001]]
 
 # mapping from tuple of via layers to via ID.
 via_id:
@@ -141,7 +146,7 @@ sp_min:
     - [.inf, 100]
   [met2, drawing]: *sp_min_1x
   [met3, drawing]: &sp_min_2x
-    - [.inf, 60]
+    - [.inf, 60] #60
   [met4, drawing]: *sp_min_2x
   [met5, drawing]:
     - [.inf, 320]
@@ -156,6 +161,7 @@ sp_le_min:
   [met4, drawing]: *sp_le_min_2x
   [met5, drawing]:
     - [.inf, 320]
+  
 
 # minimum length/minimum area rules.
 len_min:
@@ -178,6 +184,10 @@ len_min:
   [met5, drawing]:
     w_al_list:
       - [.inf, 160000, 0]
+    md_al_list: []
+  [capm, drawing]:
+    w_al_list:
+      - [.inf, 9600, 0]
     md_al_list: []
 
 margins:
