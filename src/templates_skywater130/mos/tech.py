@@ -21,15 +21,15 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause OR Apache 2.0
 
-
-from typing import Tuple, FrozenSet, List
-
+from typing import Tuple, Optional, FrozenSet, List, Mapping, Any
 
 from dataclasses import dataclass
+from itertools import chain
 
 from pybag.enum import Orient2D
-from pybag.core import BBox
+from pybag.core import COORD_MAX, BBox
 
+from bag.util.immutable import ImmutableSortedDict, ImmutableList, Param
 from bag.layout.tech import TechInfo
 from bag.layout.routing.grid import TrackSpec
 from bag.util.immutable import ImmutableSortedDict, ImmutableList, Param
@@ -42,8 +42,9 @@ from xbase.layout.mos.data import (
     MOSRowSpecs, MOSRowInfo, BlkExtInfo, MOSEdgeInfo, MOSLayInfo, ExtWidthInfo, LayoutInfo,
     ExtEndLayInfo, RowExtInfo
 )
-
 from ..util import add_base, get_arr_edge_dim
+
+MConnInfoType = Tuple[int, int, Orient2D, int, Tuple[str, str]]
 
 
 @dataclass(eq=True, frozen=True)
@@ -95,8 +96,8 @@ class ConnInfo:
 class MOSTechSkywater130(MOSTech):
     ignore_vm_sp_le_layers: FrozenSet[str] = frozenset(('m1',))
 
-    def __init__(self, tech_info: TechInfo, lch: int, mos_entry_name: str = 'mos') -> None:
-        MOSTech.__init__(self, tech_info, lch, mos_entry_name)
+    def __init__(self, tech_info: TechInfo, lch: int, arr_options: Mapping[str, Any]) -> None:
+        MOSTech.__init__(self, tech_info, lch, arr_options) 
 
     @property
     def blk_h_pitch(self) -> int:
@@ -353,7 +354,7 @@ class MOSTechSkywater130(MOSTech):
         od_y = self._add_mos_active(builder, row_info, 0, fg, w)
 
         # draw gate connection
-        self._draw_g_conn(builder, sep_g, g_xc, po_y_gate, num_g, g_pitch)
+        self._draw_g_conn(builder, sep_g, g_xc, po_y_gate, fg, g_pitch, g_on_s)
 
         # draw drain/source connections
         d0_info = self.get_conn_info(0, False)
@@ -375,9 +376,7 @@ class MOSTechSkywater130(MOSTech):
         else:
             m_info = None
 
-        # draw base
         bbox = BBox(0, 0, fg * sd_pitch, height)
-        add_base(builder, row_type, threshold, imp_y, bbox)
 
         edge_info = MOSEdgeInfo(mos_type=row_type, imp_y=imp_y, has_od=True)
         be = BlkExtInfo(row_type, row_info.threshold, False, ImmutableList([(fg, row_type)]),
@@ -388,7 +387,7 @@ class MOSTechSkywater130(MOSTech):
                           shorted_ports=ImmutableList([MOSPortType.G]))
 
     def _draw_g_conn(self, builder: LayoutInfoBuilder, sep_g: bool, g_xc: int,
-                     po_y_gate: Tuple[int, int], num_g: int, conn_pitch: int) -> None:
+                     po_y_gate: Tuple[int, int], fg: int, conn_pitch: int, g_on_s: bool) -> None:
         lch = self.lch
         sd_pitch = self.sd_pitch
 
@@ -404,8 +403,29 @@ class MOSTechSkywater130(MOSTech):
         po_lp = ('poly', 'drawing')
         po_conn_w = sd_pitch + lch
         po_xl_gate = g_xc - po_conn_w // 2
-        builder.add_rect_arr(po_lp, BBox(po_xl_gate, po_y_gate[0], po_xl_gate + po_conn_w,
-                                         po_y_gate[1]), nx=num_g, spx=conn_pitch)
+
+        if g_on_s:
+            g_xc = 0
+            num_g = fg // 2 + 1
+            po_xl_even = g_xc
+            po_xh_even = g_xc + sd_pitch // 2 + lch // 2
+            po_xl_odd = sd_pitch + sd_pitch // 2 - lch // 2
+            po_xh_odd = 2 * sd_pitch
+        else:
+            g_xc = sd_pitch
+            num_g = (fg + 1) // 2
+            po_xl_even = sd_pitch // 2 - lch // 2
+            po_xh_even = sd_pitch
+            po_xl_odd = sd_pitch
+            po_xh_odd = sd_pitch + sd_pitch // 2 + lch // 2
+
+        # builder.add_rect_arr(po_lp, BBox(po_xl_gate, po_y_gate[0], po_xl_gate + po_conn_w,
+                                         # po_y_gate[1]), nx=num_g, spx=conn_pitch)
+        builder.add_rect_arr(po_lp, BBox(po_xl_even, po_y_gate[0], po_xh_even, po_y_gate[1]),
+                             nx=(fg - (fg // 2)), spx=conn_pitch)
+        builder.add_rect_arr(po_lp, BBox(po_xl_odd, po_y_gate[0], po_xh_odd, po_y_gate[1]),
+                             nx=(fg // 2), spx=conn_pitch)
+
         po_yc_gate = (po_y_gate[0] + po_y_gate[1]) // 2
         po_h_gate = po_y_gate[1] - po_y_gate[0]
         builder.add_via(g0_info.get_via_info('PYL1_C', g_xc, po_yc_gate, po_h_gate,
@@ -737,6 +757,11 @@ class MOSTechSkywater130(MOSTech):
         od_xh = stop * sd_pitch + od_sd_dx
         builder.add_rect_arr(od_lp, BBox(od_xl, od_yl, od_xh, od_yh))
 
+        # draw base
+        imp_od_encx: int = self.mos_config['imp_od_encx']
+        bbox = BBox(od_xl-imp_od_encx, 0, od_xh+imp_od_encx, row_info.height)
+        add_base(builder, row_info.row_type, row_info.threshold, row_info['imp_y'], bbox)
+
         return od_yl, od_yh
 
     def _add_po_array(self, builder: LayoutInfoBuilder, po_y: Tuple[int, int], start: int,
@@ -806,3 +831,4 @@ def _add_blk_ext_info(sd_pitch: int, builder: LayoutInfoBuilder,
         xcur = xh
 
     return xcur
+
