@@ -23,12 +23,12 @@ imp_layers:
 
 # mapping from metal layer ID to layer/purpose pair that defines
 # a metal resistor.
-res_metal_layer_table:
-  1: [!!python/tuple ['met1', 'res']]
-  2: [!!python/tuple ['met2', 'res']]
-  3: [!!python/tuple ['met3', 'res']]
-  4: [!!python/tuple ['met4', 'res']]
-  5: [!!python/tuple ['met5', 'res']]
+res_metal_layer_table: {}
+#  1: [!!python/tuple ['met1', 'res']]
+#  2: [!!python/tuple ['met2', 'res']]
+#  3: [!!python/tuple ['met3', 'res']]
+#  4: [!!python/tuple ['met4', 'res']]
+#  5: [!!python/tuple ['met5', 'res']]
 
 # mapping from metal layer ID to layer/purpose pair that
 # defines metal exclusion region.
@@ -48,7 +48,7 @@ lay_purp_list: &lp_list
   3: [!!python/tuple ['met3', 'drawing']]
   4: [!!python/tuple ['met4', 'drawing']]
   5: [!!python/tuple ['met5', 'drawing']]
-  6: [!!python/tuple ['capm', 'drawing']]
+#  6: [!!python/tuple ['capm', 'drawing']]
 
 dum_lay_purp_list: *lp_list
 
@@ -185,10 +185,10 @@ len_min:
     w_al_list:
       - [.inf, 160000, 0]
     md_al_list: []
-  [capm, drawing]:
-    w_al_list:
-      - [.inf, 9600, 0]
-    md_al_list: []
+  #[capm, drawing]:
+  #  w_al_list:
+  #    - [.inf, 9600, 0]
+  #  md_al_list: []
 
 margins:
   well: [40, 40]
