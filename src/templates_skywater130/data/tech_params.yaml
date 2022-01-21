@@ -23,7 +23,7 @@ imp_layers:
 
 # mapping from metal layer ID to layer/purpose pair that defines
 # a metal resistor.
-res_metal_layer_table:
+res_metal_layer_table: {}
 #  1: [!!python/tuple ['met1', 'res']]
 #  2: [!!python/tuple ['met2', 'res']]
 #  3: [!!python/tuple ['met3', 'res']]
