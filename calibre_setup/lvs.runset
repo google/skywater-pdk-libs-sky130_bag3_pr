@@ -1,0 +1,39 @@
+*lvsRulesFile: ${PDK_HOME}/LVS/Calibre/lvs_s8_opts
+*lvsRunDir: ${BAG_WORK_DIR}/calibre_run/lvs/myLib/top_cell
+*lvsLayoutPaths: top_cell.calibre.db
+*lvsLayoutPrimary: top_cell
+*lvsLayoutLibrary: myLib
+*lvsLayoutView: layout
+*lvsLayoutGetFromViewer: 1
+*lvsSourcePath: top_cell.src.net
+*lvsSourcePrimary: top_cell
+*lvsSourceLibrary: myLib
+*lvsSourceView: schematic
+*lvsSourceGetFromViewer: 1
+*lvsSpiceFile: top_cell.sp
+*lvsPowerNames: VDD
+*lvsGroundNames: VSS
+*lvsRecognizeGates: NONE
+*lvsConfigureSplitGates: 1
+*lvsReduceSplitGates: 0
+*lvsERCDatabase: top_cell.erc.results
+*lvsERCSummaryFile: top_cell.erc.summary
+*lvsReportFile: top_cell.lvs.report
+*lvsViewReport: 0
+*lvsSVDBcci: 1
+*lvsSVDBxcal: 1
+*lvsSVDBtxref: 1
+*lvsSVDBnopinloc: 1
+*cmnWarnLayoutOverwrite: 0
+*cmnWarnSourceOverwrite: 0
+*cmnPromptSaveRunset: 0
+*cmnShowOptions: 1
+*cmnSaveRunsetChanges: 0
+*cmnVConnectColon: 1
+*cmnTemplate_RN: $BAG_WORK_DIR/calibre_run/lvs/%L/%l
+*cmnSlaveHosts: {use {}} {hostName {}} {cpuCount {}} {a32a64 {}} {rsh {}} {maxMem {}} {workingDir {}} {layerDir {}} {mgcLibPath {}} {launchName {}}
+*cmnLSFSlaveTbl: {use 1} {totalCpus 1} {minCpus 1} {architecture {{}}} {minMemory {{}}} {resourceOptions {{}}} {submitOptions {{}}}
+*cmnGridSlaveTbl: {use 1} {totalCpus 1} {minCpus 1} {architecture {{}}} {minMemory {{}}} {resourceOptions {{}}} {submitOptions {{}}}
+*cmnFDILayoutLibrary: myLib
+*cmnFDILayoutView: layout
+*cmnFDIDEFLayoutPath: top_cell.def

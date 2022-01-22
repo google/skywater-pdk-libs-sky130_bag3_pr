@@ -1,0 +1,71 @@
+# Copyright 2019-2021 SkyWater PDK Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# This code is *alternatively* available under a BSD-3-Clause license, see
+# details in the README.md at the top level and the license text at
+# https://github.com/google/skywater-pdk-libs-sky130_bag3_pr/blob/master/LICENSE.alternative
+#
+# SPDX-License-Identifier: BSD-3-Clause OR Apache 2.0
+
+header:
+  CDL:
+    includes: ["${BAG_TECH_CONFIG_DIR}/calibre_setup/source.added"]
+  SPECTRE:
+    includes: []
+  VERILOG:
+    includes: []
+  SYSVERILOG:
+    includes: []
+
+mos:
+  CDL:
+    - [l, l*1.0e6]
+    - [w, w*1.0e6]
+    - [m, nf]
+    - [mult, 1]
+  SPECTRE:
+    - [l, l * 1.0e6]
+    - [w, w * 1.0e6]
+    - [m, nf]
+    - [mult, 1]
+  VERILOG: []
+  SYSVERILOG: []
+  types:
+    - [nmos4_hv, nhv]
+    - [nmos4_hvesd, nhvesd]
+    - [nmos4_svt, nshort]
+    - [nmos4_lvt, nlowvt]
+    - [nmos4_standard, nshort]
+    - [pmos4_hv, phv]
+    - [pmos4_hvesd, phvesd]
+    - [pmos4_svt, pshort]
+    - [pmos4_lvt, plowvt]
+    - [pmos4_hvt, phighvt]
+    - [pmos4_standard, pshort]
+
+diode:
+  CDL: []
+  SPECTRE: []
+  VERILOG: []
+  SYSVERILOG: []
+  static: False
+  types: []
+  port_order: {}
+
+res_metal:
+  CDL: []
+  SPECTRE: []
+  VERILOG: []
+  SYSVERILOG: []
+  types: []

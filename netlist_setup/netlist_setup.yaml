@@ -1,0 +1,444 @@
+# Copyright 2019-2021 SkyWater PDK Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# This code is *alternatively* available under a BSD-3-Clause license, see
+# details in the README.md at the top level and the license text at
+# https://github.com/google/skywater-pdk-libs-sky130_bag3_pr/blob/master/LICENSE.alternative
+#
+# SPDX-License-Identifier: BSD-3-Clause OR Apache 2.0
+
+inc_list:
+  4: ['${BAG_TECH_CONFIG_DIR}/calibre_setup/source.added']
+  5: []
+  6: []
+  7: []
+netlist_map:
+  BAG_prim:
+    nmos4_hv:
+      cell_name: nmos4_hv
+      in_terms: []
+      io_terms: [B, D, G, S]
+      is_prim: true
+      lib_name: BAG_prim
+      nets: []
+      out_terms: []
+      props:
+        l: [3, '']
+        nf: [3, '']
+        w: [3, '']
+    nmos4_hvesd:
+      cell_name: nmos4_hvesd
+      in_terms: []
+      io_terms: [B, D, G, S]
+      is_prim: true
+      lib_name: BAG_prim
+      nets: []
+      out_terms: []
+      props:
+        l: [3, '']
+        nf: [3, '']
+        w: [3, '']
+    nmos4_lvt:
+      cell_name: nmos4_lvt
+      in_terms: []
+      io_terms: [B, D, G, S]
+      is_prim: true
+      lib_name: BAG_prim
+      nets: []
+      out_terms: []
+      props:
+        l: [3, '']
+        nf: [3, '']
+        w: [3, '']
+    nmos4_standard:
+      cell_name: nmos4_standard
+      in_terms: []
+      io_terms: [B, D, G, S]
+      is_prim: true
+      lib_name: BAG_prim
+      nets: []
+      out_terms: []
+      props:
+        l: [3, '']
+        nf: [3, '']
+        w: [3, '']
+    nmos4_svt:
+      cell_name: nmos4_svt
+      in_terms: []
+      io_terms: [B, D, G, S]
+      is_prim: true
+      lib_name: BAG_prim
+      nets: []
+      out_terms: []
+      props:
+        l: [3, '']
+        nf: [3, '']
+        w: [3, '']
+    pmos4_hv:
+      cell_name: pmos4_hv
+      in_terms: []
+      io_terms: [B, D, G, S]
+      is_prim: true
+      lib_name: BAG_prim
+      nets: []
+      out_terms: []
+      props:
+        l: [3, '']
+        nf: [3, '']
+        w: [3, '']
+    pmos4_hvesd:
+      cell_name: pmos4_hvesd
+      in_terms: []
+      io_terms: [B, D, G, S]
+      is_prim: true
+      lib_name: BAG_prim
+      nets: []
+      out_terms: []
+      props:
+        l: [3, '']
+        nf: [3, '']
+        w: [3, '']
+    pmos4_hvt:
+      cell_name: pmos4_hvt
+      in_terms: []
+      io_terms: [B, D, G, S]
+      is_prim: true
+      lib_name: BAG_prim
+      nets: []
+      out_terms: []
+      props:
+        l: [3, '']
+        nf: [3, '']
+        w: [3, '']
+    pmos4_lvt:
+      cell_name: pmos4_lvt
+      in_terms: []
+      io_terms: [B, D, G, S]
+      is_prim: true
+      lib_name: BAG_prim
+      nets: []
+      out_terms: []
+      props:
+        l: [3, '']
+        nf: [3, '']
+        w: [3, '']
+    pmos4_standard:
+      cell_name: pmos4_standard
+      in_terms: []
+      io_terms: [B, D, G, S]
+      is_prim: true
+      lib_name: BAG_prim
+      nets: []
+      out_terms: []
+      props:
+        l: [3, '']
+        nf: [3, '']
+        w: [3, '']
+    pmos4_svt:
+      cell_name: pmos4_svt
+      in_terms: []
+      io_terms: [B, D, G, S]
+      is_prim: true
+      lib_name: BAG_prim
+      nets: []
+      out_terms: []
+      props:
+        l: [3, '']
+        nf: [3, '']
+        w: [3, '']
+  analogLib:
+    cap:
+      cell_name: cap
+      in_terms: []
+      io_terms: [PLUS, MINUS]
+      is_prim: true
+      lib_name: analogLib
+      nets: []
+      out_terms: []
+      props:
+        c: [3, '']
+        l: [3, '']
+        m: [3, '']
+        w: [3, '']
+    cccs:
+      cell_name: cccs
+      in_terms: []
+      io_terms: [PLUS, MINUS]
+      is_prim: true
+      lib_name: analogLib
+      nets: []
+      out_terms: []
+      props:
+        fgain: [3, '1.0']
+        maxm: [3, '']
+        minm: [3, '']
+        vref: [3, '']
+    ccvs:
+      cell_name: ccvs
+      in_terms: []
+      io_terms: [PLUS, MINUS]
+      is_prim: true
+      lib_name: analogLib
+      nets: []
+      out_terms: []
+      props:
+        hgain: [3, '1.0']
+        maxm: [3, '']
+        minm: [3, '']
+        vref: [3, '']
+    dcblock:
+      cell_name: dcblock
+      in_terms: []
+      io_terms: [PLUS, MINUS]
+      is_prim: true
+      lib_name: analogLib
+      nets: []
+      out_terms: []
+      props:
+        c: [3, '']
+    dcfeed:
+      cell_name: dcfeed
+      in_terms: []
+      io_terms: [PLUS, MINUS]
+      is_prim: true
+      lib_name: analogLib
+      nets: []
+      out_terms: []
+      props:
+        l: [3, '']
+    gnd:
+      cell_name: gnd
+      ignore: true
+      in_terms: []
+      io_terms: [gnd!]
+      is_prim: true
+      lib_name: analogLib
+      nets: []
+      out_terms: []
+      props: {}
+    idc:
+      cell_name: idc
+      in_terms: []
+      io_terms: [PLUS, MINUS]
+      is_prim: true
+      lib_name: analogLib
+      nets: []
+      out_terms: []
+      props:
+        acm: [3, '']
+        acp: [3, '']
+        idc: [3, '']
+        pacm: [3, '']
+        pacp: [3, '']
+        srcType: [3, dc]
+        xfm: [3, '']
+    ideal_balun:
+      cell_name: ideal_balun
+      in_terms: []
+      io_terms: [d, c, p, n]
+      is_prim: true
+      lib_name: analogLib
+      nets: []
+      out_terms: []
+      props: {}
+    ind:
+      cell_name: ind
+      in_terms: []
+      io_terms: [PLUS, MINUS]
+      is_prim: true
+      lib_name: analogLib
+      nets: []
+      out_terms: []
+      props:
+        l: [3, '']
+        m: [3, '']
+        r: [3, '']
+    iprobe:
+      cell_name: iprobe
+      in_terms: []
+      io_terms: [PLUS, MINUS]
+      is_prim: true
+      lib_name: analogLib
+      nets: []
+      out_terms: []
+      props: {}
+    ipulse:
+      cell_name: ipulse
+      in_terms: []
+      io_terms: [PLUS, MINUS]
+      is_prim: true
+      lib_name: analogLib
+      nets: []
+      out_terms: []
+      props:
+        i1: [3, '']
+        i2: [3, '']
+        idc: [3, '']
+        per: [3, '']
+        pw: [3, '']
+        srcType: [3, pulse]
+        td: [3, '']
+    isin:
+      cell_name: isin
+      in_terms: []
+      io_terms: [PLUS, MINUS]
+      is_prim: true
+      lib_name: analogLib
+      nets: []
+      out_terms: []
+      props:
+        freq: [3, '']
+        ia: [3, '']
+        idc: [3, '']
+        srcType: [3, sine]
+    port:
+      cell_name: port
+      in_terms: []
+      io_terms: [PLUS, MINUS]
+      is_prim: true
+      lib_name: analogLib
+      nets: []
+      out_terms: []
+      props:
+        num: [3, '']
+        r: [3, '']
+        srcType: [3, sine]
+    res:
+      cell_name: res
+      in_terms: []
+      io_terms: [PLUS, MINUS]
+      is_prim: true
+      lib_name: analogLib
+      nets: []
+      out_terms: []
+      props:
+        l: [3, '']
+        m: [3, '']
+        r: [3, '']
+        w: [3, '']
+    switch:
+      cell_name: switch
+      in_terms: []
+      io_terms: [N+, N-, NC+, NC-]
+      is_prim: true
+      lib_name: analogLib
+      nets: []
+      out_terms: []
+      props:
+        rc: [3, '']
+        ro: [3, '']
+        vt1: [3, '']
+        vt2: [3, '']
+    vccs:
+      cell_name: vccs
+      in_terms: []
+      io_terms: [PLUS, MINUS, NC+, NC-]
+      is_prim: true
+      lib_name: analogLib
+      nets: []
+      out_terms: []
+      props:
+        ggain: [3, '1.0']
+        maxm: [3, '']
+        minm: [3, '']
+    vcvs:
+      cell_name: vcvs
+      in_terms: []
+      io_terms: [PLUS, MINUS, NC+, NC-]
+      is_prim: true
+      lib_name: analogLib
+      nets: []
+      out_terms: []
+      props:
+        egain: [3, '1.0']
+        maxm: [3, '']
+        minm: [3, '']
+    vdc:
+      cell_name: vdc
+      in_terms: []
+      io_terms: [PLUS, MINUS]
+      is_prim: true
+      lib_name: analogLib
+      nets: []
+      out_terms: []
+      props:
+        acm: [3, '']
+        acp: [3, '']
+        pacm: [3, '']
+        pacp: [3, '']
+        srcType: [3, dc]
+        vdc: [3, '']
+        xfm: [3, '']
+    vpulse:
+      cell_name: vpulse
+      in_terms: []
+      io_terms: [PLUS, MINUS]
+      is_prim: true
+      lib_name: analogLib
+      nets: []
+      out_terms: []
+      props:
+        per: [3, '']
+        pw: [3, '']
+        srcType: [3, pulse]
+        td: [3, '']
+        v1: [3, '']
+        v2: [3, '']
+        vdc: [3, '']
+    vpwlf:
+      cell_name: vpwlf
+      in_terms: []
+      io_terms: [PLUS, MINUS]
+      is_prim: true
+      lib_name: analogLib
+      nets: []
+      out_terms: []
+      props:
+        fileName: [3, '']
+        srcType: [3, pwl]
+    vsin:
+      cell_name: vsin
+      in_terms: []
+      io_terms: [PLUS, MINUS]
+      is_prim: true
+      lib_name: analogLib
+      nets: []
+      out_terms: []
+      props:
+        freq: [3, '']
+        srcType: [3, sine]
+        va: [3, '']
+        vdc: [3, '']
+  basic:
+    cds_thru:
+      cell_name: cds_thru
+      ignore: false
+      in_terms: []
+      io_terms: [src, dst]
+      is_prim: true
+      lib_name: basic
+      nets: []
+      out_terms: []
+      props: {}
+    noConn:
+      cell_name: noConn
+      ignore: true
+      in_terms: []
+      io_terms: [noConn]
+      is_prim: true
+      lib_name: basic
+      nets: []
+      out_terms: []
+      props: {}
+prim_files: {4: skywater130/netlist_setup/bag_prim.cdl, 5: '', 6: '', 7: skywater130/netlist_setup/bag_prim.scs}

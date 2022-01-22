@@ -1,0 +1,5 @@
+; set simulation results to be saved in /tools/scratch
+envSetVal("asimenv.startup" "projectDir" 'string sprintf( nil "%s/simulation" getShellEnvVar( "BAG_WORK_DIR" ) ) )
+
+; resize CIW window
+; hiResizeWindow(window(1) list(540:100 1260:480))
