@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # BAG (BAG AMS Generator) Primitives Library for [SKY130](https://github.com/google/skywater-pdk)
 
 This repository contains the required primitives to use the BAG3 framework with
@@ -29,13 +28,3 @@ is dual-licensed. It is available to you under your choice of the
 [the Apache 2.0 license](LICENSE) or a [3 clause BSD style](LICENSE.alternative).
 
 SPDX-License-Identifier: BSD-3-Clause OR Apache 2.0
-=======
-# skywater130
-
-skywater130 primitives for [BAG](https://github.com/bluecheetah/bag).
-
-## Licensing
-
-This library is licensed under the Apache-2.0 license.  See [here](LICENSE) for full text of the 
-Apache license.
->>>>>>> 6131bbb6cb6705a9274fe8f91070bdc3fde555fd
