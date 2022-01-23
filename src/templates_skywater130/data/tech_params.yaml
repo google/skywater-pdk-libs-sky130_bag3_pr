@@ -44,11 +44,11 @@ imp_layers:
 # mapping from metal layer ID to layer/purpose pair that defines
 # a metal resistor.
 res_metal_layer_table: {}
-#  1: [!!python/tuple ['m1res', 'drawing']]
-#  2: [!!python/tuple ['m2res', 'drawing']]
-#  3: [!!python/tuple ['m3res', 'drawing']]
-#  4: [!!python/tuple ['m4res', 'drawing']]
-#  5: [!!python/tuple ['m5res', 'drawing']]
+#  1: [!!python/tuple ['met1', 'res']]
+#  2: [!!python/tuple ['met2', 'res']]
+#  3: [!!python/tuple ['met3', 'res']]
+#  4: [!!python/tuple ['met4', 'res']]
+#  5: [!!python/tuple ['met5', 'res']]
 
 # mapping from metal layer ID to layer/purpose pair that
 # defines metal exclusion region.
@@ -68,6 +68,7 @@ lay_purp_list: &lp_list
   3: [!!python/tuple ['met3', 'drawing']]
   4: [!!python/tuple ['met4', 'drawing']]
   5: [!!python/tuple ['met5', 'drawing']]
+#  6: [!!python/tuple ['capm', 'drawing']]
 
 dum_lay_purp_list: *lp_list
 
@@ -87,6 +88,10 @@ width_intervals:
   5:
     - [[284, .inf]]
     - [[284, .inf]]
+  
+  6:
+    - [[60, .inf]]
+    - [[60, 2001]]
 
 # mapping from tuple of via layers to via ID.
 via_id:
@@ -155,12 +160,13 @@ via:
         - [.inf, [[62, 62]]]
 
 # minimum wire spacing rule.  Space is measured orthogonal to wire direction.
+# should be in resolution units
 sp_min:
   [met1, drawing]: &sp_min_1x
-    - [.inf, 28]
+    - [.inf, 100]
   [met2, drawing]: *sp_min_1x
   [met3, drawing]: &sp_min_2x
-    - [.inf, 60]
+    - [.inf, 60] #60
   [met4, drawing]: *sp_min_2x
   [met5, drawing]:
     - [.inf, 320]
@@ -168,13 +174,14 @@ sp_min:
 # minimum line-end spacing rule.  Space is measured parallel to wire direction.
 sp_le_min:
   [met1, drawing]: &sp_le_min_1x
-    - [.inf, 28]
+    - [.inf, 100] #change from 28
   [met2, drawing]: *sp_le_min_1x
   [met3, drawing]: &sp_le_min_2x
     - [.inf, 60]
   [met4, drawing]: *sp_le_min_2x
   [met5, drawing]:
     - [.inf, 320]
+  
 
 # minimum length/minimum area rules.
 len_min:
@@ -198,6 +205,10 @@ len_min:
     w_al_list:
       - [.inf, 160000, 0]
     md_al_list: []
+  #[capm, drawing]:
+  #  w_al_list:
+  #    - [.inf, 9600, 0]
+  #  md_al_list: []
 
 margins:
   well: [40, 40]
@@ -266,6 +277,9 @@ mos:
   imp_od_ency: 26
   # nsdm.1
   imp_h_min: 76
+
+  #might be redundant, well margin from edge to implant
+  nwell_imp: 40
 
   grid_info:
     - [1, 52, 1]
@@ -864,4 +878,3 @@ via_layers:
     - [22, 4294967295]
     - [27902976, 4294967295]
     - [6, 4294967295]
-

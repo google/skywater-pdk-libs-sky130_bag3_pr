@@ -1,23 +1,3 @@
-;; Copyright 2019-2021 SkyWater PDK Authors
-;;
-;; Licensed under the Apache License, Version 2.0 (the "License");
-;; you may not use this file except in compliance with the License.
-;; You may obtain a copy of the License at
-;;
-;;     https://www.apache.org/licenses/LICENSE-2.0
-;;
-;; Unless required by applicable law or agreed to in writing, software
-;; distributed under the License is distributed on an "AS IS" BASIS,
-;; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-;; See the License for the specific language governing permissions and
-;; limitations under the License.
-;;
-;; This code is *alternatively* available under a BSD-3-Clause license, see
-;; details in the README.md at the top level and the license text at
-;; https://github.com/google/skywater-pdk-libs-sky130_bag3_pr/blob/master/LICENSE.alternative
-;;
-;; SPDX-License-Identifier: BSD-3-Clause OR Apache 2.0
-
 ;; This skill file compiles schematic PCells for BAG primitives
 
 lib_obj = ddGetObj("BAG_prim")
@@ -26,21 +6,16 @@ lib_obj = ddGetObj("BAG_prim")
 ; nmos4_standard/nshort
 pcDefinePCell(
     list( lib_obj "nmos4_standard" "schematic" "schematic")
-    ((w string "0.42")
-     (l string "0.15")
+    (
      (nf string "1")
     )
     let((inst iopin_master io_net io_pin)
-        wval = atoi(w)
         nval = atoi(nf)
         inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "nfet" "symbol"
                                               "N0" -0.375:0 "R0" 1
                                               list(list("hspiceModelMenu" "string" "nshort")
-                                                   list("w" "string" w)
-                                                   list("l" "string" l)
                                                    list("m" "string" nf)
-                                                   list("totalW" "string" sprintf(nil "%dn" wval * nval)))
-                                            )
+                                                )
         iopin_master = dbOpenCellViewByType("basic" "iopin" "symbolr" nil "r")
         io_net = dbCreateNet(pcCellView "D")
         io_pin = dbCreatePin(io_net dbCreateInst(pcCellView iopin_master "D" -0.5:0.5625 "R0")

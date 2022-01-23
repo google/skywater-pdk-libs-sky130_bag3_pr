@@ -137,12 +137,13 @@ ddsOpenLibManager()
 ;; Set Default Model Files.  Note the "#;" de-selects the model call.
 
 setModelFiles=strcat(
-   " " getShellEnvVar("PDK_HOME") "MODELS/SPECTRE" getShellEnvVar("METAL_STACK") "/Models/design_wrapper.lib.scs;tt_fet"
-   " " getShellEnvVar("PDK_HOME") "MODELS/SPECTRE/" getShellEnvVar("METAL_STACK") "/Models/design_wrapper.lib.scs;tt_cell"
-   " " getShellEnvVar("PDK_HOME") "MODELS/SPECTRE/" getShellEnvVar("METAL_STACK") "/Models/design_wrapper.lib.scs;tt_parRC"
-   " " getShellEnvVar("PDK_HOME") "MODELS/SPECTRE/" getShellEnvVar("METAL_STACK") "/Models/design_wrapper.lib.scs;tt_rc"
-   " " getShellEnvVar("PDK_HOME") "MODELS/SPECTRE/" getShellEnvVar("METAL_STACK") "/Models/design_wrapper.lib.scs;npn_t"
+   " " getShellEnvVar("PDK_HOME") "/MODELS/SPECTRE/" getShellEnvVar("METAL_STACK") "/Models/design_wrapper.lib.scs;tt_fet"
+   " " getShellEnvVar("PDK_HOME") "/MODELS/SPECTRE/" getShellEnvVar("METAL_STACK") "/Models/design_wrapper.lib.scs;tt_cell"
+   " " getShellEnvVar("PDK_HOME") "/MODELS/SPECTRE/" getShellEnvVar("METAL_STACK") "/Models/design_wrapper.lib.scs;tt_parRC"
+   " " getShellEnvVar("PDK_HOME") "/MODELS/SPECTRE/" getShellEnvVar("METAL_STACK") "/Models/design_wrapper.lib.scs;tt_rc"
+   " " getShellEnvVar("PDK_HOME") "/MODELS/SPECTRE/" getShellEnvVar("METAL_STACK") "/Models/design_wrapper.lib.scs;npn_t"
 )
+
 envSetVal("spectre.envOpts" "modelFiles" 'string setModelFiles)
 envSetVal("spectre.envOpts" "controlMode" 'string "batch")
 
