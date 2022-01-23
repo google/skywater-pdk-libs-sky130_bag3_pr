@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-#
 # Copyright 2019-2021 SkyWater PDK Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");

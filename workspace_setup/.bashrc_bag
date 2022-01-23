@@ -1,6 +1,8 @@
 #! /usr/bin/env bash
 
+#set directory variables
 export BAG_WORK_DIR=$(pwd)
+#set location of BAG tools
 export BAG_TOOLS_ROOT=/tools/commercial/bcanalog/bag/bag3d0_rhel60_64
 export BAG_FRAMEWORK=${BAG_WORK_DIR}/BAG_framework
 export BAG_TECH_CONFIG_DIR=${BAG_WORK_DIR}/skywater130
@@ -10,9 +12,13 @@ export IPYTHONDIR=${BAG_WORK_DIR}/.ipython
 export PYTHONHASHSEED=0
 # set program locations
 export BAG_PYTHON=${BAG_TOOLS_ROOT}/bin/python3
+export BAG_JUPYTER=${BAG_TOOLS_ROOT}/bin/jupyter-notebook
 
 # set location of BAG configuration file
 export BAG_CONFIG_PATH=${BAG_WORK_DIR}/bag_config.yaml
+
+# change pycharm config file location
+export PYCHARM_PROPERTIES=/scratch/projects/${USER}/pycharm_setup/idea.properties
 
 # setup pybag
 export PYBAG_PYTHON=${BAG_PYTHON}

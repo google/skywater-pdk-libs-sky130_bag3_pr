@@ -1,3 +1,23 @@
+;; Copyright 2019-2021 SkyWater PDK Authors
+;;
+;; Licensed under the Apache License, Version 2.0 (the "License");
+;; you may not use this file except in compliance with the License.
+;; You may obtain a copy of the License at
+;;
+;;     https://www.apache.org/licenses/LICENSE-2.0
+;;
+;; Unless required by applicable law or agreed to in writing, software
+;; distributed under the License is distributed on an "AS IS" BASIS,
+;; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+;; See the License for the specific language governing permissions and
+;; limitations under the License.
+;;
+;; This code is *alternatively* available under a BSD-3-Clause license, see
+;; details in the README.md at the top level and the license text at
+;; https://github.com/google/skywater-pdk-libs-sky130_bag3_pr/blob/master/LICENSE.alternative
+;;
+;; SPDX-License-Identifier: BSD-3-Clause OR Apache 2.0
+
 ;; This skill file compiles schematic PCells for BAG primitives
 
 lib_obj = ddGetObj("BAG_prim")
@@ -6,20 +26,20 @@ lib_obj = ddGetObj("BAG_prim")
 ; {{ mtype }}_{{ threshold }}/{{ model_thres }}
 pcDefinePCell(
     list( lib_obj "{{ mtype }}_{{ threshold }}" "schematic" "schematic")
-    (;(w string "{{ w_def }}")
-     ;(l string "{{ l_def }}")
+    ((w string "{{ w_def }}")
+     (l string "{{ l_def }}")
      (nf string "1")
     )
     let((inst iopin_master io_net io_pin)
-        ;wval = atoi(w)
-        ;nval = atoi(nf)
+        wval = atoi(w)
+        nval = atoi(nf)
         inst = dbCreateParamInstByMasterName( pcCellView "{{ tech_lib }}" "{{ model }}" "symbol"
                                               "N0" -0.375:0 "R0" 1
                                               list(list("hspiceModelMenu" "string" "{{ model_thres }}")
-                                                   ;list("w" "string" w)
-                                                   ;list("l" "string" l)
+                                                   list("w" "string" w)
+                                                   list("l" "string" l)
                                                    list("m" "string" nf)
-                                                   ;list("totalW" "string" sprintf(nil "%dn" wval * nval)))
+                                                   list("totalW" "string" sprintf(nil "%dn" wval * nval)))
                                             )
         iopin_master = dbOpenCellViewByType("basic" "iopin" "symbolr" nil "r")
         io_net = dbCreateNet(pcCellView "D")

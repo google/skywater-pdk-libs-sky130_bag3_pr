@@ -19,15 +19,15 @@
 # SPDX-License-Identifier: BSD-3-Clause OR Apache 2.0
 
 BAG_framework:
-  url: git@10.8.0.1:bag/BAG_framework.git
-  branch: sim_refactor
+  url: https://github.com/bluecheetah/bag.git
+  branch: master
 bag3_digital:
-  url: git@10.8.0.1:bag/bag3_digital.git
-  branch: sim_refactor
+  url: https://github.com/bluecheetah/bag3_digital.git
+  branch: master
 bag3_testbenches:
-  url: git@10.8.0.1:bag/bag3_testbenches.git
-  branch: sim_refactor
+  url: https://github.com/bluecheetah/bag3_testbenches.git
+  branch: master
 xbase_bcad:
-  url: git@10.8.0.1:bag/xbase_bcad.git
-  branch: sim_refactor
+  url: https://github.com/bluecheetah/xbase.git
+  branch: master
 

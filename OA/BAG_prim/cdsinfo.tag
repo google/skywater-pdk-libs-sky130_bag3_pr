@@ -1,11 +1,22 @@
+# Copyright 2019-2021 SkyWater PDK Authors
 #
-# This is a cdsinfo.tag file.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
 #
-# See the "Cadence Application Infrastructure Reference Manual" for
-# details on the format of this file, its semantics, and its use.
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
-# The `#' character denotes a comment. Removing the leading `#'
-# character from any of the entries below will activate them.
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# This code is *alternatively* available under a BSD-3-Clause license, see
+# details in the README.md at the top level and the license text at
+# https://github.com/google/skywater-pdk-libs-sky130_bag3_pr/blob/master/LICENSE.alternative
+#
+# SPDX-License-Identifier: BSD-3-Clause OR Apache 2.0
 #
 # CDSLIBRARY entry - add this entry if the directory containing
 # this cdsinfo.tag file is the root of a Cadence library.
