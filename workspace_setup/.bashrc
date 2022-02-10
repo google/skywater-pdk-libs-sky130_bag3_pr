@@ -72,4 +72,3 @@ export HDF5_PLUGIN_PATH=${BAG_TOOLS_ROOT}/lib/hdf5/plugin
 # clear out PYTHONPATH
 export PYTHONPATH=""
 export PYTHONPATH_CUSTOM=${SRR_HOME}/tools/srrpython
-

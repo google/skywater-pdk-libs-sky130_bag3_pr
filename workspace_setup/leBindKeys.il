@@ -95,7 +95,6 @@ procedure( show_adjacent_metals( bot_layer )
             sprintf(via_name "via%d" bot_layer)
         )
 	    sprintf(top_name "met%d" bot_layer + 1)
-
         leSetEntryLayer(list(bot_name "drawing"))
         leSetAllLayerVisible(nil)
         leSetLayerVisible(list(bot_name "drawing") t)

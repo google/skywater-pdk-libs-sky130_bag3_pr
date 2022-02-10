@@ -104,16 +104,19 @@ simulation:
   # python class that talks with the simulator
   class: "bag.simulation.spectre.SpectreInterface"
   # maximum number of processes BAG can launch.
-  max_workers: 6
+  max_workers: 8
   # when simulation goes long, a reminder message will be printed at this interval
   update_timeout_ms: 120000
   # amount of time to wait for process cancellation to succeed.
   cancel_timeout_ms: 10000
+  # True to show interactive log viewer.
+  show_log_viewer: True
   # corner configuration file
   env_file: "${BAG_TECH_CONFIG_DIR}/corners_setup.yaml"
   # command settings
   kwargs:
     # the command to start
+    #command: "bsub -q bora -o $BAG_WORK_DIR/tmp -K spectre"
     command: spectre
     # environment variables.  Null for same environment as SkillOceanServer.
     env: !!null
@@ -123,7 +126,7 @@ simulation:
     format: psfxl
     # psf version
     psfversion: '1.1'
-    options: ['++aps', '+lqtimeout', '0', '+mt=1', '+mp=1', '+postlayout', '+rcnet_fmax=25']
+    options: ['++aps', '+lqtimeout', '0', '+mt=8', '+mp=8', '+postlayout', '+rcnet_fmax=25']
   compress: True
   rtol: 1.0e-8
   atol: 1.0e-22
