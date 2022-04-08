@@ -205,7 +205,8 @@ mos:
   # source/drain pitch is computed as val[0] + val[1] * lch_unit
   sd_pitch_constants:
     lch: [30, .inf]
-    val: [[172, 0], [42, 1]]
+    val: [[86, 0], [42, 1]] #I have no idea what [42,1] is
+                            # first can also be [86, 0]
   # drain connection info
   d_wire_info:
     bot_layer: 0
@@ -230,7 +231,8 @@ mos:
   # maximum vertical space between OD, in resolution units
   od_spy_max: 4000
   # set by via enclosure, licon.5
-  od_po_extx: 96
+  od_po_extx: 54 #96
+  od_tap_extx: 76
 
   # poly.2
   po_spy: 42
@@ -256,7 +258,7 @@ mos:
   # nsdm.7
   imp_od_ency: 26
   # nsdm.1
-  imp_h_min: 76
+  imp_h_min: 86 #76
 
   #might be redundant, well margin from edge to implant
   nwell_imp: 40

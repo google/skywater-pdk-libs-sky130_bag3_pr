@@ -101,12 +101,9 @@ class MOSTechSkywater130(MOSTech):
 
     @property
     def min_sep_col(self) -> int:
-        #return self._get_od_sep_col(self.mos_config['od_spx'])
-
-        #felicia copied
         lch = self.lch
         sd_pitch = self.sd_pitch
-        od_po_extx = self.od_po_extx
+        od_po_extx = self.mos_config['od_tap_extx'] #od_po_extx = self.od_po_extx
 
         od_spx: int = self.mos_config['od_spx']
         imp_od_encx: int = self.mos_config['imp_od_encx']
@@ -115,15 +112,6 @@ class MOSTechSkywater130(MOSTech):
 
     @property
     def sub_sep_col(self) -> int:
-        # column separation needed between transistor/substrate and substrate/substrate.
-        # This is guaranteed to be even.
-
-        #return self._get_od_sep_col(max(self.mos_config['od_spx'],
-        #                            2 * self.mos_config['imp_od_encx']))
-        
-        #felicia - copied method from cds_ff_mpt
-        #does something similar to _get_od_sep_col but seems to have 
-        #effective +1 that get_od doesn't have
         lch = self.lch
         sd_pitch = self.sd_pitch
         od_po_extx = self.od_po_extx
@@ -507,14 +495,12 @@ class MOSTechSkywater130(MOSTech):
     def get_mos_tap_info(self, row_info: MOSRowInfo, conn_layer: int, seg: int,
                          options: Param) -> MOSLayInfo:
         assert conn_layer == 1, 'currently only work for conn_layer = 1'
-        #print(row_info)
         row_type = row_info.row_type
 
         guard_ring: bool = options.get('guard_ring', row_info.guard_ring)
         if guard_ring:
             sub_type: MOSType = options.get('sub_type', row_type.sub_type)
         else:
-            #print(row_type.sub_type)
             sub_type: MOSType = row_type.sub_type
 
         sd_pitch = self.sd_pitch
@@ -527,11 +513,8 @@ class MOSTechSkywater130(MOSTech):
         # draw device
         builder = LayoutInfoBuilder()
         #draws diffusion and tap
-        #if (row_type is MOSType.nch):
         od_y = self._add_mos_active(builder, row_info, 0, seg, w, is_sub=True)
-        #print(row_info)
-        #else:
-        #    od_y = (193, 303)
+
         # draw drain/source connections
         d0_info = self.get_conn_info(0, False)
         d1_info = self.get_conn_info(1, False)
@@ -544,11 +527,11 @@ class MOSTechSkywater130(MOSTech):
                            0, seg + 1, sd_pitch)
 
         # draw base
-        # add extra imp)od_encx for ntap and ptap
+        # add extra imp_od_encx for ntap and ptap
         imp_od_encx: int = self.mos_config['imp_od_encx']
         bbox = BBox(0-2*imp_od_encx, 0, seg * sd_pitch + 2*imp_od_encx, height)
         add_base_mos(builder, sub_type, threshold, imp_y, bbox, is_sub=True)
-        
+         
         edge_info = MOSEdgeInfo(mos_type=sub_type, imp_y=imp_y, has_od=True)
         be = BlkExtInfo(row_type, row_info.threshold, guard_ring, ImmutableList([(seg, sub_type)]),
                         ImmutableSortedDict())
@@ -765,7 +748,6 @@ class MOSTechSkywater130(MOSTech):
 
         lch = self.lch
         sd_pitch = self.sd_pitch
-        od_po_extx = self.od_po_extx
 
         mconf = self.mos_config
         po_h_min: int = mconf['po_h_min']
@@ -775,10 +757,12 @@ class MOSTechSkywater130(MOSTech):
         od_yh = od_yl + w
         if is_sub:
             od_lp = ('tap', 'drawing')
+            od_po_extx = mconf['od_tap_extx'] # determines the amount to extend material from licon
         else:
             od_lp = ('diff', 'drawing')
             po_y = (po_yl, max(po_yl + po_h_min, od_yh + po_od_exty))
             self._add_po_array(builder, po_y, start, stop)
+            od_po_extx = self.od_po_extx
 
         # draw OD
         po_xl = (sd_pitch - lch) // 2
@@ -791,13 +775,19 @@ class MOSTechSkywater130(MOSTech):
         imp_od_encx: int = self.mos_config['imp_od_encx']
         bbox = BBox(od_xl-imp_od_encx, 0, od_xh+imp_od_encx, row_info.height)
         
-        #if drawing tap cells, flip the implant type so its opposite of row
+        # if drawing tap cells, flip the implant type so its opposite of row
         if is_sub:
             if (row_info.row_type is MOSType.nch):
                 add_base_mos(builder, MOSType.pch, row_info.threshold, row_info['imp_y'], bbox, is_sub=True)
             elif (row_info.row_type is MOSType.pch):
                 add_base_mos(builder, MOSType.nch, row_info.threshold, row_info['imp_y'], bbox, is_sub=True)
-        else:    
+            
+            # ptap and ntap sometimes are row type when having an implant row
+            elif (row_info.row_type is MOSType.ptap ):
+                add_base_mos(builder, MOSType.ptap, row_info.threshold, row_info['imp_y'], bbox, is_sub=True)
+            elif (row_info.row_type is MOSType.ntap ):
+                add_base_mos(builder, MOSType.ntap, row_info.threshold, row_info['imp_y'], bbox, is_sub=True)
+        else:   
             add_base_mos(builder, row_info.row_type, row_info.threshold, row_info['imp_y'], bbox)
 
         return od_yl, od_yh

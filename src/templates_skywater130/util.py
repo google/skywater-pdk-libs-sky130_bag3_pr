@@ -44,7 +44,6 @@ def add_base_mos(builder: LayoutInfoBuilder, row_type: MOSType, threshold: str, 
     # new func draws nwell, n+ implant (ndsm) and p+ implant (pdsm)
     
     pimp_lp = ('psdm', 'drawing')
-
     if rect.is_physical():
         # only draw nwells if not a tap cell and pch, or is tap cell and nch
         if ((not row_type.is_pwell) and (not is_sub)) \
