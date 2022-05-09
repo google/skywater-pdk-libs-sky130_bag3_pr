@@ -4,6 +4,8 @@ Skywater130 primitives for [BAG](https://github.com/ucb-art/bag).
 
 These primitives are updated for V2.0.0 of the PDK. It currently support layout generation and LVS using Virtuoso pcells, which was previously not supported. Simulations using BAG is also supported.
 
+This workspace and tech plugin are primarily maintained by Felicia Guo, Sean Huang, and Bob Zhou.
+
 ## Technology features and hints
 - Layout resolution is in 5nm.
 - Min channel length is 150nm, so min channel units is 30.
