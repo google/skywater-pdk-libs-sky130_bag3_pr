@@ -92,6 +92,10 @@ class MOSTechSkywater130(MOSTech):
         MOSTech.__init__(self, tech_info, lch, arr_options) 
 
     @property
+    def can_draw_double_gate(self) -> bool:
+        return False
+
+    @property
     def blk_h_pitch(self) -> int:
         return 2
 

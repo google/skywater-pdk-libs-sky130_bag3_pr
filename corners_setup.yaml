@@ -1,12 +1,22 @@
 tt:
   - !!python/tuple ['${BAG_TECH_CONFIG_DIR}/workspace_setup/PDK/MODELS/SPECTRE/s8phirs_10r/Models/design_wrapper.lib.scs', 'tt_fet']
+  - !!python/tuple ['${BAG_TECH_CONFIG_DIR}/workspace_setup/PDK/MODELS/SPECTRE/s8phirs_10r/Models/design_wrapper.lib.scs', 'tt_parRC']
+  - !!python/tuple ['${BAG_TECH_CONFIG_DIR}/workspace_setup/PDK/MODELS/SPECTRE/s8phirs_10r/Models/design_wrapper.lib.scs', 'tt_rc']
 ff:
   - !!python/tuple ['${BAG_TECH_CONFIG_DIR}/workspace_setup/PDK/MODELS/SPECTRE/s8phirs_10r/Models/design_wrapper.lib.scs', 'ff_fet']
+  - !!python/tuple ['${BAG_TECH_CONFIG_DIR}/workspace_setup/PDK/MODELS/SPECTRE/s8phirs_10r/Models/design_wrapper.lib.scs', 'tt_parRC']
+  - !!python/tuple ['${BAG_TECH_CONFIG_DIR}/workspace_setup/PDK/MODELS/SPECTRE/s8phirs_10r/Models/design_wrapper.lib.scs', 'tt_rc']
 ss:
   - !!python/tuple ['${BAG_TECH_CONFIG_DIR}/workspace_setup/PDK/MODELS/SPECTRE/s8phirs_10r/Models/design_wrapper.lib.scs', 'ss_fet']
+  - !!python/tuple ['${BAG_TECH_CONFIG_DIR}/workspace_setup/PDK/MODELS/SPECTRE/s8phirs_10r/Models/design_wrapper.lib.scs', 'tt_parRC']
+  - !!python/tuple ['${BAG_TECH_CONFIG_DIR}/workspace_setup/PDK/MODELS/SPECTRE/s8phirs_10r/Models/design_wrapper.lib.scs', 'tt_rc']
 sf:
   - !!python/tuple ['${BAG_TECH_CONFIG_DIR}/workspace_setup/PDK/MODELS/SPECTRE/s8phirs_10r/Models/design_wrapper.lib.scs', 'sf_fet']
+  - !!python/tuple ['${BAG_TECH_CONFIG_DIR}/workspace_setup/PDK/MODELS/SPECTRE/s8phirs_10r/Models/design_wrapper.lib.scs', 'tt_parRC']
+  - !!python/tuple ['${BAG_TECH_CONFIG_DIR}/workspace_setup/PDK/MODELS/SPECTRE/s8phirs_10r/Models/design_wrapper.lib.scs', 'tt_rc']
 fs:
   - !!python/tuple ['${BAG_TECH_CONFIG_DIR}/workspace_setup/PDK/MODELS/SPECTRE/s8phirs_10r/Models/design_wrapper.lib.scs', 'fs_fet']
+  - !!python/tuple ['${BAG_TECH_CONFIG_DIR}/workspace_setup/PDK/MODELS/SPECTRE/s8phirs_10r/Models/design_wrapper.lib.scs', 'tt_parRC']
+  - !!python/tuple ['${BAG_TECH_CONFIG_DIR}/workspace_setup/PDK/MODELS/SPECTRE/s8phirs_10r/Models/design_wrapper.lib.scs', 'tt_rc']
 mc:
   - !!python/tuple ['${BAG_TECH_CONFIG_DIR}/workspace_setup/PDK/MODELS/SPECTRE/s8phirs_10r/Models/design_wrapper.lib.scs', 'mc']
