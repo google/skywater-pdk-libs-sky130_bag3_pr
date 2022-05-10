@@ -97,7 +97,8 @@ class MOSTechSkywater130(MOSTech):
 
     @property
     def blk_h_pitch(self) -> int:
-        return 2
+        return 63
+        # return 2
 
     @property
     def end_h_min(self) -> int:
@@ -223,8 +224,11 @@ class MOSTechSkywater130(MOSTech):
         od_vency = md_info.via_bot_enc
         md_top_vency = md_info.via_top_enc
 
-        mg_info = self.get_conn_info(0, False)
-        mg_h = mg_info.w
+        if mos_type.is_substrate:
+            mg_h = 0
+        else:
+            mg_info = self.get_conn_info(0, False)
+            mg_h = mg_info.w
 
         m1_info = self.get_conn_info(1, False)
         v0_h = m1_info.via_h
@@ -235,27 +239,33 @@ class MOSTechSkywater130(MOSTech):
 
         po_yl = po_spy2
         po_yh_gate = po_yl + po_h_gate
-        po_yc_gate = (po_yl + po_yh_gate) // 2
-        gm1_yh = po_yc_gate + v0_h // 2 + m1_vency
-        gm1_yl = min(po_yc_gate - v0_h // 2 - m1_vency, gm1_yh - m1_h_min)
-        # fix mg_imp spacing
-        imp_yl = max(imp_h_min2, po_yc_gate + mg_h // 2 + mg_imp_spy)
-        od_yl = imp_yl + imp_od_ency
+        if mos_type.is_substrate:
+            od_yl = po_spy2 + po_od_exty
+        else:
+            # TODO: po_od_exty?
+            po_yc_gate = (po_yl + po_yh_gate) // 2
+            gm1_yh = po_yc_gate + v0_h // 2 + m1_vency
+            gm1_yl = min(po_yc_gate - v0_h // 2 - m1_vency, gm1_yh - m1_h_min)
+            # fix mg_imp spacing
+            imp_yl = max(imp_h_min2, po_yc_gate + mg_h // 2 + mg_imp_spy)
+            od_yl = imp_yl + imp_od_ency
 
-        dm1_yl = gm1_yh + m1_spy
-        dv0_yl = dm1_yl + m1_vency
-        dmd_yl = dv0_yl - md_bot_vency
-        dvc_yl = dmd_yl + md_top_vency
-        od_yl = max(od_yl, dvc_yl - od_vency)
+            dm1_yl = gm1_yh + m1_spy
+            dv0_yl = dm1_yl + m1_vency
+            dmd_yl = dv0_yl - md_bot_vency
+            dvc_yl = dmd_yl + md_top_vency
+            od_yl = max(od_yl, dvc_yl - od_vency)
 
         od_yh = od_yl + w
         po_yh = od_yh + po_od_exty
         blk_yh = max(od_yh + imp_od_ency + imp_h_min2, po_yh + po_spy2)
-
         blk_yh = -(-blk_yh // blk_p) * blk_p
 
         md_yl, md_yh, vc_num = self._get_conn_params(self.get_conn_info(0, False), od_yl, od_yh)
         dm1_yl, dm1_yh, v0_num = self._get_conn_params(m1_info, md_yl, md_yh)
+
+        if mos_type.is_substrate:
+            gm1_yl, gm1_yh = dm1_yl, dm1_yh
 
         # return MOSRowInfo
         top_einfo = RowExtInfo(
@@ -287,10 +297,16 @@ class MOSTechSkywater130(MOSTech):
             po_y_gate=(po_yl, po_yh_gate),
         )
 
-        g_y = (gm1_yl, gm1_yh)
-        g_m_y = (0, po_yl)
-        ds_y = ds_g_y = sub_y = (dm1_yl, dm1_yh)
-        ds_m_y = (po_yh, blk_yh)
+        if mos_type.is_substrate:
+            g_y = ds_y = ds_g_y = sub_y = (dm1_yl, dm1_yh)
+            g_m_y = (0, po_yl)
+            ds_m_y = (po_yh, blk_yh)
+        else:
+            g_y = (gm1_yl, gm1_yh)
+            g_m_y = (0, po_yl)
+            ds_y = ds_g_y = sub_y = (dm1_yl, dm1_yh)
+            ds_m_y = (po_yh, blk_yh)
+
         return MOSRowInfo(self.lch, w, w_sub, mos_type, specs.threshold, blk_yh, specs.flip,
                           top_einfo, bot_einfo, ImmutableSortedDict(info), g_y, g_m_y, ds_y,
                           ds_m_y, ds_g_y, sub_y, guard_ring=False)
@@ -800,7 +816,6 @@ class MOSTechSkywater130(MOSTech):
                       stop: int) -> None:
         lch = self.lch
         sd_pitch = self.sd_pitch
-
         po_x0 = (sd_pitch - lch) // 2 + sd_pitch * start
         fg = stop - start
         if po_y[1] > po_y[0]:
