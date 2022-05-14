@@ -21,6 +21,16 @@ This workspace and tech plugin are primarily maintained by Felicia Guo, Sean Hua
   um^2.
 - This tech has pcell MIM caps, between M3-M4 and M4-M5. Both provide ~2.2 fF / um^2.
 
+## Extraction
+- This tech uses Calibre xRC for extraction. See $PDK_HOME/PEX/xRC and the manual for details.
+- Because BAG's generation of pcells is not stable in this tech, extraction currently only works with -raw. meas_cell should do this by default.
+- The xRC SVRF is set up to produce SPF files, to match other PEX tools. It can produce Spectre-format 
+PEX netlists, but this has not been tested rigorously.
+- xRC automatically capitalizes cell names, so top level cell names need to be full capitalized.
+- PEX NETLIST is currently set to use LAYOUTNAMES instead of schematic / source based. This is to
+avoid generating resistors shorts from current_summer blocks, which fail to simulate in Spectre.
+The fix for this is currently unknown.
+
 ## Licensing
 
 This library is licensed under the Apache-2.0 license.  See [here](LICENSE) for full text of the 

@@ -6,7 +6,7 @@ SOURCE PATH "{{ netlist_file }}"
 SOURCE PRIMARY "{{ cell_name }}"
 SOURCE SYSTEM SPICE
 
-MASK SVDB DIRECTORY "svdb" QUERY CCI
+MASK SVDB DIRECTORY "svdb" QUERY XRC
 
 LVS REPORT "{{ cell_name }}.lvs.report"
 
