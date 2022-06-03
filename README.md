@@ -7,6 +7,7 @@ These primitives are updated for V2.0.0 of the PDK. It currently support layout 
 This workspace and tech plugin are primarily maintained by Felicia Guo, Sean Huang, and Bob Zhou.
 
 ## Technology features and hints
+
 - Layout resolution is in 5nm.
 - Min channel length is 150nm, so min channel units is 30.
 - This tech has standard, lvt, and hvt devices. pch hvt and lvt have min channel length of 350um,
@@ -20,6 +21,18 @@ This workspace and tech plugin are primarily maintained by Felicia Guo, Sean Hua
 - This tech has pcell MOM caps. M1-M2 caps provide ~0.4 fF / um^2. M1-M4 caps provide ~0.74 fF /
   um^2.
 - This tech has pcell MIM caps, between M3-M4 and M4-M5. Both provide ~2.2 fF / um^2.
+
+## Abstract Generation
+
+Abstract generation in this technology does not work out of the box. More details in [this README.](abstract_setup/README.md)
+
+## Extraction
+
+- This tech uses Calibre xRC for extraction. See $PDK_HOME/PEX/xRC and the manual for details.
+- Because BAG's generation of pcells is not stable in this tech, extraction currently only works with -raw. meas_cell should do this by default.
+- The xRC SVRF is set up to produce SPF files, to match other PEX tools. It can produce Spectre-format 
+PEX netlists, but this has not been tested rigorously.
+- xRC automatically capitalizes cell names, so top level cell names need to be full capitalized.
 
 ## Licensing
 

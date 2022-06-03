@@ -1,0 +1,104 @@
+LAYOUT PATH  "{{ layout_file }}"
+LAYOUT PRIMARY "{{ cell_name }}"
+LAYOUT SYSTEM {{layout_type}}
+
+SOURCE PATH "{{ netlist_file }}"
+SOURCE PRIMARY "{{ cell_name }}"
+SOURCE SYSTEM SPICE
+
+MASK SVDB DIRECTORY "svdb" QUERY XRC
+
+LVS REPORT "{{ cell_name }}.rcx.report"
+
+LVS REPORT OPTION NONE
+LVS FILTER UNUSED OPTION NONE SOURCE
+LVS FILTER UNUSED OPTION NONE LAYOUT
+LVS FILTER R(SH) SHORT SOURCE
+LVS FILTER R(SH) SHORT LAYOUT
+LVS REPORT MAXIMUM 50
+LVS POWER NAME VDD
+LVS GROUND NAME VSS
+
+LVS RECOGNIZE GATES NONE
+
+LVS REDUCE SPLIT GATES NO
+LVS REDUCE PARALLEL MOS YES
+LVS SHORT EQUIVALENT NODES NO
+
+LVS ABORT ON SOFTCHK NO
+LVS ABORT ON SUPPLY ERROR YES
+LVS IGNORE PORTS NO
+LVS SHOW SEED PROMOTIONS NO
+LVS SHOW SEED PROMOTIONS MAXIMUM 50
+
+LVS ISOLATE SHORTS NO
+
+VIRTUAL CONNECT COLON YES
+VIRTUAL CONNECT REPORT NO
+
+LVS EXECUTE ERC YES
+ERC RESULTS DATABASE "{{ cell_name }}.erc.results"
+ERC SUMMARY REPORT "{{ cell_name }}.erc.summary" REPLACE HIER
+ERC CELL NAME YES CELL SPACE XFORM
+ERC MAXIMUM RESULTS 1000
+ERC MAXIMUM VERTEX 4096
+
+DRC ICSTATION YES
+
+// S8 specific features
+
+UNIT CAPACITANCE ff
+
+// Filter Devices in include file to give LVS & xRC consistency
+
+LVS FILTER R(cds_thru) SHORT SOURCE	       
+LVS FILTER R(cds_thru) SHORT LAYOUT	       
+
+LVS FILTER Dpar                    OPEN  SOURCE
+LVS FILTER Dpar                    OPEN  LAYOUT
+LVS FILTER Dpar(DNWDIODE_PW)                    OPEN  SOURCE
+LVS FILTER Dpar(DNWDIODE_PW)                    OPEN  LAYOUT
+
+LVS FILTER Probe                   OPEN  SOURCE
+LVS FILTER Probe                   OPEN  LAYOUT
+
+LVS Filter icecap 	open source
+
+LVS Filter s8fmlt_iref_termx  open source
+LVS Filter s8fmlt_neg_termx   open source
+LVS Filter s8fmlt_termx       open source
+LVS Filter s8fmlt_vdac_termx  open source
+
+//# diff/tap devices
+
+LVS FILTER diff_dev                OPEN  SOURCE
+LVS FILTER diff_dev                OPEN  LAYOUT
+LVS FILTER tap_dev                 OPEN  SOURCE
+LVS FILTER tap_dev                 OPEN  LAYOUT
+
+//# dummy device to prevent empty cells from becoming subckt primitives
+
+LVS FILTER cad_dummy_open_device   OPEN  SOURCE
+LVS FILTER cad_dummy_open_device   OPEN  LAYOUT
+
+// Custom netlist settings
+PEX REDUCE MINRES SHORT 0.000001
+PEX POWER LAYOUT VDD
+PEX GROUND LAYOUT VSS
+
+// Include to filter out shorts from current summer
+PEX NETLIST FILTER R(SH) SOURCE SHORT
+PEX NETLIST FILTER R(SH) LAYOUT SHORT
+
+PEX NETLIST FILTER R(cds_thru) SOURCE SHORT
+PEX NETLIST FILTER R(cds_thru) LAYOUT SHORT
+
+// DSPF
+// Configure to use DPSF to match other BAG extraction methods
+PEX NETLIST {{ cell_name }}.spf DSPF SOURCEBASED
+
+// Spectre
+//PEX NETLIST {{ cell_name }}.pex.netlist SPECTRE SOURCEBASED 
+
+INCLUDE "$PDK_HOME/PEX/xRC/cap_models"
+INCLUDE "$PDK_HOME/PEX/xRC/extLvsRules_s8_5lm"

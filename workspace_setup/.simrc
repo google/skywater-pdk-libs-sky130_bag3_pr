@@ -1,2 +1,3 @@
 auCdlCDFPinCntrl = 't
 auCdlSkipMEGA = 't
+simDetectPCellFailure="ignore"
