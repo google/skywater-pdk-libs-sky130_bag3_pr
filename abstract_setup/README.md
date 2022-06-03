@@ -91,7 +91,7 @@ In order for the changes to take effect, the techfile must be merged back into t
 
 Add your locally modified techfile to the ASCII Technology File field, and select the layerRules and constraintGroups Classes. At the bottom, select the technology library that you have write access to. Either Merge or Replace will work here, but after confirming your settings, run the load and check the CIW for any warnings/errors.
 
-Alternatively, if you are editing the techfile in the library directly, you can skip the steps up to this point.
+***Alternatively, if you are editing the techfile in the library directly, you can skip the steps up to this point.***
 
 Once you have loaded the techfile and merged with the tech library you will need to save it into the tech database. From the Technology File Manager, select Save… and point to the library we merged our techfile into previously.
 
