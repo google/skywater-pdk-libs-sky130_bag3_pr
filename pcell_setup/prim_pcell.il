@@ -6,16 +6,25 @@ lib_obj = ddGetObj("BAG_prim")
 ; nmos4_standard/nshort
 pcDefinePCell(
     list( lib_obj "nmos4_standard" "schematic" "schematic")
-    (
+    ((w string "420n")
+     (l string "150n")
      (nf string "1")
     )
     let((inst iopin_master io_net io_pin)
+        wval = atoi(w) / 1e3
+        lval = atoi(l) / 1e3
         nval = atoi(nf)
         inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "nfet" "symbol"
                                               "N0" -0.375:0 "R0" 1
-                                              list(list("hspiceModelMenu" "string" "nshort")
+                                              list(list("hspiceModel" "string" "nshort")
+                                                   list("hspiceModelMenu" "string" "nshort")
+                                                   list("w" "string" sprintf(nil "%0.2f" wval))
+                                                   list("nshort_l0_w" "string" sprintf(nil "%0.2f" wval))
+                                                   list("l" "string" sprintf(nil "%0.2f" lval))
+                                                   list("nshort_l" "string" sprintf(nil "%0.2f" lval))
                                                    list("m" "string" nf)
-                                                )
+                                                   list("totalW" "string" sprintf(nil "%0.2f" wval * nval)))
+                                            )
         iopin_master = dbOpenCellViewByType("basic" "iopin" "symbolr" nil "r")
         io_net = dbCreateNet(pcCellView "D")
         io_pin = dbCreatePin(io_net dbCreateInst(pcCellView iopin_master "D" -0.5:0.5625 "R0")
@@ -39,20 +48,24 @@ pcDefinePCell(
 ; nmos4_svt/nshort
 pcDefinePCell(
     list( lib_obj "nmos4_svt" "schematic" "schematic")
-    ((w string "0.42")
-     (l string "0.15")
+    ((w string "420n")
+     (l string "150n")
      (nf string "1")
     )
     let((inst iopin_master io_net io_pin)
-        wval = atoi(w)
+        wval = atoi(w) / 1e3
+        lval = atoi(l) / 1e3
         nval = atoi(nf)
         inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "nfet" "symbol"
                                               "N0" -0.375:0 "R0" 1
-                                              list(list("hspiceModelMenu" "string" "nshort")
-                                                   list("w" "string" w)
-                                                   list("l" "string" l)
+                                              list(list("hspiceModel" "string" "nshort")
+                                                   list("hspiceModelMenu" "string" "nshort")
+                                                   list("w" "string" sprintf(nil "%0.2f" wval))
+                                                   list("nshort_l0_w" "string" sprintf(nil "%0.2f" wval))
+                                                   list("l" "string" sprintf(nil "%0.2f" lval))
+                                                   list("nshort_l" "string" sprintf(nil "%0.2f" lval))
                                                    list("m" "string" nf)
-                                                   list("totalW" "string" sprintf(nil "%dn" wval * nval)))
+                                                   list("totalW" "string" sprintf(nil "%0.2f" wval * nval)))
                                             )
         iopin_master = dbOpenCellViewByType("basic" "iopin" "symbolr" nil "r")
         io_net = dbCreateNet(pcCellView "D")
@@ -77,20 +90,24 @@ pcDefinePCell(
 ; nmos4_hv/nhv
 pcDefinePCell(
     list( lib_obj "nmos4_hv" "schematic" "schematic")
-    ((w string "0.75")
-     (l string "0.50")
+    ((w string "750n")
+     (l string "500n")
      (nf string "1")
     )
     let((inst iopin_master io_net io_pin)
-        wval = atoi(w)
+        wval = atoi(w) / 1e3
+        lval = atoi(l) / 1e3
         nval = atoi(nf)
         inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "nfet" "symbol"
                                               "N0" -0.375:0 "R0" 1
-                                              list(list("hspiceModelMenu" "string" "nhv")
-                                                   list("w" "string" w)
-                                                   list("l" "string" l)
+                                              list(list("hspiceModel" "string" "nhv")
+                                                   list("hspiceModelMenu" "string" "nhv")
+                                                   list("w" "string" sprintf(nil "%0.2f" wval))
+                                                   list("nhv_l0_w" "string" sprintf(nil "%0.2f" wval))
+                                                   list("l" "string" sprintf(nil "%0.2f" lval))
+                                                   list("nhv_l" "string" sprintf(nil "%0.2f" lval))
                                                    list("m" "string" nf)
-                                                   list("totalW" "string" sprintf(nil "%dn" wval * nval)))
+                                                   list("totalW" "string" sprintf(nil "%0.2f" wval * nval)))
                                             )
         iopin_master = dbOpenCellViewByType("basic" "iopin" "symbolr" nil "r")
         io_net = dbCreateNet(pcCellView "D")
@@ -115,20 +132,24 @@ pcDefinePCell(
 ; nmos4_hvesd/nhvesd
 pcDefinePCell(
     list( lib_obj "nmos4_hvesd" "schematic" "schematic")
-    ((w string "17.50")
-     (l string "0.55")
+    ((w string "17500n")
+     (l string "550n")
      (nf string "1")
     )
     let((inst iopin_master io_net io_pin)
-        wval = atoi(w)
+        wval = atoi(w) / 1e3
+        lval = atoi(l) / 1e3
         nval = atoi(nf)
         inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "nfet" "symbol"
                                               "N0" -0.375:0 "R0" 1
-                                              list(list("hspiceModelMenu" "string" "nhvesd")
-                                                   list("w" "string" w)
-                                                   list("l" "string" l)
+                                              list(list("hspiceModel" "string" "nhvesd")
+                                                   list("hspiceModelMenu" "string" "nhvesd")
+                                                   list("w" "string" sprintf(nil "%0.2f" wval))
+                                                   list("nhvesd_l0_w" "string" sprintf(nil "%0.2f" wval))
+                                                   list("l" "string" sprintf(nil "%0.2f" lval))
+                                                   list("nhvesd_l" "string" sprintf(nil "%0.2f" lval))
                                                    list("m" "string" nf)
-                                                   list("totalW" "string" sprintf(nil "%dn" wval * nval)))
+                                                   list("totalW" "string" sprintf(nil "%0.2f" wval * nval)))
                                             )
         iopin_master = dbOpenCellViewByType("basic" "iopin" "symbolr" nil "r")
         io_net = dbCreateNet(pcCellView "D")
@@ -153,20 +174,24 @@ pcDefinePCell(
 ; nmos4_lvt/nlowvt
 pcDefinePCell(
     list( lib_obj "nmos4_lvt" "schematic" "schematic")
-    ((w string "0.42")
-     (l string "0.15")
+    ((w string "420n")
+     (l string "150n")
      (nf string "1")
     )
     let((inst iopin_master io_net io_pin)
-        wval = atoi(w)
+        wval = atoi(w) / 1e3
+        lval = atoi(l) / 1e3
         nval = atoi(nf)
         inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "nfet" "symbol"
                                               "N0" -0.375:0 "R0" 1
-                                              list(list("hspiceModelMenu" "string" "nlowvt")
-                                                   list("w" "string" w)
-                                                   list("l" "string" l)
+                                              list(list("hspiceModel" "string" "nlowvt")
+                                                   list("hspiceModelMenu" "string" "nlowvt")
+                                                   list("w" "string" sprintf(nil "%0.2f" wval))
+                                                   list("nlowvt_l0_w" "string" sprintf(nil "%0.2f" wval))
+                                                   list("l" "string" sprintf(nil "%0.2f" lval))
+                                                   list("nlowvt_l" "string" sprintf(nil "%0.2f" lval))
                                                    list("m" "string" nf)
-                                                   list("totalW" "string" sprintf(nil "%dn" wval * nval)))
+                                                   list("totalW" "string" sprintf(nil "%0.2f" wval * nval)))
                                             )
         iopin_master = dbOpenCellViewByType("basic" "iopin" "symbolr" nil "r")
         io_net = dbCreateNet(pcCellView "D")
@@ -191,20 +216,24 @@ pcDefinePCell(
 ; pmos4_standard/pshort
 pcDefinePCell(
     list( lib_obj "pmos4_standard" "schematic" "schematic")
-    ((w string "0.55")
-     (l string "0.15")
+    ((w string "550n")
+     (l string "150n")
      (nf string "1")
     )
     let((inst iopin_master io_net io_pin)
-        wval = atoi(w)
+        wval = atoi(w) / 1e3
+        lval = atoi(l) / 1e3
         nval = atoi(nf)
         inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "pfet" "symbol"
                                               "N0" -0.375:0 "R0" 1
-                                              list(list("hspiceModelMenu" "string" "pshort")
-                                                   list("w" "string" w)
-                                                   list("l" "string" l)
+                                              list(list("hspiceModel" "string" "pshort")
+                                                   list("hspiceModelMenu" "string" "pshort")
+                                                   list("w" "string" sprintf(nil "%0.2f" wval))
+                                                   list("pshort_l0_w" "string" sprintf(nil "%0.2f" wval))
+                                                   list("l" "string" sprintf(nil "%0.2f" lval))
+                                                   list("pshort_l" "string" sprintf(nil "%0.2f" lval))
                                                    list("m" "string" nf)
-                                                   list("totalW" "string" sprintf(nil "%dn" wval * nval)))
+                                                   list("totalW" "string" sprintf(nil "%0.2f" wval * nval)))
                                             )
         iopin_master = dbOpenCellViewByType("basic" "iopin" "symbolr" nil "r")
         io_net = dbCreateNet(pcCellView "D")
@@ -229,20 +258,24 @@ pcDefinePCell(
 ; pmos4_svt/pshort
 pcDefinePCell(
     list( lib_obj "pmos4_svt" "schematic" "schematic")
-    ((w string "0.55")
-     (l string "0.15")
+    ((w string "550n")
+     (l string "150n")
      (nf string "1")
     )
     let((inst iopin_master io_net io_pin)
-        wval = atoi(w)
+        wval = atoi(w) / 1e3
+        lval = atoi(l) / 1e3
         nval = atoi(nf)
         inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "pfet" "symbol"
                                               "N0" -0.375:0 "R0" 1
-                                              list(list("hspiceModelMenu" "string" "pshort")
-                                                   list("w" "string" w)
-                                                   list("l" "string" l)
+                                              list(list("hspiceModel" "string" "pshort")
+                                                   list("hspiceModelMenu" "string" "pshort")
+                                                   list("w" "string" sprintf(nil "%0.2f" wval))
+                                                   list("pshort_l0_w" "string" sprintf(nil "%0.2f" wval))
+                                                   list("l" "string" sprintf(nil "%0.2f" lval))
+                                                   list("pshort_l" "string" sprintf(nil "%0.2f" lval))
                                                    list("m" "string" nf)
-                                                   list("totalW" "string" sprintf(nil "%dn" wval * nval)))
+                                                   list("totalW" "string" sprintf(nil "%0.2f" wval * nval)))
                                             )
         iopin_master = dbOpenCellViewByType("basic" "iopin" "symbolr" nil "r")
         io_net = dbCreateNet(pcCellView "D")
@@ -267,20 +300,24 @@ pcDefinePCell(
 ; pmos4_hvt/phighvt
 pcDefinePCell(
     list( lib_obj "pmos4_hvt" "schematic" "schematic")
-    ((w string "0.54")
-     (l string "0.15")
+    ((w string "540n")
+     (l string "150n")
      (nf string "1")
     )
     let((inst iopin_master io_net io_pin)
-        wval = atoi(w)
+        wval = atoi(w) / 1e3
+        lval = atoi(l) / 1e3
         nval = atoi(nf)
         inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "pfet" "symbol"
                                               "N0" -0.375:0 "R0" 1
-                                              list(list("hspiceModelMenu" "string" "phighvt")
-                                                   list("w" "string" w)
-                                                   list("l" "string" l)
+                                              list(list("hspiceModel" "string" "phighvt")
+                                                   list("hspiceModelMenu" "string" "phighvt")
+                                                   list("w" "string" sprintf(nil "%0.2f" wval))
+                                                   list("phighvt_l0_w" "string" sprintf(nil "%0.2f" wval))
+                                                   list("l" "string" sprintf(nil "%0.2f" lval))
+                                                   list("phighvt_l" "string" sprintf(nil "%0.2f" lval))
                                                    list("m" "string" nf)
-                                                   list("totalW" "string" sprintf(nil "%dn" wval * nval)))
+                                                   list("totalW" "string" sprintf(nil "%0.2f" wval * nval)))
                                             )
         iopin_master = dbOpenCellViewByType("basic" "iopin" "symbolr" nil "r")
         io_net = dbCreateNet(pcCellView "D")
@@ -305,20 +342,24 @@ pcDefinePCell(
 ; pmos4_hv/phv
 pcDefinePCell(
     list( lib_obj "pmos4_hv" "schematic" "schematic")
-    ((w string "0.42")
-     (l string "0.50")
+    ((w string "420")
+     (l string "500n")
      (nf string "1")
     )
     let((inst iopin_master io_net io_pin)
-        wval = atoi(w)
+        wval = atoi(w) / 1e3
+        lval = atoi(l) / 1e3
         nval = atoi(nf)
         inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "pfet" "symbol"
                                               "N0" -0.375:0 "R0" 1
-                                              list(list("hspiceModelMenu" "string" "phv")
-                                                   list("w" "string" w)
-                                                   list("l" "string" l)
+                                              list(list("hspiceModel" "string" "phv")
+                                                   list("hspiceModelMenu" "string" "phv")
+                                                   list("w" "string" sprintf(nil "%0.2f" wval))
+                                                   list("phv_l0_w" "string" sprintf(nil "%0.2f" wval))
+                                                   list("l" "string" sprintf(nil "%0.2f" lval))
+                                                   list("phv_l" "string" sprintf(nil "%0.2f" lval))
                                                    list("m" "string" nf)
-                                                   list("totalW" "string" sprintf(nil "%dn" wval * nval)))
+                                                   list("totalW" "string" sprintf(nil "%0.2f" wval * nval)))
                                             )
         iopin_master = dbOpenCellViewByType("basic" "iopin" "symbolr" nil "r")
         io_net = dbCreateNet(pcCellView "D")
@@ -343,20 +384,24 @@ pcDefinePCell(
 ; pmos4_hvesd/phvesd
 pcDefinePCell(
     list( lib_obj "pmos4_hvesd" "schematic" "schematic")
-    ((w string "14.50")
-     (l string "0.55")
+    ((w string "14500n")
+     (l string "550n")
      (nf string "1")
     )
     let((inst iopin_master io_net io_pin)
-        wval = atoi(w)
+        wval = atoi(w) / 1e3
+        lval = atoi(l) / 1e3
         nval = atoi(nf)
         inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "pfet" "symbol"
                                               "N0" -0.375:0 "R0" 1
-                                              list(list("hspiceModelMenu" "string" "phvesd")
-                                                   list("w" "string" w)
-                                                   list("l" "string" l)
+                                              list(list("hspiceModel" "string" "phvesd")
+                                                   list("hspiceModelMenu" "string" "phvesd")
+                                                   list("w" "string" sprintf(nil "%0.2f" wval))
+                                                   list("phvesd_l0_w" "string" sprintf(nil "%0.2f" wval))
+                                                   list("l" "string" sprintf(nil "%0.2f" lval))
+                                                   list("phvesd_l" "string" sprintf(nil "%0.2f" lval))
                                                    list("m" "string" nf)
-                                                   list("totalW" "string" sprintf(nil "%dn" wval * nval)))
+                                                   list("totalW" "string" sprintf(nil "%0.2f" wval * nval)))
                                             )
         iopin_master = dbOpenCellViewByType("basic" "iopin" "symbolr" nil "r")
         io_net = dbCreateNet(pcCellView "D")
@@ -381,20 +426,24 @@ pcDefinePCell(
 ; pmos4_lvt/plowvt
 pcDefinePCell(
     list( lib_obj "pmos4_lvt" "schematic" "schematic")
-    ((w string "0.55")
-     (l string "0.35")
+    ((w string "550n")
+     (l string "350n")
      (nf string "1")
     )
     let((inst iopin_master io_net io_pin)
-        wval = atoi(w)
+        wval = atoi(w) / 1e3
+        lval = atoi(l) / 1e3
         nval = atoi(nf)
         inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "pfet" "symbol"
                                               "N0" -0.375:0 "R0" 1
-                                              list(list("hspiceModelMenu" "string" "plowvt")
-                                                   list("w" "string" w)
-                                                   list("l" "string" l)
+                                              list(list("hspiceModel" "string" "plowvt")
+                                                   list("hspiceModelMenu" "string" "plowvt")
+                                                   list("w" "string" sprintf(nil "%0.2f" wval))
+                                                   list("plowvt_l0_w" "string" sprintf(nil "%0.2f" wval))
+                                                   list("l" "string" sprintf(nil "%0.2f" lval))
+                                                   list("plowvt_l" "string" sprintf(nil "%0.2f" lval))
                                                    list("m" "string" nf)
-                                                   list("totalW" "string" sprintf(nil "%dn" wval * nval)))
+                                                   list("totalW" "string" sprintf(nil "%0.2f" wval * nval)))
                                             )
         iopin_master = dbOpenCellViewByType("basic" "iopin" "symbolr" nil "r")
         io_net = dbCreateNet(pcCellView "D")

@@ -12,7 +12,7 @@ cp_files=( ".cdsenv.personal"
 ln_files=( "bag_config.yaml"
            ".cdsenv"
            ".cdsinit"
-	   ".simrc"
+	         ".simrc"
            ".bashrc"
            ".bashrc_bag"
            "cds.lib.core"
@@ -21,10 +21,7 @@ ln_files=( "bag_config.yaml"
            "display.drf"
            "models"
            ".gitignore"
-           "leBindKeys.il"
-           "pvtech.lib"
-           "tutorial_files"
-           "start_tutorial.sh" )
+           "leBindKeys.il" )
 
 # user configuration files; copy
 for f in "${cp_files[@]}"; do
@@ -56,6 +53,12 @@ echo 'INCLUDE $BAG_WORK_DIR/cds.lib.core' > cds.lib
 ln -s BAG_framework/run_scripts/start_bag_ICADV12d3.il start_bag.il
 ln -s BAG_framework/run_scripts/start_bag.sh .
 ln -s BAG_framework/run_scripts/run_bag.sh .
+ln -s BAG_framework/run_scripts/gen_cell.sh .
+ln -s BAG_framework/run_scripts/sim_cell.sh .
+ln -s BAG_framework/run_scripts/meas_cell.sh .
+ln -s BAG_framework/run_scripts/run_em_cell.sh .
+ln -s BAG_framework/run_scripts/extract_cell.sh .
+ln -s BAG_framework/run_scripts/dsn_cell.sh .
 ln -s BAG_framework/run_scripts/virt_server.sh .
 ln -s BAG_framework/run_scripts/setup_submodules.py .
 git add start_bag.il
@@ -64,11 +67,5 @@ git add run_bag.sh
 git add virt_server.sh
 git add setup_submodules.py
 
-# copy over transistor characterization examples
-# cp -r ${TECH_DIR}/specs_mos_char .
-# git add specs_mos_char
-# cp -r ${TECH_DIR}/scripts_char .
-# git add scripts_char
-# mkdir data
-# cp -r ${TECH_DIR}/mos_data/nch_w4 data/
-# cp -r ${TECH_DIR}/mos_data/pch_w4 data/
+ln -s ${BAG_TEMP_DIR}/simulations/gen_outputs gen_outputs_scratch
+ln -s ${BAG_TEMP_DIR}/calibre_run calibre_run

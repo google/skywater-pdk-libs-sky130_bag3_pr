@@ -6,6 +6,10 @@ SOURCE PATH "{{ netlist_file }}"
 SOURCE PRIMARY "{{ cell_name }}"
 SOURCE SYSTEM SPICE
 
+LAYOUT CASE YES
+SOURCE CASE YES
+LVS COMPARE CASE YES
+
 MASK SVDB DIRECTORY "svdb" QUERY XRC
 
 LVS REPORT "{{ cell_name }}.rcx.report"

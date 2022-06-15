@@ -49,3 +49,10 @@ res_metal:
   VERILOG: []
   SYSVERILOG: []
   types: []
+
+res:
+  CDL: []
+  SPECTRE: []
+  VERILOG: []
+  SYSVERILOG: []
+  types: []

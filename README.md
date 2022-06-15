@@ -29,7 +29,6 @@ Abstract generation in this technology does not work out of the box. More detail
 ## Extraction
 
 - This tech uses Calibre xRC for extraction. See $PDK_HOME/PEX/xRC and the manual for details.
-- Because BAG's generation of pcells is not stable in this tech, extraction currently only works with -raw. meas_cell should do this by default.
 - The xRC SVRF is set up to produce SPF files, to match other PEX tools. It can produce Spectre-format 
 PEX netlists, but this has not been tested rigorously.
 - xRC automatically capitalizes cell names, so top level cell names need to be full capitalized.
