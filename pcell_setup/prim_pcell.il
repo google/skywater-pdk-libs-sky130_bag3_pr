@@ -11,8 +11,8 @@ pcDefinePCell(
      (nf string "1")
     )
     let((inst iopin_master io_net io_pin)
-        wval = atoi(w) / 1e3
-        lval = atoi(l) / 1e3
+        wval = cdfParseFloatString(w) * 1e6
+        lval = cdfParseFloatString(l) * 1e6
         nval = atoi(nf)
         inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "nfet" "symbol"
                                               "N0" -0.375:0 "R0" 1
@@ -53,8 +53,8 @@ pcDefinePCell(
      (nf string "1")
     )
     let((inst iopin_master io_net io_pin)
-        wval = atoi(w) / 1e3
-        lval = atoi(l) / 1e3
+        wval = cdfParseFloatString(w) * 1e6
+        lval = cdfParseFloatString(l) * 1e6
         nval = atoi(nf)
         inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "nfet" "symbol"
                                               "N0" -0.375:0 "R0" 1
@@ -95,8 +95,8 @@ pcDefinePCell(
      (nf string "1")
     )
     let((inst iopin_master io_net io_pin)
-        wval = atoi(w) / 1e3
-        lval = atoi(l) / 1e3
+        wval = cdfParseFloatString(w) * 1e6
+        lval = cdfParseFloatString(l) * 1e6
         nval = atoi(nf)
         inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "nfet" "symbol"
                                               "N0" -0.375:0 "R0" 1
@@ -137,8 +137,8 @@ pcDefinePCell(
      (nf string "1")
     )
     let((inst iopin_master io_net io_pin)
-        wval = atoi(w) / 1e3
-        lval = atoi(l) / 1e3
+        wval = cdfParseFloatString(w) * 1e6
+        lval = cdfParseFloatString(l) * 1e6
         nval = atoi(nf)
         inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "nfet" "symbol"
                                               "N0" -0.375:0 "R0" 1
@@ -179,8 +179,8 @@ pcDefinePCell(
      (nf string "1")
     )
     let((inst iopin_master io_net io_pin)
-        wval = atoi(w) / 1e3
-        lval = atoi(l) / 1e3
+        wval = cdfParseFloatString(w) * 1e6
+        lval = cdfParseFloatString(l) * 1e6
         nval = atoi(nf)
         inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "nfet" "symbol"
                                               "N0" -0.375:0 "R0" 1
@@ -221,8 +221,8 @@ pcDefinePCell(
      (nf string "1")
     )
     let((inst iopin_master io_net io_pin)
-        wval = atoi(w) / 1e3
-        lval = atoi(l) / 1e3
+        wval = cdfParseFloatString(w) * 1e6
+        lval = cdfParseFloatString(l) * 1e6
         nval = atoi(nf)
         inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "pfet" "symbol"
                                               "N0" -0.375:0 "R0" 1
@@ -263,8 +263,8 @@ pcDefinePCell(
      (nf string "1")
     )
     let((inst iopin_master io_net io_pin)
-        wval = atoi(w) / 1e3
-        lval = atoi(l) / 1e3
+        wval = cdfParseFloatString(w) * 1e6
+        lval = cdfParseFloatString(l) * 1e6
         nval = atoi(nf)
         inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "pfet" "symbol"
                                               "N0" -0.375:0 "R0" 1
@@ -305,8 +305,8 @@ pcDefinePCell(
      (nf string "1")
     )
     let((inst iopin_master io_net io_pin)
-        wval = atoi(w) / 1e3
-        lval = atoi(l) / 1e3
+        wval = cdfParseFloatString(w) * 1e6
+        lval = cdfParseFloatString(l) * 1e6
         nval = atoi(nf)
         inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "pfet" "symbol"
                                               "N0" -0.375:0 "R0" 1
@@ -347,8 +347,8 @@ pcDefinePCell(
      (nf string "1")
     )
     let((inst iopin_master io_net io_pin)
-        wval = atoi(w) / 1e3
-        lval = atoi(l) / 1e3
+        wval = cdfParseFloatString(w) * 1e6
+        lval = cdfParseFloatString(l) * 1e6
         nval = atoi(nf)
         inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "pfet" "symbol"
                                               "N0" -0.375:0 "R0" 1
@@ -389,8 +389,8 @@ pcDefinePCell(
      (nf string "1")
     )
     let((inst iopin_master io_net io_pin)
-        wval = atoi(w) / 1e3
-        lval = atoi(l) / 1e3
+        wval = cdfParseFloatString(w) * 1e6
+        lval = cdfParseFloatString(l) * 1e6
         nval = atoi(nf)
         inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "pfet" "symbol"
                                               "N0" -0.375:0 "R0" 1
@@ -431,8 +431,8 @@ pcDefinePCell(
      (nf string "1")
     )
     let((inst iopin_master io_net io_pin)
-        wval = atoi(w) / 1e3
-        lval = atoi(l) / 1e3
+        wval = cdfParseFloatString(w) * 1e6
+        lval = cdfParseFloatString(l) * 1e6
         nval = atoi(nf)
         inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "pfet" "symbol"
                                               "N0" -0.375:0 "R0" 1
