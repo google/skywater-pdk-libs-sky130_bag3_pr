@@ -40,6 +40,7 @@ spectre_run
 cdl_netlist
 netlist
 sim
+simulation
 
 # cadence files
 .abstract
