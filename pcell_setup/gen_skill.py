@@ -16,8 +16,8 @@
 from jinja2 import Template
 
 tech_lib = 's8phirs_10r'
-# mos_w_default = '0.42'
-# mos_l_default = '0.15'
+# mos_w_default = '420n'
+# mos_l_default = '150n'
 res_w_default = '1u'
 res_l_default = '2u'
 res_metal_w_default = '400n'
@@ -26,17 +26,17 @@ dio_w_default = '1u'
 dio_l_default = '1u'
 
 mos_list = [
-    ('nmos4', 'standard', 'nfet', 'nshort', '0.42', '0.15'),
-    ('nmos4', 'svt', 'nfet', 'nshort', '0.42', '0.15'),
-    ('nmos4', 'hv', 'nfet', 'nhv', '0.75', '0.50'),
-    ('nmos4', 'hvesd', 'nfet', 'nhvesd', '17.50', '0.55'),
-    ('nmos4', 'lvt', 'nfet', 'nlowvt', '0.42', '0.15'),
-    ('pmos4', 'standard', 'pfet', 'pshort', '0.55', '0.15'),
-    ('pmos4', 'svt', 'pfet', 'pshort', '0.55', '0.15'),
-    ('pmos4', 'hvt', 'pfet', 'phighvt', '0.54', '0.15'),
-    ('pmos4', 'hv', 'pfet', 'phv', '0.42', '0.50'),
-    ('pmos4', 'hvesd', 'pfet', 'phvesd', '14.50', '0.55'),
-    ('pmos4', 'lvt', 'pfet', 'plowvt', '0.55', '0.35'),
+    ('nmos4', 'standard', 'nfet', 'nshort', '420n', '150n'),
+    ('nmos4', 'svt', 'nfet', 'nshort', '420n', '150n'),
+    ('nmos4', 'hv', 'nfet', 'nhv', '750n', '500n'),
+    ('nmos4', 'hvesd', 'nfet', 'nhvesd', '17500n', '550n'),
+    ('nmos4', 'lvt', 'nfet', 'nlowvt', '420n', '150n'),
+    ('pmos4', 'standard', 'pfet', 'pshort', '550n', '150n'),
+    ('pmos4', 'svt', 'pfet', 'pshort', '550n', '150n'),
+    ('pmos4', 'hvt', 'pfet', 'phighvt', '540n', '150n'),
+    ('pmos4', 'hv', 'pfet', 'phv', '420', '500n'),
+    ('pmos4', 'hvesd', 'pfet', 'phvesd', '14500n', '550n'),
+    ('pmos4', 'lvt', 'pfet', 'plowvt', '550n', '350n'),
 ]
 
 res_list = [
