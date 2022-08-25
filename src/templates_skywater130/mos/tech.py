@@ -183,7 +183,7 @@ class MOSTechSkywater130(MOSTech):
         return False
 
     def get_track_specs(self, conn_layer: int, top_layer: int) -> List[TrackSpec]:
-        # assert conn_layer == 1, 'currently only work for conn_layer = 1'
+        assert conn_layer == 0, 'currently only work for conn_layer = 0'
 
         sd_pitch = self.sd_pitch
 
@@ -199,7 +199,7 @@ class MOSTechSkywater130(MOSTech):
 
     def get_mos_row_info(self, conn_layer: int, specs: MOSRowSpecs, bot_mos_type: MOSType,
                          top_mos_type: MOSType, global_options: Param) -> MOSRowInfo:
-        # assert conn_layer == 1, 'currently only work for conn_layer = 1'
+        assert conn_layer == 0, 'currently only work for conn_layer = 0'
         # TODO: Update this for li1
         # TODO: Get rid of all references to m1, update tech_params with only li1 data, draw everything in li1
 
@@ -342,7 +342,7 @@ class MOSTechSkywater130(MOSTech):
 
     def get_mos_conn_info(self, row_info: MOSRowInfo, conn_layer: int, seg: int, w: int, stack: int,
                           g_on_s: bool, options: Param) -> MOSLayInfo:
-        # assert conn_layer == 1, 'currently only work for conn_layer = 1'
+        assert conn_layer == 0, 'currently only work for conn_layer = 0'
 
         sep_g = options.get('sep_g', False)
         export_mid = options.get('export_mid', False)
@@ -421,7 +421,6 @@ class MOSTechSkywater130(MOSTech):
         npc_h2 = npc_h // 2
 
         g0_info = self.get_conn_info(0, True)
-        # g1_info = self.get_conn_info(1, True)
 
         po_lp = ('poly', 'drawing')             # Layer alias
         po_conn_w = sd_pitch + lch              # Poly connection width
@@ -442,8 +441,6 @@ class MOSTechSkywater130(MOSTech):
             po_xl_odd = sd_pitch
             po_xh_odd = sd_pitch + sd_pitch // 2 + lch // 2
 
-        # builder.add_rect_arr(po_lp, BBox(po_xl_gate, po_y_gate[0], po_xl_gate + po_conn_w,
-                                         # po_y_gate[1]), nx=num_g, spx=conn_pitch)
         builder.add_rect_arr(po_lp, BBox(po_xl_even, po_y_gate[0], po_xh_even, po_y_gate[1]),
                              nx=(fg - (fg // 2)), spx=conn_pitch)
         builder.add_rect_arr(po_lp, BBox(po_xl_odd, po_y_gate[0], po_xh_odd, po_y_gate[1]),
@@ -473,10 +470,6 @@ class MOSTechSkywater130(MOSTech):
             mp_xh = g_xc + (num_g - 1) * conn_pitch + mp_dx
             builder.add_rect_arr(po_lp, BBox(mp_xl, po_y_gate[0], mp_xh, po_y_gate[1]))
 
-        # # connect MP to M1
-        # builder.add_via(g1_info.get_via_info('L1M1_C', g_xc, po_yc_gate, po_h, ortho=True,
-        #                                      num=1, nx=num_g, spx=conn_pitch))
-
     @staticmethod
     def _draw_ds_conn(builder: LayoutInfoBuilder, d0_info: ConnInfo,
                       od_y: Tuple[int, int], md_y: Tuple[int, int], num_vc: int,
@@ -500,18 +493,14 @@ class MOSTechSkywater130(MOSTech):
         md_box = BBox(xc - md_w2, md_y[0], xc + md_w2, md_y[1])
         builder.add_rect_arr(('licon1', 'drawing'), vc_box, nx=nx, spx=spx, ny=num_vc, spy=vc_p)
         builder.add_rect_arr(('li1', 'drawing'), md_box, nx=nx, spx=spx)
-        # print(md_box, vc_box)
-        # connect to M1
-        # builder.add_via(d1_info.get_via_info('L1M1_C', xc, od_yc, md_w, ortho=False,
-        #                                      num=num_v0, nx=nx, spx=spx))
-
+        
     def get_mos_abut_info(self, row_info: MOSRowInfo, edgel: MOSEdgeInfo, edger: MOSEdgeInfo
                           ) -> LayoutInfo:
         raise ValueError('This method is not supported in this technology.')
 
     def get_mos_tap_info(self, row_info: MOSRowInfo, conn_layer: int, seg: int,
                          options: Param) -> MOSLayInfo:
-        # assert conn_layer == 1, 'currently only work for conn_layer = 1'
+        assert conn_layer == 0, 'currently only work for conn_layer = 0'
         row_type = row_info.row_type
 
         guard_ring: bool = options.get('guard_ring', row_info.guard_ring)
