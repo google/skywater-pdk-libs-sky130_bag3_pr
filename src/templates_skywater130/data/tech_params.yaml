@@ -21,6 +21,20 @@ imp_layers:
   ptap: !!python/tuple ['psdm', 'drawing']
   ntap: !!python/tuple ['nsdm', 'drawing']
 
+mos_lay_table:
+  # poly
+  PO: !!python/tuple ['poly', 'drawing']
+  # active
+  OD:
+    nch: !!python/tuple ['diff', 'drawing']
+    pch: !!python/tuple ['diff', 'drawing']
+    ptap: !!python/tuple ['diff', 'drawing']
+    ntap: !!python/tuple ['diff', 'drawing']
+  # gate connection metal
+  MP: !!python/tuple ['li1', 'drawing']
+  # OC connection metal
+  MD: !!python/tuple ['li1', 'drawing']
+
 # mapping from metal layer ID to layer/purpose pair that defines
 # a metal resistor.
 res_metal_layer_table: {}
@@ -43,6 +57,7 @@ exclude_is_blockage: true
 
 # mapping from metal layer ID to metal layer name.  Assume purpose is 'drawing'.
 lay_purp_list: &lp_list
+  0: [!!python/tuple ['li1', 'drawing']]
   1: [!!python/tuple ['met1', 'drawing']]
   2: [!!python/tuple ['met2', 'drawing']]
   3: [!!python/tuple ['met3', 'drawing']]
@@ -52,10 +67,13 @@ lay_purp_list: &lp_list
 
 dum_lay_purp_list: *lp_list
 
-width_intervals:
+width_intervals:  
+  0:
+    - [[28, 801]]   # vertical
+    - [[28, .inf]]  # horizontal
   1:
-    - [[28, 801]]
-    - [[28, .inf]]
+    - [[28, 801]]   # vertical
+    - [[28, .inf]]  # horizontal
   2:
     - [[28, .inf]]
     - [[28, 801]]
@@ -68,10 +86,6 @@ width_intervals:
   5:
     - [[284, .inf]]
     - [[284, .inf]]
-  
-  6:
-    - [[60, .inf]]
-    - [[60, 2001]]
 
 # mapping from tuple of via layers to via ID.
 via_id:
@@ -107,6 +121,14 @@ idc_em_scale:
 flipped_vias: [TPL1_C, L1M1_C, M1M2_C, M2M3_C, M3M4_C, M4M5_C]
 via_square_list: [square]
 via:
+  L1M1_C:
+    - name: square
+      dim: [34, 34]
+      sp: [38, 38]
+      bot_enc: 
+        - [.inf, [[0, 0]]]
+      top_enc: #TODO: This is a placeholder from Virtuoso measurement, Find this in the DRM
+        - [.inf, [[12, 12]]]
   M1M2_C:
     - name: square
       dim: [30, 30]
@@ -142,8 +164,10 @@ via:
 # minimum wire spacing rule.  Space is measured orthogonal to wire direction.
 # should be in resolution units
 sp_min:
+  [li1, drawing]: 
+    - [.inf, 34]
   [met1, drawing]: &sp_min_1x
-    - [.inf, 100]
+    - [.inf, 28]
   [met2, drawing]: *sp_min_1x
   [met3, drawing]: &sp_min_2x
     - [.inf, 60] #60
@@ -153,8 +177,10 @@ sp_min:
 
 # minimum line-end spacing rule.  Space is measured parallel to wire direction.
 sp_le_min:
+  [li1, drawing]: 
+    - [.inf, 34]
   [met1, drawing]: &sp_le_min_1x
-    - [.inf, 100] #change from 28
+    - [.inf, 28] #change from 28
   [met2, drawing]: *sp_le_min_1x
   [met3, drawing]: &sp_le_min_2x
     - [.inf, 60]
@@ -165,6 +191,10 @@ sp_le_min:
 
 # minimum length/minimum area rules.
 len_min:
+  [li1, drawing]:
+    w_al_list:
+      - [.inf, 2244, 0]
+    md_al_list: []
   [met1, drawing]:
     w_al_list:
       - [.inf, 3320, 0]
@@ -196,7 +226,7 @@ margins:
 # transistor DRC rules.
 mos:
   # MOSBase vertical connection layer
-  conn_layer: 1
+  conn_layer: 0
   # min/max transistor width.
   mos_w_range: [84, 1400]
   # transistor width resolution
@@ -211,16 +241,17 @@ mos:
   d_wire_info:
     bot_layer: 0
     # wire_w, is_horiz, v_w, v_h, v_sp, v_bot_enc, v_top_enc
+    # One entry only since we don't used M1 anymore
     info_list:
-      - [34, False, 34, 34, 34, 12, 16]
-      - [52, False, 34, 34, 38, 8, 12]
+      - [34, False, 34, 34, 34, 8, 16] # li1
+      # - [52, False, 34, 34, 38, 8, 12]
   # gate connection info
   g_wire_info:
     bot_layer: 0
     # wire_w, is_horiz, v_w, v_h, v_sp, v_bot_enc, v_top_enc
     info_list:
-      - [34, True, 34, 34, 34, 10, 10]
-      - [52, False, 34, 34, 38, 8, 12]
+      - [34, False, 34, 34, 34, 10, 16]
+      # - [52, True, 34, 34, 38, 8, 12]
 
   # minimum horizontal space between OD, in resolution units
   od_spx: 54
@@ -231,8 +262,9 @@ mos:
   # maximum vertical space between OD, in resolution units
   od_spy_max: 4000
   # set by via enclosure, licon.5
-  od_po_extx: 54 #96
-  od_tap_extx: 76
+  # od_po_extx: 54 #96
+  od_tap_extx: 54 
+  od_po_extx: 76
 
   # poly.2
   po_spy: 42
@@ -263,10 +295,10 @@ mos:
   #might be redundant, well margin from edge to implant
   nwell_imp: 40
 
-  grid_info:
-    - [1, 52, 1]
-    - [3, 66, 1]
-    - [5, 284, 1]
+  grid_info: # [Layer, Width, track width?]
+    - [0, 34, 1]
+    - [2, 56, 1]
+    - [4, 66, 1]
 
 fill: {}
 

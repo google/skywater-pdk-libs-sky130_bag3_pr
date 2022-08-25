@@ -17,11 +17,14 @@ mos:
 
 # routing grid parameters
 routing_grid:
-  1: [y, 52,  34]
-  2: [x, 56,  70]
-  3: [y, 66,  106]
-  4: [x, 66,  60]
-  5: [y, 284, 232]
+# TODO: Change all spacing of y-oriented layers to SD pitch, change all x to layer pitch
+# Currently no layers have been updated
+  0: [y, 34,  34]
+  1: [x, 58,  28]
+  2: [y, 56,  80]
+  3: [x, 66,  106]
+  4: [y, 66,  70]
+  5: [x, 284, 232]
 
 # MOM cap parameters
 mom_cap:
