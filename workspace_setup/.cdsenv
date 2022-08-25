@@ -4,6 +4,7 @@ license	VLSXL_UseNextLicense	string	"always"
 license	VSEL_UseNextLicense	string	"always"
 
 asimenv.startup	simulator	string	"spectre"
+asimenv.startup         projectDir      string  "/tools/scratch/$USER/skywater130"
 ; Allows you to use multibit buses in stimulus files [#in_bits<0>], [#in_bits<1>], etc
 asimenv         mappingMode     string  "oss"
 

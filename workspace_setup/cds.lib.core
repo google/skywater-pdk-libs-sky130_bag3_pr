@@ -1,6 +1,7 @@
 # cadence base libraries
 DEFINE     analogLib    $CDSHOME/tools/dfII/etc/cdslib/artist/analogLib
 DEFINE     basic        $CDSHOME/tools/dfII/etc/cdslib/basic
+DEFINE     ahdlLib      $CDSHOME/tools/dfII/samples/artist/ahdlLib
 
 # technology base libraries
 DEFINE     s8phirs_10r  $BAG_TECH_CONFIG_DIR/workspace_setup/PDK/VirtuosoOA/libs/s8phirs_10r

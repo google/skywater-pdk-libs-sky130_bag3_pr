@@ -6,20 +6,24 @@ lib_obj = ddGetObj("BAG_prim")
 ; {{ mtype }}_{{ threshold }}/{{ model_thres }}
 pcDefinePCell(
     list( lib_obj "{{ mtype }}_{{ threshold }}" "schematic" "schematic")
-    (;(w string "{{ w_def }}")
-     ;(l string "{{ l_def }}")
+    ((w string "{{ w_def }}")
+     (l string "{{ l_def }}")
      (nf string "1")
     )
     let((inst iopin_master io_net io_pin)
-        ;wval = atoi(w)
-        ;nval = atoi(nf)
+        wval = cdfParseFloatString(w) * 1e6
+        lval = cdfParseFloatString(l) * 1e6
+        nval = atoi(nf)
         inst = dbCreateParamInstByMasterName( pcCellView "{{ tech_lib }}" "{{ model }}" "symbol"
                                               "N0" -0.375:0 "R0" 1
-                                              list(list("hspiceModelMenu" "string" "{{ model_thres }}")
-                                                   ;list("w" "string" w)
-                                                   ;list("l" "string" l)
+                                              list(list("hspiceModel" "string" "{{ model_thres }}")
+                                                   list("hspiceModelMenu" "string" "{{ model_thres }}")
+                                                   list("w" "string" sprintf(nil "%0.2f" wval))
+                                                   list("{{ model_thres }}_l0_w" "string" sprintf(nil "%0.2f" wval))
+                                                   list("l" "string" sprintf(nil "%0.2f" lval))
+                                                   list("{{ model_thres }}_l" "string" sprintf(nil "%0.2f" lval))
                                                    list("m" "string" nf)
-                                                   ;list("totalW" "string" sprintf(nil "%dn" wval * nval)))
+                                                   list("totalW" "string" sprintf(nil "%0.2f" wval * nval)))
                                             )
         iopin_master = dbOpenCellViewByType("basic" "iopin" "symbolr" nil "r")
         io_net = dbCreateNet(pcCellView "D")

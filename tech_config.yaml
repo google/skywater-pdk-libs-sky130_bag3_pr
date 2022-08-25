@@ -29,17 +29,14 @@ routing_grid:
 # MOM cap parameters
 mom_cap:
   standard:
-    bot_dir: x
+    bot_dir: y
     info:
       # w, sp, margin, num_ports, port_tr_w
-      1: !!python/tuple [64, 64, 120, 2, 1]
-      2: !!python/tuple [64, 64, 120, 2, 1]
-      3: !!python/tuple [64, 64, 120, 2, 1]
-      4: !!python/tuple [64, 96, 96, 1, 1]
-      5: !!python/tuple [116, 136, 136, 1, 1]
-      6: !!python/tuple [116, 136, 136, 1, 1]
-      7: !!python/tuple [138, 180, 180, 1, 1]
-      8: !!python/tuple [440, 400, 400, 1, 1]
+      1: !!python/tuple [52, 34, 120, 2, 1]
+      2: !!python/tuple [56, 70, 120, 2, 1]
+      3: !!python/tuple [66, 106, 120, 2, 1]
+      4: !!python/tuple [66, 60, 96, 1, 1]
+      5: !!python/tuple [284, 232, 232, 1, 1]
 
 # fill parameters
 fill:
@@ -49,6 +46,3 @@ fill:
   3: !!python/tuple [2000, 2000, 1000, 1000, 0.2]
   4: !!python/tuple [2000, 2000, 1000, 1000, 0.2]
   5: !!python/tuple [2000, 2000, 1000, 1000, 0.2]
-  6: !!python/tuple [2000, 2000, 1000, 1000, 0.2]
-  7: !!python/tuple [2000, 2000, 1000, 1000, 0.2]
-  8: !!python/tuple [2000, 2000, 1000, 1000, 0.2]

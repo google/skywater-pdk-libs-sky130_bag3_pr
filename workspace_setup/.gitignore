@@ -13,11 +13,13 @@ venv
 *.log
 IPOPT.out
 lsyncd.status
+core.*
 
 # misc BAG files
 bag_sim
 bag_stimuli
 gen_outputs
+gen_outputs_scratch
 BAG_server_port.txt
 BAG_sim_server_port.txt
 pytest_output
@@ -38,23 +40,34 @@ spectre_run
 cdl_netlist
 netlist
 sim
-gen_output
+simulation
 
 # cadence files
 .abstract
+beol.drc.*
+PIPO.*
 .cadence
 *.cdslck
 .calibreviewsetup
 .tmp_*
 libManager.log.*
 abstract*
+hdl.var
+lefout.list
+si.env
+xOasisOut_cellMap.txt
 
 # calibre files
 .cgidrcdb
 .cgilvsdb
 calibreview.setup
+ihnl
+map
+.stimulusFile.auCdl
 
 # pvs files
 .QRC.run
 .preRcx.Last.State
 .qrc.Last.state
+
+.nfs*
