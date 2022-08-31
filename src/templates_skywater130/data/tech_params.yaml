@@ -69,20 +69,20 @@ dum_lay_purp_list: *lp_list
 
 width_intervals:  
   0:
-    - [[28, 801]]   # vertical
-    - [[28, .inf]]  # horizontal
+    - [[28, 801]]   # horizontal
+    - [[28, .inf]]  # vertical
   1:
-    - [[28, 801]]   # vertical
     - [[28, .inf]]  # horizontal
+    - [[28, 801]]   # vertical
   2:
-    - [[28, .inf]]
     - [[28, 801]]
+    - [[28, .inf]]
   3:
+    - [[60, .inf]]
     - [[60, 801]]
-    - [[60, .inf]]
   4:
-    - [[60, .inf]]
     - [[60, 2001]]
+    - [[60, .inf]]
   5:
     - [[284, .inf]]
     - [[284, .inf]]
@@ -266,6 +266,11 @@ mos:
   od_tap_extx: 54 
   od_po_extx: 76
 
+  # M1 pitch
+  m1_pitch: 86
+
+  # poly.1a
+  po_w: 30
   # poly.2
   po_spy: 42
   # cannot find constrant, set to od_w_min

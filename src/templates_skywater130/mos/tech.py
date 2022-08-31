@@ -100,7 +100,8 @@ class MOSTechSkywater130(MOSTech):
 
     @property
     def blk_h_pitch(self) -> int:
-        return 63
+        return self.mos_config['m1_pitch']
+        # return 63
         # return 2
 
     @property
@@ -425,6 +426,7 @@ class MOSTechSkywater130(MOSTech):
         po_lp = ('poly', 'drawing')             # Layer alias
         po_conn_w = sd_pitch + lch              # Poly connection width
         po_xl_gate = g_xc - po_conn_w // 2
+        po_min_w = mconf['po_w']
 
         if g_on_s:
             g_xc = 0
@@ -448,6 +450,7 @@ class MOSTechSkywater130(MOSTech):
 
         po_yc_gate = (po_y_gate[0] + po_y_gate[1]) // 2
         po_h_gate = po_y_gate[1] - po_y_gate[0]
+        po_h_gate = sd_pitch - po_min_w
         builder.add_via(g0_info.get_via_info('PYL1_C', g_xc, po_yc_gate, po_h_gate,
                                              ortho=False, num=1, nx=num_g, spx=conn_pitch))
         # poly via draws npc layer wrong
@@ -483,8 +486,6 @@ class MOSTechSkywater130(MOSTech):
         vc_w2 = vc_w // 2
         vc_h2 = vc_h // 2
         md_w2 = md_w // 2
-
-        # print(md_w, vc_w, vc_h, xc)
 
         od_yc = (od_y[0] + od_y[1]) // 2
         vc_h_arr = num_vc * vc_p - vc_sp
