@@ -69,20 +69,20 @@ dum_lay_purp_list: *lp_list
 
 width_intervals:  
   0:
-    - [[28, 801]]   # horizontal
-    - [[28, .inf]]  # vertical
-  1:
-    - [[28, .inf]]  # horizontal
     - [[28, 801]]   # vertical
+    - [[28, .inf]]  # horizontal
+  1:
+    - [[28, 801]]   # vertical
+    - [[28, .inf]]  # horizontal
   2:
-    - [[28, 801]]
     - [[28, .inf]]
+    - [[28, 801]]
   3:
-    - [[60, .inf]]
     - [[60, 801]]
-  4:
-    - [[60, 2001]]
     - [[60, .inf]]
+  4:
+    - [[60, .inf]]
+    - [[60, 2001]]
   5:
     - [[284, .inf]]
     - [[284, .inf]]
