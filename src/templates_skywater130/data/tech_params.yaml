@@ -69,20 +69,20 @@ dum_lay_purp_list: *lp_list
 
 width_intervals:  
   0:
-    - [[28, 801]]   # vertical
-    - [[28, .inf]]  # horizontal
+    - [[28, 801]]   # horizontal
+    - [[28, .inf]]  # vertical
   1:
-    - [[28, 801]]   # vertical
     - [[28, .inf]]  # horizontal
+    - [[28, 801]]   # vertical
   2:
-    - [[28, .inf]]
     - [[28, 801]]
+    - [[28, .inf]]
   3:
+    - [[60, .inf]]
     - [[60, 801]]
-    - [[60, .inf]]
   4:
-    - [[60, .inf]]
     - [[60, 2001]]
+    - [[60, .inf]]
   5:
     - [[284, .inf]]
     - [[284, .inf]]
@@ -263,8 +263,10 @@ mos:
   od_spy_max: 4000
   # set by via enclosure, licon.5
   # od_po_extx: 54 #96
-  od_tap_extx: 54 
   od_po_extx: 76
+  # set by via enclosure for tap, licon.7
+  # This is in absolute resolution units of enclosure of licon, directly corresponds go licon.7 value
+  od_tap_extx: 24
 
   # M1 pitch
   m1_pitch: 86

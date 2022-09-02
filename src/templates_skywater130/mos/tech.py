@@ -758,22 +758,26 @@ class MOSTechSkywater130(MOSTech):
         po_h_min: int = mconf['po_h_min']
         po_od_exty: int = mconf['po_od_exty']
 
+        md_info = self.get_conn_info(0, False)
+        v_w = md_info.via_w
+
         # draw PO
         od_yh = od_yl + w
+        od_po_extx = self.od_po_extx
         if is_sub:
             od_lp = ('tap', 'drawing')
-            od_po_extx = mconf['od_tap_extx'] # determines the amount to extend material from licon
+            od_tap_extx = mconf['od_tap_extx'] # determines the amount to extend material from licon
         else:
             od_lp = ('diff', 'drawing')
             po_y = (po_yl, max(po_yl + po_h_min, od_yh + po_od_exty))
             self._add_po_array(builder, po_y, start, stop)
-            od_po_extx = self.od_po_extx
 
         # draw OD
         po_xl = (sd_pitch - lch) // 2
-        od_sd_dx = od_po_extx - po_xl
+        od_sd_dx = od_po_extx - po_xl if not is_sub else od_tap_extx + v_w // 2
         od_xl = start * sd_pitch - od_sd_dx
         od_xh = stop * sd_pitch + od_sd_dx
+        print(od_xl, od_xh)
         builder.add_rect_arr(od_lp, BBox(od_xl, od_yl, od_xh, od_yh))
 
         # draw base
