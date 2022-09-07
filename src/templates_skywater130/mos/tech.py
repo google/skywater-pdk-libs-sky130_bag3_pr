@@ -38,9 +38,6 @@ from ..util import add_base, add_base_mos, get_arr_edge_dim
 
 MConnInfoType = Tuple[int, int, Orient2D, int, Tuple[str, str]]
 
-# TODO: There are a lot of asserts for conn_layer == 1. Check these because 
-#       conn_layer is now 0 for sky130
-
 # TODO: Replace hard-coded layer definitions with references to mos_lay_table
 @dataclass(eq=True, frozen=True)
 class ConnInfo:
@@ -110,27 +107,24 @@ class MOSTechSkywater130(MOSTech):
 
     @property
     def min_sep_col(self) -> int:
-        lch = self.lch
         sd_pitch = self.sd_pitch
-        od_po_extx = self.mos_config['od_po_extx']
-
         od_spx: int = self.mos_config['od_spx']
         imp_od_encx: int = self.mos_config['imp_od_encx']
-        ans = -(-(od_spx + lch + 2 * od_po_extx + 2*imp_od_encx) // sd_pitch) - 1
-        return ans + (ans & 1)
+        imp_sp: int = self.mos_config['imp_same_sp']
+        od_sep = max(od_spx, imp_sp + 2 * imp_od_encx)
+        ans = -(-(od_sep + sd_pitch) // sd_pitch)
 
+        return ans #+ (ans & 1)     # This is not enforcing even col spacing for smallest possible spacing, for even, use min_sep_col_even
+    
     @property
     def sub_sep_col(self) -> int:
-        lch = self.lch
         sd_pitch = self.sd_pitch
-        od_tap_extx = self.mos_config['od_tap_extx']
+        od_spx: int = self.mos_config['od_spx']
+        imp_od_encx: int = self.mos_config['imp_od_encx']
+        imp_sp: int = self.mos_config['imp_diff_sp']
+        od_sep = max(od_spx, imp_sp + 2 * imp_od_encx)
+        ans = -(-(od_sep + sd_pitch) // sd_pitch)
 
-        mos_config = self.mos_config
-        od_spx: int = mos_config['od_spx']
-        imp_od_encx: int = mos_config['imp_od_encx']
-
-        od_spx = max(od_spx, 2 * imp_od_encx)
-        ans = -(-(od_spx + lch + 2 * od_tap_extx) // sd_pitch) - 1
         return ans + (ans & 1)
         
     @property
@@ -774,10 +768,9 @@ class MOSTechSkywater130(MOSTech):
 
         # draw OD
         po_xl = (sd_pitch - lch) // 2
-        od_sd_dx = od_po_extx - po_xl if not is_sub else od_tap_extx + v_w // 2
+        od_sd_dx = sd_pitch // 2 if not is_sub else od_tap_extx + v_w // 2
         od_xl = start * sd_pitch - od_sd_dx
         od_xh = stop * sd_pitch + od_sd_dx
-        print(od_xl, od_xh)
         builder.add_rect_arr(od_lp, BBox(od_xl, od_yl, od_xh, od_yh))
 
         # draw base

@@ -292,6 +292,10 @@ mos:
   md_area_min: 2244
   md_spy: 34
 
+  # n/psdm.3, minimum spacing in x direction between same type OD implants in res units
+  imp_same_sp: 76
+  # n/psdm.7, minimum spacing in y direction between opposite OD implants in res units
+  imp_diff_sp: 26
   # nsdm.7
   imp_od_encx: 26
   # nsdm.7
