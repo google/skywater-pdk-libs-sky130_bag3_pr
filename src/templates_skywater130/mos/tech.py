@@ -38,7 +38,6 @@ from ..util import add_base, add_base_mos, get_arr_edge_dim
 
 MConnInfoType = Tuple[int, int, Orient2D, int, Tuple[str, str]]
 
-# TODO: Replace hard-coded layer definitions with references to mos_lay_table
 @dataclass(eq=True, frozen=True)
 class ConnInfo:
     w: int
@@ -97,9 +96,7 @@ class MOSTechSkywater130(MOSTech):
 
     @property
     def blk_h_pitch(self) -> int:
-        return self.mos_config['m1_pitch']
-        # return 63
-        # return 2
+        return self.mos_config['blk_h_pitch']
 
     @property
     def end_h_min(self) -> int:
@@ -114,7 +111,7 @@ class MOSTechSkywater130(MOSTech):
         od_sep = max(od_spx, imp_sp + 2 * imp_od_encx)
         ans = -(-(od_sep + sd_pitch) // sd_pitch)
 
-        return ans #+ (ans & 1)     # This is not enforcing even col spacing for smallest possible spacing, for even, use min_sep_col_even
+        return ans #+ (ans & 1)     # This is not enforcing even col spacing for smallest possible spacing
     
     @property
     def sub_sep_col(self) -> int:
@@ -414,10 +411,9 @@ class MOSTechSkywater130(MOSTech):
 
         g0_info = self.get_conn_info(0, True)
 
-        po_lp = ('poly', 'drawing')             # Layer alias
+        po_lp = mconf['mos_lay_table']['PO']
         po_conn_w = sd_pitch + lch              # Poly connection width
         po_xl_gate = g_xc - po_conn_w // 2
-        po_min_w = mconf['po_w']
 
         if g_on_s:
             g_xc = 0
@@ -441,7 +437,7 @@ class MOSTechSkywater130(MOSTech):
 
         po_yc_gate = (po_y_gate[0] + po_y_gate[1]) // 2
         po_h_gate = po_y_gate[1] - po_y_gate[0]
-        po_h_gate = sd_pitch - po_min_w
+        po_h_gate = sd_pitch - lch
         builder.add_via(g0_info.get_via_info('PYL1_C', g_xc, po_yc_gate, po_h_gate,
                                              ortho=False, num=1, nx=num_g, spx=conn_pitch))
         # poly via draws npc layer wrong
@@ -792,12 +788,14 @@ class MOSTechSkywater130(MOSTech):
 
     def _add_po_array(self, builder: LayoutInfoBuilder, po_y: Tuple[int, int], start: int,
                       stop: int) -> None:
+        mconf = self.mos_config
+        po_lp = mconf['mos_lay_table']['PO']
         lch = self.lch
         sd_pitch = self.sd_pitch
         po_x0 = (sd_pitch - lch) // 2 + sd_pitch * start
         fg = stop - start
         if po_y[1] > po_y[0]:
-            builder.add_rect_arr(('poly', 'drawing'), BBox(po_x0, po_y[0], po_x0 + lch, po_y[1]),
+            builder.add_rect_arr(po_lp, BBox(po_x0, po_y[0], po_x0 + lch, po_y[1]),
                                  nx=fg, spx=sd_pitch)
 
     def _edge_info_helper(self, blk_w: int, blk_h: int, row_type: MOSType, threshold: str,

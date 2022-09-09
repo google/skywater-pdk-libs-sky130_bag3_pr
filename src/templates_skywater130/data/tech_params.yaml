@@ -25,11 +25,7 @@ mos_lay_table:
   # poly
   PO: !!python/tuple ['poly', 'drawing']
   # active
-  OD:
-    nch: !!python/tuple ['diff', 'drawing']
-    pch: !!python/tuple ['diff', 'drawing']
-    ptap: !!python/tuple ['diff', 'drawing']
-    ntap: !!python/tuple ['diff', 'drawing']
+  OD: !!python/tuple ['diff', 'drawing']
   # gate connection metal
   MP: !!python/tuple ['li1', 'drawing']
   # OC connection metal
@@ -127,7 +123,7 @@ via:
       sp: [38, 38]
       bot_enc: 
         - [.inf, [[0, 0]]]
-      top_enc: #TODO: This is a placeholder from Virtuoso measurement, Find this in the DRM
+      top_enc: 
         - [.inf, [[12, 12]]]
   M1M2_C:
     - name: square
@@ -180,7 +176,7 @@ sp_le_min:
   [li1, drawing]: 
     - [.inf, 34]
   [met1, drawing]: &sp_le_min_1x
-    - [.inf, 28] #change from 28
+    - [.inf, 28]
   [met2, drawing]: *sp_le_min_1x
   [met3, drawing]: &sp_le_min_2x
     - [.inf, 60]
@@ -241,10 +237,8 @@ mos:
   d_wire_info:
     bot_layer: 0
     # wire_w, is_horiz, v_w, v_h, v_sp, v_bot_enc, v_top_enc
-    # One entry only since we don't used M1 anymore
     info_list:
-      - [34, False, 34, 34, 34, 8, 16] # li1
-      # - [52, False, 34, 34, 38, 8, 12]
+      - [34, False, 34, 34, 34, 8, 16] 
   # gate connection info
   g_wire_info:
     bot_layer: 0
@@ -265,14 +259,12 @@ mos:
   # od_po_extx: 54 #96
   od_po_extx: 76
   # set by via enclosure for tap, licon.7
-  # This is in absolute resolution units of enclosure of licon, directly corresponds go licon.7 value
+  # This is in absolute resolution units of enclosure of licon, directly corresponds to licon.7 value
   od_tap_extx: 24
 
   # M1 pitch
-  m1_pitch: 86
+  blk_h_pitch: 86
 
-  # poly.1a
-  po_w: 30
   # poly.2
   po_spy: 42
   # cannot find constrant, set to od_w_min
@@ -306,7 +298,7 @@ mos:
   #might be redundant, well margin from edge to implant
   nwell_imp: 40
 
-  grid_info: # [Layer, Width, track width?]
+  grid_info: # [Layer, Width, track width]
     - [0, 34, 1]
     - [2, 56, 1]
     - [4, 66, 1]

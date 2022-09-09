@@ -17,8 +17,6 @@ mos:
 
 # routing grid parameters
 routing_grid:
-# TODO: Change all spacing of y-oriented layers to SD pitch, change all x to layer pitch
-# Currently no layers have been updated
   0: [y, 34,  34]
   1: [x, 58,  28]
   2: [y, 56,  80]
