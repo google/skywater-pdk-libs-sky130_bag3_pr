@@ -38,7 +38,6 @@ from ..util import add_base, add_base_mos, get_arr_edge_dim
 
 MConnInfoType = Tuple[int, int, Orient2D, int, Tuple[str, str]]
 
-
 @dataclass(eq=True, frozen=True)
 class ConnInfo:
     w: int
@@ -97,8 +96,7 @@ class MOSTechSkywater130(MOSTech):
 
     @property
     def blk_h_pitch(self) -> int:
-        return 63
-        # return 2
+        return self.mos_config['blk_h_pitch']
 
     @property
     def end_h_min(self) -> int:
@@ -106,27 +104,24 @@ class MOSTechSkywater130(MOSTech):
 
     @property
     def min_sep_col(self) -> int:
-        lch = self.lch
         sd_pitch = self.sd_pitch
-        od_po_extx = self.mos_config['od_tap_extx'] #od_po_extx = self.od_po_extx
-
         od_spx: int = self.mos_config['od_spx']
         imp_od_encx: int = self.mos_config['imp_od_encx']
-        ans = -(-(od_spx + lch + 2 * od_po_extx + 2*imp_od_encx) // sd_pitch) - 1
-        return ans + (ans & 1)
+        imp_sp: int = self.mos_config['imp_same_sp']
+        od_sep = max(od_spx, imp_sp + 2 * imp_od_encx)
+        ans = -(-(od_sep + sd_pitch) // sd_pitch)
 
+        return ans #+ (ans & 1)     # This is not enforcing even col spacing for smallest possible spacing
+    
     @property
     def sub_sep_col(self) -> int:
-        lch = self.lch
         sd_pitch = self.sd_pitch
-        od_po_extx = self.od_po_extx
+        od_spx: int = self.mos_config['od_spx']
+        imp_od_encx: int = self.mos_config['imp_od_encx']
+        imp_sp: int = self.mos_config['imp_diff_sp']
+        od_sep = max(od_spx, imp_sp + 2 * imp_od_encx)
+        ans = -(-(od_sep + sd_pitch) // sd_pitch)
 
-        mos_config = self.mos_config
-        od_spx: int = mos_config['od_spx']
-        imp_od_encx: int = mos_config['imp_od_encx']
-
-        od_spx = max(od_spx, 2 * imp_od_encx)
-        ans = -(-(od_spx + lch + 2 * od_po_extx) // sd_pitch) - 1
         return ans + (ans & 1)
         
     @property
@@ -167,16 +162,12 @@ class MOSTechSkywater130(MOSTech):
         idx = conn_layer - wire_info['bot_layer']
         w, is_horiz, v_w, v_h, v_sp, v_bot_enc, v_top_enc = wire_info['info_list'][idx]
         orient = Orient2D(int(is_horiz ^ 1))
-        if conn_layer == 0:
-            sp_le = mconf['md_spy']
-            len_min = -(-mconf['md_area_min'] // w)
-        else:
-            tech_info = self.tech_info
-            lay, purp = tech_info.get_lay_purp_list(conn_layer)[0]
-            # make sure minimum length satisfies via enclosure rule
-            cur_len = 2 * v_top_enc + (v_w if is_horiz else v_h)
-            len_min = tech_info.get_next_length(lay, purp, orient, w, cur_len, even=True)
-            sp_le = tech_info.get_min_line_end_space(lay, w, purpose=purp, even=True)
+        tech_info = self.tech_info
+        lay, purp = tech_info.get_lay_purp_list(conn_layer)[0]
+        # make sure minimum length satisfies via enclosure rule
+        cur_len = 2 * v_top_enc + (v_w if is_horiz else v_h)
+        len_min = tech_info.get_next_length(lay, purp, orient, w, cur_len, even=True)
+        sp_le = tech_info.get_min_line_end_space(lay, w, purpose=purp, even=True)
 
         return ConnInfo(w, len_min, sp_le, orient, v_w, v_h, v_sp, v_bot_enc, v_top_enc)
 
@@ -184,7 +175,7 @@ class MOSTechSkywater130(MOSTech):
         return False
 
     def get_track_specs(self, conn_layer: int, top_layer: int) -> List[TrackSpec]:
-        assert conn_layer == 1, 'currently only work for conn_layer = 1'
+        assert conn_layer == 0, 'currently only work for conn_layer = 0'
 
         sd_pitch = self.sd_pitch
 
@@ -200,7 +191,7 @@ class MOSTechSkywater130(MOSTech):
 
     def get_mos_row_info(self, conn_layer: int, specs: MOSRowSpecs, bot_mos_type: MOSType,
                          top_mos_type: MOSType, global_options: Param) -> MOSRowInfo:
-        assert conn_layer == 1, 'currently only work for conn_layer = 1'
+        assert conn_layer == 0, 'currently only work for conn_layer = 0'
 
         blk_p = self.blk_h_pitch
 
@@ -223,36 +214,32 @@ class MOSTechSkywater130(MOSTech):
         md_info = self.get_conn_info(0, False)
         od_vency = md_info.via_bot_enc
         md_top_vency = md_info.via_top_enc
+        md_vency = md_info.via_top_enc
+        md_spy = md_info.sp_le
+        md_h_min = md_info.len_min
+        v0_h = md_info.via_h
+        md_bot_vency = md_info.via_bot_enc
 
         if mos_type.is_substrate:
             mg_h = 0
         else:
-            mg_info = self.get_conn_info(0, False)
+            mg_info = self.get_conn_info(0, True)
             mg_h = mg_info.w
-
-        m1_info = self.get_conn_info(1, False)
-        v0_h = m1_info.via_h
-        m1_h_min = m1_info.len_min
-        m1_spy = m1_info.sp_le
-        md_bot_vency = m1_info.via_bot_enc
-        m1_vency = m1_info.via_top_enc
 
         po_yl = po_spy2
         po_yh_gate = po_yl + po_h_gate
+
         if mos_type.is_substrate:
             od_yl = po_spy2 + po_od_exty
         else:
-            # TODO: po_od_exty?
             po_yc_gate = (po_yl + po_yh_gate) // 2
-            gm1_yh = po_yc_gate + v0_h // 2 + m1_vency
-            gm1_yl = min(po_yc_gate - v0_h // 2 - m1_vency, gm1_yh - m1_h_min)
+            gmd_yh = po_yc_gate + v0_h // 2 + md_vency
+            gmd_yl = min(po_yc_gate - v0_h // 2 - md_vency, gmd_yh - md_h_min)
             # fix mg_imp spacing
             imp_yl = max(imp_h_min2, po_yc_gate + mg_h // 2 + mg_imp_spy)
             od_yl = imp_yl + imp_od_ency
 
-            dm1_yl = gm1_yh + m1_spy
-            dv0_yl = dm1_yl + m1_vency
-            dmd_yl = dv0_yl - md_bot_vency
+            dmd_yl = gmd_yh + md_spy
             dvc_yl = dmd_yl + md_top_vency
             od_yl = max(od_yl, dvc_yl - od_vency)
 
@@ -261,11 +248,11 @@ class MOSTechSkywater130(MOSTech):
         blk_yh = max(od_yh + imp_od_ency + imp_h_min2, po_yh + po_spy2)
         blk_yh = -(-blk_yh // blk_p) * blk_p
 
-        md_yl, md_yh, vc_num = self._get_conn_params(self.get_conn_info(0, False), od_yl, od_yh)
-        dm1_yl, dm1_yh, v0_num = self._get_conn_params(m1_info, md_yl, md_yh)
+        md_yl, md_yh, _ = self._get_conn_params(self.get_conn_info(0, False), od_yl, od_yh)
+        dmd_yl, dmd_yh, _ = self._get_conn_params(md_info, md_yl, md_yh)
 
         if mos_type.is_substrate:
-            gm1_yl, gm1_yh = dm1_yl, dm1_yh
+            gmd_yl, gmd_yh = dmd_yl, dmd_yh
 
         # return MOSRowInfo
         top_einfo = RowExtInfo(
@@ -275,7 +262,7 @@ class MOSTechSkywater130(MOSTech):
                 margins=dict(
                     od=(blk_yh - od_yh, od_spy),
                     po=(blk_yh - po_yh, po_spy),
-                    m1=(blk_yh - dm1_yh, m1_spy),
+                    md=(blk_yh - dmd_yh, md_spy),
                 )
             )),
         )
@@ -286,7 +273,7 @@ class MOSTechSkywater130(MOSTech):
                 margins=dict(
                     od=(od_yl, od_spy),
                     po=(po_yl, po_spy),
-                    m1=(gm1_yl, m1_spy),
+                    md=(gmd_yl, md_spy),
                 ),
             )),
         )
@@ -298,15 +285,14 @@ class MOSTechSkywater130(MOSTech):
         )
 
         if mos_type.is_substrate:
-            g_y = ds_y = ds_g_y = sub_y = (dm1_yl, dm1_yh)
+            g_y = ds_y = ds_g_y = sub_y = (dmd_yl, dmd_yh)
             g_m_y = (0, po_yl)
             ds_m_y = (po_yh, blk_yh)
         else:
-            g_y = (gm1_yl, gm1_yh)
+            g_y = (gmd_yl, gmd_yh)
             g_m_y = (0, po_yl)
-            ds_y = ds_g_y = sub_y = (dm1_yl, dm1_yh)
+            ds_y = ds_g_y = sub_y = (dmd_yl, dmd_yh)
             ds_m_y = (po_yh, blk_yh)
-
         return MOSRowInfo(self.lch, w, w_sub, mos_type, specs.threshold, blk_yh, specs.flip,
                           top_einfo, bot_einfo, ImmutableSortedDict(info), g_y, g_m_y, ds_y,
                           ds_m_y, ds_g_y, sub_y, guard_ring=False)
@@ -346,7 +332,7 @@ class MOSTechSkywater130(MOSTech):
 
     def get_mos_conn_info(self, row_info: MOSRowInfo, conn_layer: int, seg: int, w: int, stack: int,
                           g_on_s: bool, options: Param) -> MOSLayInfo:
-        assert conn_layer == 1, 'currently only work for conn_layer = 1'
+        assert conn_layer == 0, 'currently only work for conn_layer = 0'
 
         sep_g = options.get('sep_g', False)
         export_mid = options.get('export_mid', False)
@@ -387,20 +373,18 @@ class MOSTechSkywater130(MOSTech):
 
         # draw drain/source connections
         d0_info = self.get_conn_info(0, False)
-        d1_info = self.get_conn_info(1, False)
         md_yl, md_yh, num_vc = self._get_conn_params(d0_info, od_y[0], od_y[1])
-        num_v0 = self._get_conn_params(d1_info, md_yl, md_yh)[2]
         md_y = (md_yl, md_yh)
-        self._draw_ds_conn(builder, d0_info, d1_info, od_y, md_y, num_vc, num_v0,
+        self._draw_ds_conn(builder, d0_info, od_y, md_y, num_vc,
                            d_xc, num_d, conn_pitch)
-        self._draw_ds_conn(builder, d0_info, d1_info, od_y, md_y, num_vc, num_v0,
+        self._draw_ds_conn(builder, d0_info, od_y, md_y, num_vc,
                            s_xc, num_s, conn_pitch)
 
         if export_mid:
             m_xc = sd_pitch
             num_m = fg + 1 - num_s - num_d
             m_info = (m_xc, num_m, wire_pitch)
-            self._draw_ds_conn(builder, d0_info, d1_info, od_y, md_y, num_vc, num_v0,
+            self._draw_ds_conn(builder, d0_info, od_y, md_y, num_vc,
                                m_xc, num_m, wire_pitch)
         else:
             m_info = None
@@ -419,7 +403,6 @@ class MOSTechSkywater130(MOSTech):
                      po_y_gate: Tuple[int, int], fg: int, conn_pitch: int, g_on_s: bool) -> None:
         lch = self.lch
         sd_pitch = self.sd_pitch
-        #breakpoint()
         mconf = self.mos_config
         npc_w: int = mconf['npc_w']
         npc_h: int = mconf['npc_h']
@@ -427,10 +410,9 @@ class MOSTechSkywater130(MOSTech):
         npc_h2 = npc_h // 2
 
         g0_info = self.get_conn_info(0, True)
-        g1_info = self.get_conn_info(1, True)
 
-        po_lp = ('poly', 'drawing')
-        po_conn_w = sd_pitch + lch
+        po_lp = mconf['mos_lay_table']['PO']
+        po_conn_w = sd_pitch + lch              # Poly connection width
         po_xl_gate = g_xc - po_conn_w // 2
 
         if g_on_s:
@@ -448,8 +430,6 @@ class MOSTechSkywater130(MOSTech):
             po_xl_odd = sd_pitch
             po_xh_odd = sd_pitch + sd_pitch // 2 + lch // 2
 
-        # builder.add_rect_arr(po_lp, BBox(po_xl_gate, po_y_gate[0], po_xl_gate + po_conn_w,
-                                         # po_y_gate[1]), nx=num_g, spx=conn_pitch)
         builder.add_rect_arr(po_lp, BBox(po_xl_even, po_y_gate[0], po_xh_even, po_y_gate[1]),
                              nx=(fg - (fg // 2)), spx=conn_pitch)
         builder.add_rect_arr(po_lp, BBox(po_xl_odd, po_y_gate[0], po_xh_odd, po_y_gate[1]),
@@ -457,35 +437,31 @@ class MOSTechSkywater130(MOSTech):
 
         po_yc_gate = (po_y_gate[0] + po_y_gate[1]) // 2
         po_h_gate = po_y_gate[1] - po_y_gate[0]
+        po_h_gate = sd_pitch - lch
         builder.add_via(g0_info.get_via_info('PYL1_C', g_xc, po_yc_gate, po_h_gate,
                                              ortho=False, num=1, nx=num_g, spx=conn_pitch))
         # poly via draws npc layer wrong
         npc_box = BBox(g_xc - npc_w2, po_yc_gate - npc_h2, g_xc + npc_w2, po_yc_gate + npc_h2)
         builder.add_rect_arr(('npc', 'drawing'), npc_box, nx=num_g, spx=conn_pitch)
 
-        mp_h = g0_info.w
-        mp_w_min = g0_info.len_min
-        mp_lp = ('li1', 'drawing')
-        mp_yl = po_yc_gate - mp_h // 2
-        mp_yh = mp_yl + mp_h
+        po_h = g0_info.w
+        po_w_min = g0_info.len_min
+        po_yl = po_yc_gate - po_h // 2
+        po_yh = po_yl + po_h
         if sep_g:
-            mp_xl = g_xc - mp_w_min // 2
-            builder.add_rect_arr(mp_lp, BBox(mp_xl, mp_yl, mp_xl + mp_w_min, mp_yh),
+            mp_xl = g_xc - po_w_min // 2
+            builder.add_rect_arr(po_lp, BBox(mp_xl, po_y_gate[0], mp_xl + po_w_min, po_y_gate[1]),
                                  nx=num_g, spx=conn_pitch)
         else:
             mp_dx = g0_info.via_w # felicia - // 2 + g0_info.via_top_enc
                                   # for licon.5
             mp_xl = g_xc - mp_dx
             mp_xh = g_xc + (num_g - 1) * conn_pitch + mp_dx
-            builder.add_rect_arr(mp_lp, BBox(mp_xl, mp_yl, mp_xh, mp_yh))
-
-        # connect MP to M1
-        builder.add_via(g1_info.get_via_info('L1M1_C', g_xc, po_yc_gate, mp_h, ortho=True,
-                                             num=1, nx=num_g, spx=conn_pitch))
+            builder.add_rect_arr(po_lp, BBox(mp_xl, po_y_gate[0], mp_xh, po_y_gate[1]))
 
     @staticmethod
-    def _draw_ds_conn(builder: LayoutInfoBuilder, d0_info: ConnInfo, d1_info: ConnInfo,
-                      od_y: Tuple[int, int], md_y: Tuple[int, int], num_vc: int, num_v0: int,
+    def _draw_ds_conn(builder: LayoutInfoBuilder, d0_info: ConnInfo,
+                      od_y: Tuple[int, int], md_y: Tuple[int, int], num_vc: int,
                       xc: int, nx: int, spx: int) -> None:
         # connect to MD
         md_w = d0_info.w
@@ -504,17 +480,14 @@ class MOSTechSkywater130(MOSTech):
         md_box = BBox(xc - md_w2, md_y[0], xc + md_w2, md_y[1])
         builder.add_rect_arr(('licon1', 'drawing'), vc_box, nx=nx, spx=spx, ny=num_vc, spy=vc_p)
         builder.add_rect_arr(('li1', 'drawing'), md_box, nx=nx, spx=spx)
-        # connect to M1
-        builder.add_via(d1_info.get_via_info('L1M1_C', xc, od_yc, md_w, ortho=False,
-                                             num=num_v0, nx=nx, spx=spx))
-
+        
     def get_mos_abut_info(self, row_info: MOSRowInfo, edgel: MOSEdgeInfo, edger: MOSEdgeInfo
                           ) -> LayoutInfo:
         raise ValueError('This method is not supported in this technology.')
 
     def get_mos_tap_info(self, row_info: MOSRowInfo, conn_layer: int, seg: int,
                          options: Param) -> MOSLayInfo:
-        assert conn_layer == 1, 'currently only work for conn_layer = 1'
+        assert conn_layer == 0, 'currently only work for conn_layer = 0'
         row_type = row_info.row_type
 
         guard_ring: bool = options.get('guard_ring', row_info.guard_ring)
@@ -537,13 +510,11 @@ class MOSTechSkywater130(MOSTech):
 
         # draw drain/source connections
         d0_info = self.get_conn_info(0, False)
-        d1_info = self.get_conn_info(1, False)
         md_yl, md_yh, num_vc = self._get_conn_params(d0_info, od_y[0], od_y[1])
-        num_v0 = self._get_conn_params(d1_info, md_yl, md_yh)[2]
         md_y = (md_yl, md_yh)
 
         #draws in vias connecting tap cell to metal 1
-        self._draw_ds_conn(builder, d0_info, d1_info, od_y, md_y, num_vc, num_v0,
+        self._draw_ds_conn(builder, d0_info, od_y, md_y, num_vc,
                            0, seg + 1, sd_pitch)
 
         # draw base
@@ -773,20 +744,23 @@ class MOSTechSkywater130(MOSTech):
         po_h_min: int = mconf['po_h_min']
         po_od_exty: int = mconf['po_od_exty']
 
+        md_info = self.get_conn_info(0, False)
+        v_w = md_info.via_w
+
         # draw PO
         od_yh = od_yl + w
+        od_po_extx = self.od_po_extx
         if is_sub:
             od_lp = ('tap', 'drawing')
-            od_po_extx = mconf['od_tap_extx'] # determines the amount to extend material from licon
+            od_tap_extx = mconf['od_tap_extx'] # determines the amount to extend material from licon
         else:
             od_lp = ('diff', 'drawing')
             po_y = (po_yl, max(po_yl + po_h_min, od_yh + po_od_exty))
             self._add_po_array(builder, po_y, start, stop)
-            od_po_extx = self.od_po_extx
 
         # draw OD
         po_xl = (sd_pitch - lch) // 2
-        od_sd_dx = od_po_extx - po_xl
+        od_sd_dx = sd_pitch // 2 if not is_sub else od_tap_extx + v_w // 2
         od_xl = start * sd_pitch - od_sd_dx
         od_xh = stop * sd_pitch + od_sd_dx
         builder.add_rect_arr(od_lp, BBox(od_xl, od_yl, od_xh, od_yh))
@@ -814,12 +788,14 @@ class MOSTechSkywater130(MOSTech):
 
     def _add_po_array(self, builder: LayoutInfoBuilder, po_y: Tuple[int, int], start: int,
                       stop: int) -> None:
+        mconf = self.mos_config
+        po_lp = mconf['mos_lay_table']['PO']
         lch = self.lch
         sd_pitch = self.sd_pitch
         po_x0 = (sd_pitch - lch) // 2 + sd_pitch * start
         fg = stop - start
         if po_y[1] > po_y[0]:
-            builder.add_rect_arr(('poly', 'drawing'), BBox(po_x0, po_y[0], po_x0 + lch, po_y[1]),
+            builder.add_rect_arr(po_lp, BBox(po_x0, po_y[0], po_x0 + lch, po_y[1]),
                                  nx=fg, spx=sd_pitch)
 
     def _edge_info_helper(self, blk_w: int, blk_h: int, row_type: MOSType, threshold: str,
