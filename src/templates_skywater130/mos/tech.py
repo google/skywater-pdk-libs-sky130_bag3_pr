@@ -195,8 +195,6 @@ class MOSTechSkywater130(MOSTech):
     def get_mos_row_info(self, conn_layer: int, specs: MOSRowSpecs, bot_mos_type: MOSType,
                          top_mos_type: MOSType, global_options: Param) -> MOSRowInfo:
         assert conn_layer == 0, 'currently only work for conn_layer = 0'
-        # TODO: Update this for li1
-        # TODO: Get rid of all references to m1, update tech_params with only li1 data, draw everything in li1
 
         blk_p = self.blk_h_pitch
 
@@ -406,7 +404,6 @@ class MOSTechSkywater130(MOSTech):
 
     def _draw_g_conn(self, builder: LayoutInfoBuilder, sep_g: bool, g_xc: int,
                      po_y_gate: Tuple[int, int], fg: int, conn_pitch: int, g_on_s: bool) -> None:
-        # TODO: Update Poly shapes to not be the weird H shape
         lch = self.lch
         sd_pitch = self.sd_pitch
         mconf = self.mos_config
@@ -451,7 +448,6 @@ class MOSTechSkywater130(MOSTech):
         npc_box = BBox(g_xc - npc_w2, po_yc_gate - npc_h2, g_xc + npc_w2, po_yc_gate + npc_h2)
         builder.add_rect_arr(('npc', 'drawing'), npc_box, nx=num_g, spx=conn_pitch)
 
-        # TODO: Change the po* names to be a bit more descriptive?
         po_h = g0_info.w
         po_w_min = g0_info.len_min
         po_yl = po_yc_gate - po_h // 2
