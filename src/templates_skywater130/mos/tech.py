@@ -88,7 +88,7 @@ class MOSTechSkywater130(MOSTech):
     ignore_vm_sp_le_layers: FrozenSet[str] = frozenset(('m1',))
 
     def __init__(self, tech_info: TechInfo, lch: int, arr_options: Mapping[str, Any]) -> None:
-        MOSTech.__init__(self, tech_info, lch, arr_options) 
+        MOSTech.__init__(self, tech_info, lch, arr_options)
 
     @property
     def can_draw_double_gate(self) -> bool:
@@ -111,8 +111,8 @@ class MOSTechSkywater130(MOSTech):
         od_sep = max(od_spx, imp_sp + 2 * imp_od_encx)
         ans = -(-(od_sep + sd_pitch) // sd_pitch)
 
-        return ans #+ (ans & 1)     # This is not enforcing even col spacing for smallest possible spacing
-    
+        return ans  # This is not enforcing even col spacing for smallest possible spacing
+
     @property
     def sub_sep_col(self) -> int:
         sd_pitch = self.sd_pitch
@@ -123,7 +123,6 @@ class MOSTechSkywater130(MOSTech):
         ans = -(-(od_sep + sd_pitch) // sd_pitch)
 
         return ans + (ans & 1)
-        
     @property
     def min_sub_col(self) -> int:
         return self.min_od_col
@@ -171,6 +170,7 @@ class MOSTechSkywater130(MOSTech):
 
         return ConnInfo(w, len_min, sp_le, orient, v_w, v_h, v_sp, v_bot_enc, v_top_enc)
 
+    # noinspection PyMethodMayBeStatic
     def can_short_adj_tracks(self, conn_layer: int) -> bool:
         return False
 
@@ -218,7 +218,6 @@ class MOSTechSkywater130(MOSTech):
         md_spy = md_info.sp_le
         md_h_min = md_info.len_min
         v0_h = md_info.via_h
-        md_bot_vency = md_info.via_bot_enc
 
         if mos_type.is_substrate:
             mg_h = 0
@@ -411,7 +410,7 @@ class MOSTechSkywater130(MOSTech):
 
         g0_info = self.get_conn_info(0, True)
 
-        po_lp = mconf['mos_lay_table']['PO']
+        po_lp = self.tech_info.config['mos_lay_table']['PO']
         po_conn_w = sd_pitch + lch              # Poly connection width
         po_xl_gate = g_xc - po_conn_w // 2
 
@@ -480,7 +479,7 @@ class MOSTechSkywater130(MOSTech):
         md_box = BBox(xc - md_w2, md_y[0], xc + md_w2, md_y[1])
         builder.add_rect_arr(('licon1', 'drawing'), vc_box, nx=nx, spx=spx, ny=num_vc, spy=vc_p)
         builder.add_rect_arr(('li1', 'drawing'), md_box, nx=nx, spx=spx)
-        
+
     def get_mos_abut_info(self, row_info: MOSRowInfo, edgel: MOSEdgeInfo, edger: MOSEdgeInfo
                           ) -> LayoutInfo:
         raise ValueError('This method is not supported in this technology.')
@@ -522,7 +521,7 @@ class MOSTechSkywater130(MOSTech):
         imp_od_encx: int = self.mos_config['imp_od_encx']
         bbox = BBox(0-2*imp_od_encx, 0, seg * sd_pitch + 2*imp_od_encx, height)
         add_base_mos(builder, sub_type, threshold, imp_y, bbox, is_sub=True)
-         
+
         edge_info = MOSEdgeInfo(mos_type=sub_type, imp_y=imp_y, has_od=True)
         be = BlkExtInfo(row_type, row_info.threshold, guard_ring, ImmutableList([(seg, sub_type)]),
                         ImmutableSortedDict())
@@ -768,28 +767,32 @@ class MOSTechSkywater130(MOSTech):
         # draw base
         imp_od_encx: int = self.mos_config['imp_od_encx']
         bbox = BBox(od_xl-imp_od_encx, 0, od_xh+imp_od_encx, row_info.height)
-        
+
         # if drawing tap cells, flip the implant type so its opposite of row
         if is_sub:
-            if (row_info.row_type is MOSType.nch):
-                add_base_mos(builder, MOSType.pch, row_info.threshold, row_info['imp_y'], bbox, is_sub=True)
-            elif (row_info.row_type is MOSType.pch):
-                add_base_mos(builder, MOSType.nch, row_info.threshold, row_info['imp_y'], bbox, is_sub=True)
-            
+            if row_info.row_type is MOSType.nch:
+                add_base_mos(builder, MOSType.pch, row_info.threshold,
+                             row_info['imp_y'], bbox, is_sub=True)
+            elif row_info.row_type is MOSType.pch:
+                add_base_mos(builder, MOSType.nch, row_info.threshold,
+                             row_info['imp_y'], bbox, is_sub=True)
+
             # ptap and ntap sometimes are row type when having an implant row
-            elif (row_info.row_type is MOSType.ptap ):
-                add_base_mos(builder, MOSType.ptap, row_info.threshold, row_info['imp_y'], bbox, is_sub=True)
-            elif (row_info.row_type is MOSType.ntap ):
-                add_base_mos(builder, MOSType.ntap, row_info.threshold, row_info['imp_y'], bbox, is_sub=True)
-        else:   
-            add_base_mos(builder, row_info.row_type, row_info.threshold, row_info['imp_y'], bbox)
+            elif row_info.row_type is MOSType.ptap :
+                add_base_mos(builder, MOSType.ptap, row_info.threshold,
+                             row_info['imp_y'], bbox, is_sub=True)
+            elif row_info.row_type is MOSType.ntap :
+                add_base_mos(builder, MOSType.ntap, row_info.threshold,
+                             row_info['imp_y'], bbox, is_sub=True)
+        else:
+            add_base_mos(builder, row_info.row_type, row_info.threshold,
+                         row_info['imp_y'], bbox)
 
         return od_yl, od_yh
 
     def _add_po_array(self, builder: LayoutInfoBuilder, po_y: Tuple[int, int], start: int,
                       stop: int) -> None:
-        mconf = self.mos_config
-        po_lp = mconf['mos_lay_table']['PO']
+        po_lp = self.tech_info.config['mos_lay_table']['PO']
         lch = self.lch
         sd_pitch = self.sd_pitch
         po_x0 = (sd_pitch - lch) // 2 + sd_pitch * start
