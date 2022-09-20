@@ -777,7 +777,6 @@ class MOSTechSkywater130(MOSTech):
         od_sd_dx = od_po_extx - po_xl if not is_sub else od_tap_extx + v_w // 2
         od_xl = start * sd_pitch - od_sd_dx
         od_xh = stop * sd_pitch + od_sd_dx
-        print(od_xl, od_xh)
         builder.add_rect_arr(od_lp, BBox(od_xl, od_yl, od_xh, od_yh))
 
         # draw base

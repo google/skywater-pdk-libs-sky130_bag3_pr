@@ -35,6 +35,10 @@ mos_lay_table:
   # OC connection metal
   MD: !!python/tuple ['li1', 'drawing']
 
+mim_lay:
+  capm: !!python/tuple ['capm', 'drawing']
+  cap2m: !!python/tuple ['cap2m', 'drawing']
+
 # mapping from metal layer ID to layer/purpose pair that defines
 # a metal resistor.
 res_metal_layer_table: {}
@@ -149,7 +153,7 @@ via:
       dim: [40, 40]
       sp: [40, 40]
       bot_enc:
-        - [.inf, [[18, 11], [11, 18]]]
+        - [.inf, [[18, 11], [11, 18]]] #x, y enclosure
       top_enc:
         - [.inf, [[13, 13]]]
   M4M5_C:
@@ -235,8 +239,8 @@ mos:
   # source/drain pitch is computed as val[0] + val[1] * lch_unit
   sd_pitch_constants:
     lch: [30, .inf]
-    val: [[86, 0], [42, 1]] #I have no idea what [42,1] is
-                            # first can also be [86, 0]
+    val: [[86, 0], [42, 1]] 
+
   # drain connection info
   d_wire_info:
     bot_layer: 0
@@ -310,6 +314,36 @@ mos:
 fill: {}
 
 res_metal: {}
+
+# mim cap DRC rules
+mim:
+  # capm.1 minimum width
+  min_wid: 400
+  # capm.2b min bottom plate to bottom plate split
+  bot_bot_sp: 200
+  # capm.3 enclosure of top metal around capm
+  top_to_cap_sp: 28
+  # capm.4 space between via and capm edge
+  capvia_cap: 40
+  # capm.5 space between non-cap via & capm layer when connected by layer
+  cap_via2_sp: 254
+  # capm.6  width to length or length to width
+  max_ratio: 20
+  # capm.8 Minimum space between non-cap via and capm layer when no overlap
+  via_cap_sp: 28
+  # capm.11 Min space between capm to metal2
+  capm_met_sp: 100
+
+
+  grid_info: # [Layer, (layer, purpose) Width, Spacing ]
+    - [3, ['met3', 'drawing'], 60, 60]
+    - [3.5, ['capm', 'drawing'], 400, 168]
+    - [4, ['met4', 'drawing'], 60, 60]
+    - [4.5, ['cap2m', 'drawing'], 400, 168]
+    - [5, ['met5', 'drawing'], 284, 320]
+  via_info: # [bot layer, type, dimension, space, bot_enc, top_enc]
+    - [3, 'M3M4_C', 40, 40, 18, 13]
+    - [4, 'M4M5_C', 160, 160, 38, 62]
 
 layer:
   nwell: 0

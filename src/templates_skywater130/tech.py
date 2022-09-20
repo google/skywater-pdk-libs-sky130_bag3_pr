@@ -26,6 +26,7 @@ from xbase.layout.enum import DeviceType
 from . import config as _config
 from . import config_fname as _config_fname
 from .mos.tech import MOSTechSkywater130
+from .mim.tech import MIMTechSkywater130
 # from .fill.tech import FillTechSkywater130
 # from .res.tech import ResTechSkywater130
 
@@ -35,6 +36,7 @@ class TechInfoSkywater130(TechInfo):
         TechInfo.__init__(self, process_params, _config, _config_fname)
 
         self.register_device_tech('mos', MOSTechSkywater130)
+        self.register_device_tech('mim', MIMTechSkywater130)
         # self.register_device_tech('fill', FillTechCDSFFMPT)
         # self.register_device_tech('res', ResTechCDSFFMPT)
 
