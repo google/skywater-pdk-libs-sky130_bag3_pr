@@ -26,7 +26,6 @@ def add_base(builder: LayoutInfoBuilder, row_type: MOSType, threshold: str, imp_
     # draws nwell, n+ implant (ndsm) and p+ implant (pdsm)
     # for non mos devices (corners, edges, etc)
 
-    pimp_lp = ('psdm', 'drawing')
     if rect.is_physical():
         if not row_type.is_pwell:
             well_lp = ('nwell', 'drawing')
@@ -38,31 +37,26 @@ def add_base(builder: LayoutInfoBuilder, row_type: MOSType, threshold: str, imp_
         thres_lp = _get_thres_lp(row_type, threshold)
         if thres_lp[0] != '':
             builder.add_rect_arr(thres_lp, rect)
-    
+
+
 def add_base_mos(builder: LayoutInfoBuilder, row_type: MOSType, threshold: str, imp_y: Tuple[int, int],
-             rect: BBox, well_x: Optional[Tuple[int, int]] = None, is_sub: bool = False) -> None:
+                 rect: BBox, well_x: Optional[Tuple[int, int]] = None, is_sub: bool = False) -> None:
     # new func draws nwell, n+ implant (ndsm) and p+ implant (pdsm)
-    
-    pimp_lp = ('psdm', 'drawing')
     if rect.is_physical():
         # only draw nwells if not a tap cell and pch, or is tap cell and nch
-        if ((not row_type.is_pwell) and (not is_sub)) \
-                or (is_sub and (row_type is MOSType.nch or row_type is MOSType.ntap) ):
+        if (not row_type.is_pwell and not is_sub) or (is_sub and row_type.is_n_plus):
             well_lp = ('nwell', 'drawing')
             if well_x is None:
                 builder.add_rect_arr(well_lp, rect)
             else:
                 builder.add_rect_arr(well_lp, BBox(well_x[0], rect.yl, well_x[1], rect.yh))
             
-        #draw the respective implant called    
-        if (row_type is MOSType.nch):
-            builder.add_rect_arr(('nsdm', 'drawing'),  BBox(rect.xl, imp_y[0], rect.xh, imp_y[1]))
-        elif (row_type is MOSType.pch):
-            builder.add_rect_arr(('psdm', 'drawing'),  BBox(rect.xl, imp_y[0], rect.xh, imp_y[1]))
-        elif (row_type is MOSType.ntap):
-            builder.add_rect_arr(('nsdm', 'drawing'),  BBox(rect.xl, imp_y[0], rect.xh, imp_y[1]))
-        elif (row_type is MOSType.ptap):
-            builder.add_rect_arr(('psdm', 'drawing'),  BBox(rect.xl, imp_y[0], rect.xh, imp_y[1]))
+        # draw the respective implant
+        imp_bbox = BBox(rect.xl, imp_y[0], rect.xh, imp_y[1])
+        if row_type.is_n_plus:
+            builder.add_rect_arr(('nsdm', 'drawing'),  imp_bbox)
+        else:
+            builder.add_rect_arr(('psdm', 'drawing'),  imp_bbox)
 
         thres_lp = _get_thres_lp(row_type, threshold)
         if thres_lp[0] != '':

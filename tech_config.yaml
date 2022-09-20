@@ -17,26 +17,24 @@ mos:
 
 # routing grid parameters
 routing_grid:
-# TODO: Change all spacing of y-oriented layers to SD pitch, change all x to layer pitch
-# Currently no layers have been updated
   0: [y, 34,  34]
   1: [x, 58,  28]
   2: [y, 56,  80]
   3: [x, 66,  106]
   4: [y, 66,  70]
-  5: [x, 284, 232]
+  5: [x, 320, 368]
 
 # MOM cap parameters
 mom_cap:
   standard:
-    bot_dir: y
+    bot_dir: x
     info:
       # w, sp, margin, num_ports, port_tr_w
-      1: !!python/tuple [52, 34, 120, 2, 1]
-      2: !!python/tuple [56, 70, 120, 2, 1]
-      3: !!python/tuple [66, 106, 120, 2, 1]
-      4: !!python/tuple [66, 60, 96, 1, 1]
-      5: !!python/tuple [284, 232, 232, 1, 1]
+      1: !!python/tuple [58, 28, 86, 2, 1]
+      2: !!python/tuple [56, 28, 84, 2, 1]
+      3: !!python/tuple [66, 60, 86, 2, 1]
+      4: !!python/tuple [66, 60, 84, 1, 1]
+#      5: !!python/tuple [320, 320, 320, 1, 1]
 
 # fill parameters
 fill:

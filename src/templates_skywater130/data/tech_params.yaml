@@ -26,21 +26,14 @@ mos_lay_table:
   PO: !!python/tuple ['poly', 'drawing']
   # active
   OD:
-    nch: !!python/tuple ['diff', 'drawing']
-    pch: !!python/tuple ['diff', 'drawing']
-    ptap: !!python/tuple ['diff', 'drawing']
-    ntap: !!python/tuple ['diff', 'drawing']
+    active: !!python/tuple ['diff', 'drawing'] 
+    sub: !!python/tuple ['tap', 'drawing']
   # gate connection metal
   MP: !!python/tuple ['li1', 'drawing']
   # OC connection metal
   MD: !!python/tuple ['li1', 'drawing']
 
-mim_lay:
-  capm: !!python/tuple ['capm', 'drawing']
-  cap2m: !!python/tuple ['cap2m', 'drawing']
-
-# mapping from metal layer ID to layer/purpose pair that defines
-# a metal resistor.
+# mapping from metal layer ID to layer/purpose pair that defines a metal resistor.
 res_metal_layer_table: {}
 #  1: [!!python/tuple ['met1', 'res']]
 #  2: [!!python/tuple ['met2', 'res']]
@@ -48,8 +41,7 @@ res_metal_layer_table: {}
 #  4: [!!python/tuple ['met4', 'res']]
 #  5: [!!python/tuple ['met5', 'res']]
 
-# mapping from metal layer ID to layer/purpose pair that
-# defines metal exclusion region.
+# mapping from metal layer ID to layer/purpose pair that defines metal exclusion region.
 metal_exclude_table: {}
 #  1: !!python/tuple ['met1', 'drawing']
 #  2: !!python/tuple ['met2', 'drawing']
@@ -88,8 +80,8 @@ width_intervals:
     - [[60, 2001]]
     - [[60, .inf]]
   5:
-    - [[284, .inf]]
-    - [[284, .inf]]
+    - [[320, .inf]]
+    - [[320, .inf]]
 
 # mapping from tuple of via layers to via ID.
 via_id:
@@ -131,7 +123,7 @@ via:
       sp: [38, 38]
       bot_enc: 
         - [.inf, [[0, 0]]]
-      top_enc: #TODO: This is a placeholder from Virtuoso measurement, Find this in the DRM
+      top_enc: 
         - [.inf, [[12, 12]]]
   M1M2_C:
     - name: square
@@ -174,7 +166,7 @@ sp_min:
     - [.inf, 28]
   [met2, drawing]: *sp_min_1x
   [met3, drawing]: &sp_min_2x
-    - [.inf, 60] #60
+    - [.inf, 60]
   [met4, drawing]: *sp_min_2x
   [met5, drawing]:
     - [.inf, 320]
@@ -184,7 +176,7 @@ sp_le_min:
   [li1, drawing]: 
     - [.inf, 34]
   [met1, drawing]: &sp_le_min_1x
-    - [.inf, 28] #change from 28
+    - [.inf, 28]
   [met2, drawing]: *sp_le_min_1x
   [met3, drawing]: &sp_le_min_2x
     - [.inf, 60]
@@ -219,10 +211,6 @@ len_min:
     w_al_list:
       - [.inf, 160000, 0]
     md_al_list: []
-  #[capm, drawing]:
-  #  w_al_list:
-  #    - [.inf, 9600, 0]
-  #  md_al_list: []
 
 margins:
   well: [40, 40]
@@ -239,24 +227,19 @@ mos:
   # source/drain pitch is computed as val[0] + val[1] * lch_unit
   sd_pitch_constants:
     lch: [30, .inf]
-    val: [[86, 0], [42, 1]] 
-
+    val: [[86, 0], [42, 1]]
   # drain connection info
   d_wire_info:
     bot_layer: 0
     # wire_w, is_horiz, v_w, v_h, v_sp, v_bot_enc, v_top_enc
-    # One entry only since we don't used M1 anymore
     info_list:
-      - [34, False, 34, 34, 34, 8, 16] # li1
-      # - [52, False, 34, 34, 38, 8, 12]
+      - [34, False, 34, 34, 34, 8, 16] 
   # gate connection info
   g_wire_info:
     bot_layer: 0
     # wire_w, is_horiz, v_w, v_h, v_sp, v_bot_enc, v_top_enc
     info_list:
       - [34, False, 34, 34, 34, 10, 16]
-      # - [52, True, 34, 34, 38, 8, 12]
-
   # minimum horizontal space between OD, in resolution units
   od_spx: 54
   # minimum vertical space between OD, in resolution units
@@ -269,14 +252,12 @@ mos:
   # od_po_extx: 54 #96
   od_po_extx: 76
   # set by via enclosure for tap, licon.7
-  # This is in absolute resolution units of enclosure of licon, directly corresponds go licon.7 value
+  # This is in absolute resolution units of enclosure of licon, directly corresponds to licon.7 value
   od_tap_extx: 24
 
   # M1 pitch
-  m1_pitch: 86
+  blk_h_pitch: 86
 
-  # poly.1a
-  po_w: 30
   # poly.2
   po_spy: 42
   # cannot find constrant, set to od_w_min
@@ -296,17 +277,21 @@ mos:
   md_area_min: 2244
   md_spy: 34
 
+  # n/psdm.3, minimum spacing in x direction between same type OD implants in res units
+  imp_same_sp: 76
+  # n/psdm.7, minimum spacing in y direction between opposite OD implants in res units
+  imp_diff_sp: 26
   # nsdm.7
   imp_od_encx: 26
   # nsdm.7
   imp_od_ency: 26
   # nsdm.1
-  imp_h_min: 86 #76
+  imp_h_min: 86
 
-  #might be redundant, well margin from edge to implant
+  # might be redundant, well margin from edge to implant
   nwell_imp: 40
 
-  grid_info: # [Layer, Width, track width?]
+  grid_info: # [layer, width, track width]
     - [0, 34, 1]
     - [2, 56, 1]
     - [4, 66, 1]
