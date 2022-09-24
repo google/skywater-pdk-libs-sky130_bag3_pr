@@ -13,16 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Tuple, Optional, FrozenSet, List, Mapping, Any
-
-import math
+from typing import FrozenSet
 
 from pybag.core import BBox
 
 from bag.layout.tech import TechInfo
-from bag.util.immutable import ImmutableSortedDict, ImmutableList, Param
 
-from xbase.layout.data import LayoutInfoBuilder, ViaInfo, LayoutInfo
+from xbase.layout.data import LayoutInfoBuilder, ViaInfo
 from xbase.layout.cap.tech import MIMTech
 from xbase.layout.cap.tech import MIMLayInfo
 
@@ -34,28 +31,33 @@ class MIMTechSkywater130(MIMTech):
         MIMTech.__init__(self, tech_info) 
 
     def get_mim_cap_info(self, top_layer: int,
-                         bot_layer: int, width_total: int,
-                         width: int, height: int, array: bool,
-                         unit_width: Optional[int],
-                         unit_height: Optional[int]) -> LayoutInfo:    
+                         bot_layer: int, rows: int, columns: int,
+                         dum_columns: int,
+                         unit_width: int,
+                         unit_height: int) -> MIMLayInfo:    
         
         top_cap = max(top_layer, bot_layer)
         bot_cap = min(top_layer, bot_layer)
-        
+
         avail_top = False
         avail_bot = False
-        for list in self.mim_config['grid_info']:
-            if (top_cap == list[0]):
-                avail_top = True
-                top_metal, topm_wid, topm_sp = list[1:]
-            if (bot_cap == list[0]):
-                avail_bot = True
-                bot_metal, botm_wid, botm_sp = list[1:]
-            if (bot_cap < float(list[0]) and float(list[0]) < top_cap):
-                cap_lay, cap_wid, cap_off = list[1:]
+
+        top_metal, topm_wid, topm_sp = self.grid_info[top_cap]
+        bot_metal, botm_wid, botm_sp = self.grid_info[bot_cap]
+        
+        if (top_cap in self.mim_config['cap_info']) and \
+            (bot_cap == top_cap - 1):
+            cap_lay, cap_wid, cap_off = self.mim_config['cap_info'][top_cap]
+            avail_top = True
+            avail_bot = True
+
         top_metal = tuple(top_metal)
         bot_metal = tuple(bot_metal)
         cap_lay = tuple(cap_lay)
+
+        width = columns * unit_width
+        width_total = (columns + dum_columns) * unit_width
+        height = rows * unit_height
 
         for list in self.mim_config['via_info']:
             if (bot_cap == int(list[0])):
@@ -72,12 +74,12 @@ class MIMTechSkywater130(MIMTech):
             raise ValueError("Dimension too small")
  
         # DRC rules
-        ratio = self.mim_config['max_ratio'] 
-        cap_bound = self.mim_config['top_to_cap_sp'] 
+        ratio: int = self.mim_config['max_ratio'] 
+        cap_bound: int = self.mim_config['top_to_cap_sp'] 
 
         if top_cap == 4:
-            via_bnd = self.mim_config['capvia_cap']
-            bot_sp = cap_off/2
+            via_bnd: int = self.mim_config['capvia_cap']
+            bot_sp = -(-cap_off//2)
         else:
             via_bnd = via_bot_enc
             bot_sp = botm_wid
@@ -88,31 +90,29 @@ class MIMTechSkywater130(MIMTech):
         builder = LayoutInfoBuilder()
 
         # Cap construction
-        if array:
+        # array
+        if (rows > 1 or columns > 1 or dum_columns > 0):
             cap_off_h = cap_off+bot_ext
 
             if (unit_height/unit_width > ratio or unit_width/unit_height
                     > ratio):
                 raise ValueError("Unit dimensions violate DRC rules")
-            num_vert = int(height/unit_height)
-            num_hor = int(width_total/unit_width)
-            # need to differentiate between total width and cap width (dummies)
-            block_w = unit_width
-            base_y = int(bot_sp+cap_bound)
-            num_dum = int((width_total-width)/unit_width)
             
-            for j in range(0, num_vert):  
+            tot_columns = columns + dum_columns
+            block_w = unit_width
+            base_y = bot_sp+cap_bound
+            for j in range(0, rows):  
                 y_bot = base_y + j*(int(unit_height+cap_off))
-                for n in range(0, num_hor):
-                    xl_cap = int(bot_ext+(n) * (block_w+cap_off_h))
-                    xh_cap = int(bot_ext+(n+1)*(block_w)+(n)*cap_off_h)
+                for n in range(0, tot_columns):
+                    xl_cap = bot_ext+(n) * (block_w+cap_off_h)
+                    xh_cap = bot_ext+(n+1)*(block_w)+(n)*cap_off_h
                     yl_cap = y_bot
-                    yh_cap = y_bot+int(unit_height)
+                    yh_cap = y_bot+unit_height
 
-                    xl_via = int((bot_ext+via_bnd)+n*(block_w+cap_off_h))
-                    xh_via = int(bot_ext-via_bnd+(n+1)*(block_w)+n*cap_off_h)
-                    yl_via = y_bot + int(cap_bound)
-                    yh_via = y_bot+int(unit_height-via_bnd)
+                    xl_via = (bot_ext+via_bnd)+n*(block_w+cap_off_h)
+                    xh_via = bot_ext-via_bnd+(n+1)*(block_w)+n*cap_off_h
+                    yl_via = y_bot + cap_bound
+                    yh_via = y_bot+unit_height-via_bnd
 
                     builder.add_rect_arr(cap_lay, BBox(xl_cap, yl_cap,
                                                        xh_cap, yh_cap))
@@ -121,51 +121,51 @@ class MIMTechSkywater130(MIMTech):
                                                       xh_via, yh_via),
                                                  via_dim, via_sp, via_bot_enc,
                                                  via_top_enc))
-            if (width < width_total):
+            if (dum_columns > 0):
                 # for the actual cap
-                xl_top = int(width_total-width+(num_dum)*cap_off_h)
-                xh_top = int(width_total+(num_hor-1)*cap_off_h+top_ext +
-                             bot_ext+cap_bound)
-                yl_top = int(bot_sp+cap_bound)
-                yh_top = int(height+(num_vert-1)*cap_off+bot_sp+cap_bound)
+                xl_top = width_total-width+(dum_columns)*cap_off_h + bot_ext
+                xh_top = width_total+(tot_columns-1)*cap_off_h+top_ext + \
+                             bot_ext+cap_bound
+                yl_top = bot_sp+cap_bound
+                yh_top = height+(rows-1)*cap_off+bot_sp+cap_bound
 
-                xl_bot = int(width_total-width+(num_dum)*cap_off_h)
-                xh_bot = int(width_total+(num_hor-1)*cap_off_h +
-                             bot_ext+cap_bound)
-                yl_bot = int(bot_sp)
-                yh_bot = int(height+(num_vert-1)*cap_off+2*cap_bound+bot_sp)
+                xl_bot = width_total-width+(dum_columns)*cap_off_h
+                xh_bot = width_total+(tot_columns-1)*cap_off_h + \
+                             bot_ext+cap_bound
+                yl_bot = bot_sp
+                yh_bot = height+(rows-1)*cap_off+2*cap_bound+bot_sp
 
                 builder.add_rect_arr(bot_metal, BBox(xl_bot, yl_bot, 
                                                      xh_bot, yh_bot))
                 builder.add_rect_arr(top_metal, BBox(xl_top, yl_top,
                                                      xh_top, yh_top))
                 # for the dummy
-                xl_dtop = int(bot_ext)
-                xh_dtop = int(width_total-width+(num_dum-1)*cap_off_h +
-                              bot_ext+cap_bound)
-                yl_dtop = int(bot_sp+cap_bound)
-                yh_dtop = int(height+(num_vert-1)*cap_off+bot_sp+cap_bound)
+                xl_dtop = bot_ext
+                xh_dtop = width_total-width+(dum_columns-1)*cap_off_h + \
+                              bot_ext+cap_bound
+                yl_dtop = bot_sp+cap_bound
+                yh_dtop = height+(rows-1)*cap_off+bot_sp+cap_bound
 
                 xl_dbot = 0
-                xh_dbot = int(width_total-width+(num_dum-1)*cap_off_h +
-                              bot_ext+cap_bound)
-                yl_dbot = int(bot_sp)
-                yh_dbot = int(height+(num_vert-1)*cap_off+2*cap_bound+bot_sp)
+                xh_dbot = width_total-width+(dum_columns-1)*cap_off_h + \
+                              bot_ext+cap_bound
+                yl_dbot = bot_sp
+                yh_dbot = height+(rows-1)*cap_off+2*cap_bound+bot_sp
 
                 builder.add_rect_arr(bot_metal, BBox(xl_dbot, yl_dbot,
                                                      xh_dbot, yh_dbot))
                 builder.add_rect_arr(top_metal, BBox(xl_dtop, yl_dtop,
                                                      xh_dtop, yh_dtop))
             else:
-                xl_top = int(bot_ext)
-                xh_top = int(width+(num_hor-1)*cap_off_h+(top_ext+bot_ext))
-                yl_top = int(bot_sp+cap_bound)
-                yh_top = int(height+(num_vert-1)*cap_off+bot_sp+cap_bound)
+                xl_top = bot_ext
+                xh_top = width+(tot_columns-1)*cap_off_h+(top_ext+bot_ext)
+                yl_top = bot_sp+cap_bound
+                yh_top = height+(rows-1)*cap_off+bot_sp+cap_bound
 
                 xl_bot = 0
-                xh_bot = int(width+(num_hor-1)*cap_off_h+bot_ext+cap_bound)
-                yl_bot = int(bot_sp)
-                yh_bot = int(height+(num_vert-1)*cap_off+2*cap_bound+bot_sp)
+                xh_bot = width+(tot_columns-1)*cap_off_h+bot_ext+cap_bound
+                yl_bot = bot_sp
+                yh_bot = height+(rows-1)*cap_off+2*cap_bound+bot_sp
 
                 builder.add_rect_arr(bot_metal, BBox(xl_bot, yl_bot,
                                                      xh_bot, yh_bot))
@@ -173,49 +173,51 @@ class MIMTechSkywater130(MIMTech):
                                                      xh_top, yh_top))
 
             # add top metal and bottom 
-            w_tot = bot_ext+width_total+(num_hor-1)*cap_off_h + top_ext
-            h_tot = bot_sp+cap_bound+height+(num_vert-1)*cap_off + cap_off
+            w_tot = xh_top
+            h_tot = bot_sp+cap_bound+height+(rows-1)*cap_off + cap_off
             
-            pin_bot_yl = int(bot_sp)
-            pin_bot_yh = int(h_tot-cap_off)
+            pin_bot_yl = bot_sp
+            pin_bot_yh = h_tot-cap_off
 
-            pin_top_yl = int(bot_sp+cap_bound)
-            pin_top_yh = int(h_tot-cap_off)
-            pin_bot_xh = int(width_total-width+(num_dum)*cap_off_h)
+            pin_top_yl = bot_sp+cap_bound
+            pin_top_yh = h_tot-cap_off
+            pin_bot_xh = width_total-width+(dum_columns)*cap_off_h
             
-            bnd_box = BBox(0, 0, int(w_tot), int(h_tot))
+            bnd_box = BBox(0, 0, w_tot, h_tot)
 
+        # not arrayed
         else:
-            xl_top = int(bot_ext)
-            xh_top = int(width+(top_ext+bot_ext))
-            yl_top = int(bot_sp+cap_bound)
-            yh_top = int(height+bot_sp+cap_bound)
+            xl_top = bot_ext
+            xh_top = width+(top_ext+bot_ext)
+            yl_top = bot_sp+cap_bound
+            yh_top = height+bot_sp+cap_bound
 
             xl_bot = 0
-            xh_bot = int(width+bot_ext+cap_bound)
-            yl_bot = int(bot_sp)
-            yh_bot = int(height+2*cap_bound+bot_sp)
+            xh_bot = width+bot_ext+cap_bound
+            yl_bot = bot_sp
+            yh_bot = height+2*cap_bound+bot_sp
 
             builder.add_rect_arr(bot_metal, BBox(xl_bot, yl_bot,
                                                  xh_bot, yh_bot))
             builder.add_rect_arr(top_metal, BBox(xl_top, yl_top,
                                                  xh_top, yh_top))
 
-            # TODO: make it possible to have multiblock vertically
+            # This only sections long widths
             if (width/height > ratio): 
-                num_blocks = int(math.ceil(max(width, height) /
-                                              (20*min(width, height))))
-                block_w = (width-(num_blocks-1)*cap_off)/num_blocks
-                for n in range(0, num_blocks):
-                    xl_cap = int(bot_ext+(n)*(block_w+cap_off))
-                    xh_cap = int(bot_ext+(n+1)*(block_w)+(n)*cap_off)
-                    yl_cap = int(bot_sp+cap_bound)
-                    yh_cap = int(height+cap_bound+bot_sp)
+                num_blocks = -(-max(width, height) //
+                                              (20*min(width, height)))
 
-                    xl_via = int((bot_ext+via_bnd)+n*(block_w+cap_off))
-                    xh_via = int(bot_ext-via_bnd+(n+1)*(block_w)+n*cap_off)
-                    yl_via = int(bot_sp+2*cap_bound)
-                    yh_via = int(height+cap_bound+bot_sp-via_bnd)
+                block_w = -(-(width-(num_blocks-1)*cap_off)//num_blocks)
+                for n in range(0, num_blocks):
+                    xl_cap = bot_ext+(n)*(block_w+cap_off)
+                    xh_cap = bot_ext+(n+1)*(block_w)+(n)*cap_off
+                    yl_cap = bot_sp+cap_bound
+                    yh_cap = height+cap_bound+bot_sp
+
+                    xl_via = (bot_ext+via_bnd)+n*(block_w+cap_off)
+                    xh_via = bot_ext-via_bnd+(n+1)*(block_w)+n*cap_off
+                    yl_via = bot_sp+2*cap_bound
+                    yh_via = height+cap_bound+bot_sp-via_bnd
 
                     builder.add_rect_arr(cap_lay, BBox(xl_cap, yl_cap,
                                                        xh_cap, yh_cap))
@@ -226,15 +228,15 @@ class MIMTechSkywater130(MIMTech):
                                                  via_bot_enc, via_top_enc))
  
             else:
-                xl_cap = int(bot_ext)
-                xh_cap = int(bot_ext+width)
-                yl_cap = int(bot_sp+cap_bound)
-                yh_cap = int(height+cap_bound+bot_sp)
+                xl_cap = bot_ext
+                xh_cap = bot_ext+width
+                yl_cap = bot_sp+cap_bound
+                yh_cap = height+cap_bound+bot_sp
 
-                xl_via = int(bot_ext+via_bnd)
-                xh_via = int(bot_ext+width-via_bnd)
-                yl_via = int(bot_sp+cap_bound+via_bnd)
-                yh_via = int(height+bot_sp)
+                xl_via = bot_ext+via_bnd
+                xh_via = bot_ext+width-via_bnd
+                yl_via = bot_sp+cap_bound+via_bnd
+                yh_via = height+bot_sp
                 builder.add_rect_arr(cap_lay, BBox(xl_cap, yl_cap,
                                                    xh_cap, yh_cap))
                 builder.add_via(get_via_info(via_type,
@@ -246,15 +248,15 @@ class MIMTechSkywater130(MIMTech):
             w_tot = bot_ext+width+top_ext
             h_tot = bot_sp+2*cap_bound+height+cap_off
 
-            pin_bot_yl = int(bot_sp)
-            pin_bot_yh = int(height+2*cap_bound+bot_sp)
+            pin_bot_yl = bot_sp
+            pin_bot_yh = height+2*cap_bound+bot_sp
 
-            pin_top_yl = int(bot_sp+cap_bound)
-            pin_top_yh = int(bot_sp+height+cap_bound)
-            pin_bot_xh = int(0)
+            pin_top_yl = bot_sp+cap_bound
+            pin_top_yh = bot_sp+height+cap_bound
+            pin_bot_xh = 0
 
             # # set size
-            bnd_box = BBox(0, 0, int(w_tot), int(h_tot))
+            bnd_box = BBox(0, 0, w_tot, h_tot)
         
         return MIMLayInfo(builder.get_info(bnd_box),
                           pin_bot_yl, pin_bot_yh, pin_top_yl,
@@ -264,7 +266,7 @@ class MIMTechSkywater130(MIMTech):
 def get_via_info(via_type: str, box: BBox,
                  via_dim: int, via_sp: int, bot_enc: int,
                  top_enc: int) -> ViaInfo:
-
+    """Create vias over specified area."""
     xc = int((box.xl + box.xh)//2)
     yc = int((box.yl + box.yh)//2)
 

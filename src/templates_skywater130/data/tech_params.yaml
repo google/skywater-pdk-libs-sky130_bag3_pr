@@ -319,13 +319,9 @@ mim:
   # capm.11 Min space between capm to metal2
   capm_met_sp: 100
 
-
-  grid_info: # [Layer, (layer, purpose) Width, Spacing ]
-    - [3, ['met3', 'drawing'], 60, 60]
-    - [3.5, ['capm', 'drawing'], 400, 168]
-    - [4, ['met4', 'drawing'], 60, 60]
-    - [4.5, ['cap2m', 'drawing'], 400, 168]
-    - [5, ['met5', 'drawing'], 284, 320]
+  cap_info: # Top layer: [(layer, purpose) Width, Spacing ]
+    4: [['capm', 'drawing'], 400, 168]
+    5: [['cap2m', 'drawing'], 400, 168]
   via_info: # [bot layer, type, dimension, space, bot_enc, top_enc]
     - [3, 'M3M4_C', 40, 40, 18, 13]
     - [4, 'M4M5_C', 160, 160, 38, 62]
