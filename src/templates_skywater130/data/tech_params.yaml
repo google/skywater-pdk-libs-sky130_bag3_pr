@@ -319,12 +319,12 @@ mim:
   # capm.11 Min space between capm to metal2
   capm_met_sp: 100
 
-  cap_info: # Top layer: [(layer, purpose) Width, Spacing ]
-    4: [['capm', 'drawing'], 400, 168]
-    5: [['cap2m', 'drawing'], 400, 168]
-  via_info: # [bot layer, type, dimension, space, bot_enc, top_enc]
-    - [3, 'M3M4_C', 40, 40, 18, 13]
-    - [4, 'M4M5_C', 160, 160, 38, 62]
+  cap_info: # top_layer: [(layer, purpose), width, spacing]
+    4: [!!python/tuple ['capm', 'drawing'], 400, 168]
+    5: [!!python/tuple ['cap2m', 'drawing'], 400, 168]
+  via_info: # bot layer: type, dimension, space, bot_enc, top_enc]
+    3: ['M3M4_C', 40, 40, 18, 13]
+    4: ['M4M5_C', 160, 160, 38, 62]
 
 layer:
   nwell: 0
