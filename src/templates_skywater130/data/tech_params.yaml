@@ -26,7 +26,7 @@ mos_lay_table:
   PO: !!python/tuple ['poly', 'drawing']
   # active
   OD:
-    active: !!python/tuple ['diff', 'drawing']
+    active: !!python/tuple ['diff', 'drawing'] 
     sub: !!python/tuple ['tap', 'drawing']
   # gate connection metal
   MP: !!python/tuple ['li1', 'drawing']
@@ -145,7 +145,7 @@ via:
       dim: [40, 40]
       sp: [40, 40]
       bot_enc:
-        - [.inf, [[18, 11], [11, 18]]]
+        - [.inf, [[18, 11], [11, 18]]] #x, y enclosure
       top_enc:
         - [.inf, [[13, 13]]]
   M4M5_C:
@@ -299,6 +299,32 @@ mos:
 fill: {}
 
 res_metal: {}
+
+# mim cap DRC rules
+mim:
+  # capm.1 minimum width
+  min_wid: 400
+  # capm.2b min bottom plate to bottom plate split
+  bot_bot_sp: 200
+  # capm.3 enclosure of top metal around capm
+  top_to_cap_sp: 28
+  # capm.4 space between via and capm edge
+  capvia_cap: 40
+  # capm.5 space between non-cap via & capm layer when connected by layer
+  cap_via2_sp: 254
+  # capm.6  width to length or length to width
+  max_ratio: 20
+  # capm.8 Minimum space between non-cap via and capm layer when no overlap
+  via_cap_sp: 28
+  # capm.11 Min space between capm to metal2
+  capm_met_sp: 100
+
+  cap_info: # top_layer: [(layer, purpose), width, spacing]
+    4: [!!python/tuple ['capm', 'drawing'], 400, 168]
+    5: [!!python/tuple ['cap2m', 'drawing'], 400, 168]
+  via_info: # bot layer: type, dimension, space, bot_enc, top_enc]
+    3: ['M3M4_C', 40, 40, 18, 13]
+    4: ['M4M5_C', 160, 160, 38, 62]
 
 layer:
   nwell: 0

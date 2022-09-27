@@ -54,6 +54,21 @@ parameters l w nf
 MM0 D G S B pshort l=l * 1.0e6 w=w * 1.0e6 m=nf mult=1
 ends pmos4_standard
 
+subckt mim_standard BOT TOP
+parameters unit_width unit_height num_rows num_cols
+CC0 TOP BOT xcmimc2 w=unit_width * 1.0e6 l=unit_height * 1.0e6 m=num_rows * num_cols
+ends mim_standard
+
+subckt mim_45 BOT TOP
+parameters unit_width unit_height num_rows num_cols
+CC0 TOP BOT xcmimc2 w=unit_width * 1.0e6 l=unit_height * 1.0e6 m=num_rows * num_cols
+ends mim_45
+
+subckt mim_34 BOT TOP
+parameters unit_width unit_height num_rows num_cols
+CC0 TOP BOT xcmimc1 w=unit_width * 1.0e6 l=unit_height * 1.0e6 m=num_rows * num_cols
+ends mim_34
+
 subckt ideal_balun d c p n
     K0 d 0 p c transformer n1=2
     K1 d 0 c n transformer n1=2

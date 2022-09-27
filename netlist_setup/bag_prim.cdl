@@ -53,3 +53,18 @@ MM0 D G S B phighvt l=l*1.0e6 w=w*1.0e6 m=nf mult=1
 *.PININFO B:B D:B G:B S:B
 MM0 D G S B pshort l=l*1.0e6 w=w*1.0e6 m=nf mult=1
 .ENDS
+
+.SUBCKT mim_standard BOT TOP
+*.PININFO BOT:B TOP:B
+CC0 TOP BOT xcmimc2 w=unit_width*1.0e6 l=unit_height*1.0e6 m=num_rows*num_cols
+.ENDS
+
+.SUBCKT mim_45 BOT TOP
+*.PININFO BOT:B TOP:B
+CC0 TOP BOT xcmimc2 w=unit_width*1.0e6 l=unit_height*1.0e6 m=num_rows*num_cols
+.ENDS
+
+.SUBCKT mim_34 BOT TOP
+*.PININFO BOT:B TOP:B
+CC0 TOP BOT xcmimc1 w=unit_width*1.0e6 l=unit_height*1.0e6 m=num_rows*num_cols
+.ENDS
