@@ -5,6 +5,45 @@ inc_list:
   7: []
 netlist_map:
   BAG_prim:
+    mim_34:
+      cell_name: mim_34
+      in_terms: []
+      io_terms: [BOT, TOP]
+      is_prim: true
+      lib_name: BAG_prim
+      nets: []
+      out_terms: []
+      props:
+        num_cols: [3, '']
+        num_rows: [3, '']
+        unit_height: [3, '']
+        unit_width: [3, '']
+    mim_45:
+      cell_name: mim_45
+      in_terms: []
+      io_terms: [BOT, TOP]
+      is_prim: true
+      lib_name: BAG_prim
+      nets: []
+      out_terms: []
+      props:
+        num_cols: [3, '']
+        num_rows: [3, '']
+        unit_height: [3, '']
+        unit_width: [3, '']
+    mim_standard:
+      cell_name: mim_standard
+      in_terms: []
+      io_terms: [BOT, TOP]
+      is_prim: true
+      lib_name: BAG_prim
+      nets: []
+      out_terms: []
+      props:
+        num_cols: [3, '']
+        num_rows: [3, '']
+        unit_height: [3, '']
+        unit_width: [3, '']
     nmos4_hv:
       cell_name: nmos4_hv
       in_terms: []
@@ -137,6 +176,21 @@ netlist_map:
         l: [3, '']
         nf: [3, '']
         w: [3, '']
+  ahdlLib:
+    comparator:
+      cell_name: comparator
+      in_terms: [sigin, sigref]
+      io_terms: []
+      is_prim: true
+      lib_name: ahdlLib
+      nets: []
+      out_terms: [sigout]
+      props:
+        comp_slope: [3, '']
+        sigin_offset: [3, '']
+        sigout_high: [3, '']
+        sigout_low: [3, '']
+      va: ${CDSHOME}/tools/dfII/samples/artist/ahdlLib/comparator/veriloga/veriloga.va
   analogLib:
     cap:
       cell_name: cap

@@ -56,3 +56,19 @@ res:
   VERILOG: []
   SYSVERILOG: []
   types: []
+
+mim:
+  CDL:
+    - [w, unit_width*1.0e6]
+    - [l, unit_height*1.0e6]
+    - [m, num_rows*num_cols]
+  SPECTRE:
+    - [w, unit_width * 1.0e6]
+    - [l, unit_height * 1.0e6]
+    - [m, num_rows * num_cols]
+  VERILOG: []
+  SYSVERILOG: []
+  types:
+    - [mim_standard, xcmimc2]
+    - [mim_45, xcmimc2]
+    - [mim_34, xcmimc1]
