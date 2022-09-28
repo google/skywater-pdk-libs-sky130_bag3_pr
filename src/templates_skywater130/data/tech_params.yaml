@@ -303,7 +303,7 @@ res_metal: {}
 # mim cap DRC rules
 mim:
   # capm.1 minimum width
-  min_wid: 400
+  min_width: 400
   # capm.2b min bottom plate to bottom plate split
   bot_bot_sp: 200
   # capm.3 enclosure of top metal around capm

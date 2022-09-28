@@ -80,8 +80,12 @@ class MIMTechSkywater130(MIMTech):
             raise ValueError('Unit cell dimensions are too small')
  
         # DRC rules
+        min_width: int = self.mim_config['min_width']
         ratio: int = self.mim_config['max_ratio'] 
-        cap_bound: int = self.mim_config['top_to_cap_sp'] 
+        cap_bound: int = self.mim_config['top_to_cap_sp']
+
+        if min(width, height) < min_width:
+            raise ValueError(f'Unit cell dimensions have to be larger than {min_width}')
 
         if top_layer == 4:
             via_bnd: int = self.mim_config['capvia_cap']
