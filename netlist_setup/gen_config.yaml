@@ -51,11 +51,22 @@ res_metal:
   types: []
 
 res:
-  CDL: []
-  SPECTRE: []
+  CDL:
+    - [m, 1]
+    - [w, w*1.0e6]
+    - [l, l*1.0e6]
+  SPECTRE:
+    - [w, w * 1.0e6]
+    - [l, l * 1.0e6]
+    - [m, 1]
+    - [mult, 1]
   VERILOG: []
   SYSVERILOG: []
-  types: []
+  types:
+    - [res_standard, xhrpoly]
+    - [res_high_res, xuhrpoly]
+  prefix:
+    CDL: 'x'
 
 mim:
   CDL:

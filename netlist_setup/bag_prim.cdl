@@ -54,6 +54,16 @@ MM0 D G S B phighvt l=l*1.0e6 w=w*1.0e6 m=nf mult=1
 MM0 D G S B pshort l=l*1.0e6 w=w*1.0e6 m=nf mult=1
 .ENDS
 
+.SUBCKT res_standard BULK MINUS PLUS
+*.PININFO BULK:B MINUS:B PLUS:B
+xR0 PLUS MINUS BULK xhrpoly m=1 w=w*1.0e6 l=l*1.0e6
+.ENDS
+
+.SUBCKT res_high_res BULK MINUS PLUS
+*.PININFO BULK:B MINUS:B PLUS:B
+xR0 PLUS MINUS BULK xuhrpoly m=1 w=w*1.0e6 l=l*1.0e6
+.ENDS
+
 .SUBCKT mim_standard BOT TOP
 *.PININFO BOT:B TOP:B
 CC0 TOP BOT xcmimc2 w=unit_width*1.0e6 l=unit_height*1.0e6 m=num_rows*num_cols

@@ -18,8 +18,8 @@ from jinja2 import Template
 tech_lib = 's8phirs_10r'
 # mos_w_default = '420n'
 # mos_l_default = '150n'
-res_w_default = '1u'
-res_l_default = '2u'
+# res_w_default = '1u'
+# res_l_default = '2u'
 res_metal_w_default = '400n'
 res_metal_l_default = '1u'
 dio_w_default = '1u'
@@ -40,6 +40,8 @@ mos_list = [
 ]
 
 res_list = [
+    ('standard', 'hrpoly', '1000n', '2105n'),
+    ('high_res', 'uhrpoly', '350n', '17400n'),
 ]
 
 res_metal_list = [
@@ -62,8 +64,8 @@ def run_main() -> None:
         # mos_w_default=mos_w_default,
         # mos_l_default=mos_l_default,
         res_list=res_list,
-        res_w_default=res_w_default,
-        res_l_default=res_l_default,
+        # res_w_default=res_w_default,
+        # res_l_default=res_l_default,
         res_metal_list=res_metal_list,
         res_metal_w_default=res_metal_w_default,
         res_metal_l_default=res_metal_l_default,

@@ -176,6 +176,28 @@ netlist_map:
         l: [3, '']
         nf: [3, '']
         w: [3, '']
+    res_high_res:
+      cell_name: res_high_res
+      in_terms: []
+      io_terms: [BULK, MINUS, PLUS]
+      is_prim: true
+      lib_name: BAG_prim
+      nets: []
+      out_terms: []
+      props:
+        l: [3, '']
+        w: [3, '']
+    res_standard:
+      cell_name: res_standard
+      in_terms: []
+      io_terms: [BULK, MINUS, PLUS]
+      is_prim: true
+      lib_name: BAG_prim
+      nets: []
+      out_terms: []
+      props:
+        l: [3, '']
+        w: [3, '']
   ahdlLib:
     comparator:
       cell_name: comparator

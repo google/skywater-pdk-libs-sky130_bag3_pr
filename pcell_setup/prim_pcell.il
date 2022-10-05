@@ -467,6 +467,78 @@ pcDefinePCell(
 
 
 
+; res_standard/hrpoly
+pcDefinePCell(
+    list( lib_obj "res_standard" "schematic" "schematic")
+    ((w string "1000n")
+     (l string "2105n")
+    )
+    let((inst iopin_master io_net io_pin)
+        wval = cdfParseFloatString(w) * 1e6
+        lval = cdfParseFloatString(l) * 1e6
+        wstr = sprintf(nil "%0.3f" wval)
+        lstr = sprintf(nil "%0.3f" lval)
+        inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "hrpoly" "symbol"
+                                              "R0" 0.5:0 "R270" 1
+                                              list(list("segW" "string" wstr)
+                                                   list("w" "string" wstr)
+                                                   list("segL" "string" lstr)
+                                                   list("l" "string" lstr)
+                                                   list("rCalcMethod" "string" "Segment Length")
+                                                  )
+                                            )
+        iopin_master = dbOpenCellViewByType("basic" "iopin" "symbolr" nil "r")
+        io_net = dbCreateNet(pcCellView "PLUS")
+        io_pin = dbCreatePin(io_net dbCreateInst(pcCellView iopin_master "PLUS" 1:0 "R0")
+                             "PLUS" dbCreateTerm(io_net "PLUS" "inputOutput"))
+        dbCreateInstTerm(io_net inst dbFindTermByName(inst~>master "PLUS"))
+        io_net = dbCreateNet(pcCellView "MINUS")
+        io_pin = dbCreatePin(io_net dbCreateInst(pcCellView iopin_master "MINUS" -0.15:0 "R0")
+                             "MINUS" dbCreateTerm(io_net "MINUS" "inputOutput"))
+        dbCreateInstTerm(io_net inst dbFindTermByName(inst~>master "MINUS"))
+        io_net = dbCreateNet(pcCellView "BULK")
+        io_pin = dbCreatePin(io_net dbCreateInst(pcCellView iopin_master "BULK" -0.15:-0.4 "R0")
+                             "BULK" dbCreateTerm(io_net "BULK" "inputOutput"))
+        dbCreateInstTerm(io_net inst dbFindTermByName(inst~>master "B"))
+    )
+)
+
+; res_high_res/uhrpoly
+pcDefinePCell(
+    list( lib_obj "res_high_res" "schematic" "schematic")
+    ((w string "350n")
+     (l string "17400n")
+    )
+    let((inst iopin_master io_net io_pin)
+        wval = cdfParseFloatString(w) * 1e6
+        lval = cdfParseFloatString(l) * 1e6
+        wstr = sprintf(nil "%0.3f" wval)
+        lstr = sprintf(nil "%0.3f" lval)
+        inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "uhrpoly" "symbol"
+                                              "R0" 0.5:0 "R270" 1
+                                              list(list("segW" "string" wstr)
+                                                   list("w" "string" wstr)
+                                                   list("segL" "string" lstr)
+                                                   list("l" "string" lstr)
+                                                   list("rCalcMethod" "string" "Segment Length")
+                                                  )
+                                            )
+        iopin_master = dbOpenCellViewByType("basic" "iopin" "symbolr" nil "r")
+        io_net = dbCreateNet(pcCellView "PLUS")
+        io_pin = dbCreatePin(io_net dbCreateInst(pcCellView iopin_master "PLUS" 1:0 "R0")
+                             "PLUS" dbCreateTerm(io_net "PLUS" "inputOutput"))
+        dbCreateInstTerm(io_net inst dbFindTermByName(inst~>master "PLUS"))
+        io_net = dbCreateNet(pcCellView "MINUS")
+        io_pin = dbCreatePin(io_net dbCreateInst(pcCellView iopin_master "MINUS" -0.15:0 "R0")
+                             "MINUS" dbCreateTerm(io_net "MINUS" "inputOutput"))
+        dbCreateInstTerm(io_net inst dbFindTermByName(inst~>master "MINUS"))
+        io_net = dbCreateNet(pcCellView "BULK")
+        io_pin = dbCreatePin(io_net dbCreateInst(pcCellView iopin_master "BULK" -0.15:-0.4 "R0")
+                             "BULK" dbCreateTerm(io_net "BULK" "inputOutput"))
+        dbCreateInstTerm(io_net inst dbFindTermByName(inst~>master "B"))
+    )
+)
+
 
 
 
