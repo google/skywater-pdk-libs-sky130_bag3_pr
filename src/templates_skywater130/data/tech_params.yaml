@@ -114,7 +114,7 @@ idc_em_scale:
     scale: [1.0, 0.5]
 
 # via enclosure/spacing rules
-flipped_vias: [TPL1_C, L1M1_C, M1M2_C, M2M3_C, M3M4_C, M4M5_C]
+flipped_vias: [TPL1_C, PYL1_C, L1M1_C, M1M2_C, M2M3_C, M3M4_C, M4M5_C]
 via_square_list: [square]
 via:
   L1M1_C:
@@ -299,6 +299,76 @@ mos:
 fill: {}
 
 res_metal: {}
+
+res_lay_table:
+  PO: !!python/tuple ['poly', 'drawing']
+  ID: !!python/tuple ['poly', 'res']
+  CUT: !!python/tuple ['poly', 'cut']
+  NPC: !!python/tuple ['npc', 'drawing']
+  IMP: !!python/tuple ['psdm', 'drawing']
+  OD_sub: !!python/tuple ['tap', 'drawing']
+
+# resistor DRC rules
+res:
+  # ArrayBase vertical connection layer
+  conn_layer: 0
+  # Default mos conn type (unused)
+  mos_type_default: 'pch'
+  # Default threshold (unused)
+  threshold_default: 'lvt'
+  # Has substrate port
+  has_substrate_port: True
+  # Default sub type
+  sub_type_default: 'ptap'
+  # minimum width of unit resistor
+  w_min: 66
+  # minimum length of unit resistor
+  l_min: 100
+  # w / h of minimum resistor unit
+  min_size: !!python/tuple [272, 1376]
+  # block x / y pitch
+  blk_pitch: !!python/tuple [68, 86]
+  # grid info of vertical metals
+  grid_info:
+    - [0, 34, 34]
+    - [2, 56, 80]
+    - [4, 66, 70]
+  # horizontal margin for abutting with another ResTech or MosTech
+  edge_margin: 68   # TODO: currently set to 1 pitch
+  # vertical margin for abutting with another ResTech or MosTech
+  end_margin: 86    # TODO: currently set to 1 pitch
+  # poly vertical extension beyond resID layer
+  po_id_exty: 416
+  # npc enclosure of poly in any direction
+  npc_po_enc: 19
+  # psdm enclosure of npc
+  imp_npc_enc: [3, 51]
+  # tap implant height
+  tap_imp_h: 134
+  # tap height
+  tap_h: 82
+  # resistor layer enclosure of npc in any direction
+  rlay_npc_enc: 21
+  # space between adjacent npc layers
+  npc_sp: 54
+  # resistor layer based on type
+  rlay:
+    standard: !!python/tuple ['rpm', 'drawing']
+    high_res: !!python/tuple ['urpm', 'drawing']
+  # specs for via from PO to conn_layer (li1)
+  po_via_specs:
+    name: PYL1_C
+    dim: [38, 400]
+    bot_enc: [11, 16]
+    top_enc: [16, 16]
+    spx: 102
+  # specs for via from tap to conn_layer (li1)
+  tap_via_specs:
+    name: TPL1_C
+    dim: [34, 34]
+    bot_enc: [24, 24]
+    top_enc: [16, 16]
+    spx: 45
 
 # mim cap DRC rules
 mim:

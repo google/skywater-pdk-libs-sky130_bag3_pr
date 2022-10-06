@@ -56,6 +56,7 @@ hdl.var
 lefout.list
 si.env
 xOasisOut_cellMap.txt
+gui.tcl
 
 # calibre files
 .cgidrcdb
