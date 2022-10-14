@@ -342,7 +342,7 @@ pcDefinePCell(
 ; pmos4_hv/phv
 pcDefinePCell(
     list( lib_obj "pmos4_hv" "schematic" "schematic")
-    ((w string "420")
+    ((w string "420n")
      (l string "500n")
      (nf string "1")
     )

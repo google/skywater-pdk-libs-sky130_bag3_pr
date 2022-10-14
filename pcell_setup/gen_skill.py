@@ -34,7 +34,7 @@ mos_list = [
     ('pmos4', 'standard', 'pfet', 'pshort', '550n', '150n'),
     ('pmos4', 'svt', 'pfet', 'pshort', '550n', '150n'),
     ('pmos4', 'hvt', 'pfet', 'phighvt', '540n', '150n'),
-    ('pmos4', 'hv', 'pfet', 'phv', '420', '500n'),
+    ('pmos4', 'hv', 'pfet', 'phv', '420n', '500n'),
     ('pmos4', 'hvesd', 'pfet', 'phvesd', '14500n', '550n'),
     ('pmos4', 'lvt', 'pfet', 'plowvt', '550n', '350n'),
 ]
