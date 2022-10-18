@@ -84,24 +84,24 @@ pcDefinePCell(
 )
 {% endfor %}
 
-{% for layer, model, rsq in res_metal_list  %}
-; res_metal_{{ layer }}/{{ model }}
+{% for layer in res_metal_list  %}
+; res_metal_{{ layer }}/mrm{{ layer }}
 pcDefinePCell(
     list( lib_obj "res_metal_{{ layer }}" "schematic" "schematic")
     ((w string "{{ res_metal_w_default }}")
      (l string "{{ res_metal_l_default }}")
     )
-    let((inst iopin_master io_net io_pin wval lval rval)
-        wval = cdfParseFloatString(w)
-        lval = cdfParseFloatString(l)
-        rval = {{ rsq }}*lval/wval
-        inst = dbCreateParamInstByMasterName( pcCellView "{{ tech_lib }}" "{{ model }}" "symbol"
+    let((inst iopin_master io_net io_pin)
+        wval = cdfParseFloatString(w) * 1e6
+        lval = cdfParseFloatString(l) * 1e6
+        wstr = sprintf(nil "%0.3f" wval)
+        lstr = sprintf(nil "%0.3f" lval)
+        inst = dbCreateParamInstByMasterName( pcCellView "{{ tech_lib }}" "res" "symbol"
                                               "R0" 0.1:0 "R90" 1
-                                              list(list("w" "string" w)
-                                                   list("l" "string" l)
-                                                   list("effw" "string" w)
-                                                   list("effl" "string" l)
-                                                   list("r" "float" rval)
+                                              list(list("resistorTypr" "string" "met{{ layer }}")
+                                                   list("rw" "string" wstr)
+                                                   list("rl" "string" lstr)
+                                                   list("model" "string" "mrm{{ layer }}")
                                                   )
                                             )
 
@@ -109,11 +109,11 @@ pcDefinePCell(
         io_net = dbCreateNet(pcCellView "PLUS")
         io_pin = dbCreatePin(io_net dbCreateInst(pcCellView iopin_master "PLUS" -0.15:0 "R0")
                              "PLUS" dbCreateTerm(io_net "PLUS" "inputOutput"))
-        dbCreateInstTerm(io_net inst dbFindTermByName(inst~>master "PLUS"))
+        dbCreateInstTerm(io_net inst dbFindTermByName(inst~>master "r0"))
         io_net = dbCreateNet(pcCellView "MINUS")
         io_pin = dbCreatePin(io_net dbCreateInst(pcCellView iopin_master "MINUS" 1.15:0 "R0")
                              "MINUS" dbCreateTerm(io_net "MINUS" "inputOutput"))
-        dbCreateInstTerm(io_net inst dbFindTermByName(inst~>master "MINUS"))
+        dbCreateInstTerm(io_net inst dbFindTermByName(inst~>master "r1"))
     )
 )
 {% endfor %}

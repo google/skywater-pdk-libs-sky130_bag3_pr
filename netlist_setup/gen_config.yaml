@@ -44,11 +44,22 @@ diode:
   port_order: {}
 
 res_metal:
-  CDL: []
-  SPECTRE: []
+  CDL:
+    - [m, 1]
+    - [w, w*1.0e6]
+    - [l, l*1.0e6]
+  SPECTRE:
+    - [w, w * 1.0e6]
+    - [l, l * 1.0e6]
+    - [m, 1]
   VERILOG: []
   SYSVERILOG: []
-  types: []
+  types:
+    - [res_metal_1, mrm1]
+    - [res_metal_2, mrm2]
+    - [res_metal_3, mrm3]
+    - [res_metal_4, mrm4]
+    - [res_metal_5, mrm5]
 
 res:
   CDL:

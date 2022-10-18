@@ -541,5 +541,165 @@ pcDefinePCell(
 
 
 
+; res_metal_1/mrm1
+pcDefinePCell(
+    list( lib_obj "res_metal_1" "schematic" "schematic")
+    ((w string "720n")
+     (l string "290n")
+    )
+    let((inst iopin_master io_net io_pin)
+        wval = cdfParseFloatString(w) * 1e6
+        lval = cdfParseFloatString(l) * 1e6
+        wstr = sprintf(nil "%0.3f" wval)
+        lstr = sprintf(nil "%0.3f" lval)
+        inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "res" "symbol"
+                                              "R0" 0.1:0 "R90" 1
+                                              list(list("resistorTypr" "string" "met1")
+                                                   list("rw" "string" wstr)
+                                                   list("rl" "string" lstr)
+                                                   list("model" "string" "mrm1")
+                                                  )
+                                            )
+
+        iopin_master = dbOpenCellViewByType("basic" "iopin" "symbolr" nil "r")
+        io_net = dbCreateNet(pcCellView "PLUS")
+        io_pin = dbCreatePin(io_net dbCreateInst(pcCellView iopin_master "PLUS" -0.15:0 "R0")
+                             "PLUS" dbCreateTerm(io_net "PLUS" "inputOutput"))
+        dbCreateInstTerm(io_net inst dbFindTermByName(inst~>master "r0"))
+        io_net = dbCreateNet(pcCellView "MINUS")
+        io_pin = dbCreatePin(io_net dbCreateInst(pcCellView iopin_master "MINUS" 1.15:0 "R0")
+                             "MINUS" dbCreateTerm(io_net "MINUS" "inputOutput"))
+        dbCreateInstTerm(io_net inst dbFindTermByName(inst~>master "r1"))
+    )
+)
+
+; res_metal_2/mrm2
+pcDefinePCell(
+    list( lib_obj "res_metal_2" "schematic" "schematic")
+    ((w string "720n")
+     (l string "290n")
+    )
+    let((inst iopin_master io_net io_pin)
+        wval = cdfParseFloatString(w) * 1e6
+        lval = cdfParseFloatString(l) * 1e6
+        wstr = sprintf(nil "%0.3f" wval)
+        lstr = sprintf(nil "%0.3f" lval)
+        inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "res" "symbol"
+                                              "R0" 0.1:0 "R90" 1
+                                              list(list("resistorTypr" "string" "met2")
+                                                   list("rw" "string" wstr)
+                                                   list("rl" "string" lstr)
+                                                   list("model" "string" "mrm2")
+                                                  )
+                                            )
+
+        iopin_master = dbOpenCellViewByType("basic" "iopin" "symbolr" nil "r")
+        io_net = dbCreateNet(pcCellView "PLUS")
+        io_pin = dbCreatePin(io_net dbCreateInst(pcCellView iopin_master "PLUS" -0.15:0 "R0")
+                             "PLUS" dbCreateTerm(io_net "PLUS" "inputOutput"))
+        dbCreateInstTerm(io_net inst dbFindTermByName(inst~>master "r0"))
+        io_net = dbCreateNet(pcCellView "MINUS")
+        io_pin = dbCreatePin(io_net dbCreateInst(pcCellView iopin_master "MINUS" 1.15:0 "R0")
+                             "MINUS" dbCreateTerm(io_net "MINUS" "inputOutput"))
+        dbCreateInstTerm(io_net inst dbFindTermByName(inst~>master "r1"))
+    )
+)
+
+; res_metal_3/mrm3
+pcDefinePCell(
+    list( lib_obj "res_metal_3" "schematic" "schematic")
+    ((w string "720n")
+     (l string "290n")
+    )
+    let((inst iopin_master io_net io_pin)
+        wval = cdfParseFloatString(w) * 1e6
+        lval = cdfParseFloatString(l) * 1e6
+        wstr = sprintf(nil "%0.3f" wval)
+        lstr = sprintf(nil "%0.3f" lval)
+        inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "res" "symbol"
+                                              "R0" 0.1:0 "R90" 1
+                                              list(list("resistorTypr" "string" "met3")
+                                                   list("rw" "string" wstr)
+                                                   list("rl" "string" lstr)
+                                                   list("model" "string" "mrm3")
+                                                  )
+                                            )
+
+        iopin_master = dbOpenCellViewByType("basic" "iopin" "symbolr" nil "r")
+        io_net = dbCreateNet(pcCellView "PLUS")
+        io_pin = dbCreatePin(io_net dbCreateInst(pcCellView iopin_master "PLUS" -0.15:0 "R0")
+                             "PLUS" dbCreateTerm(io_net "PLUS" "inputOutput"))
+        dbCreateInstTerm(io_net inst dbFindTermByName(inst~>master "r0"))
+        io_net = dbCreateNet(pcCellView "MINUS")
+        io_pin = dbCreatePin(io_net dbCreateInst(pcCellView iopin_master "MINUS" 1.15:0 "R0")
+                             "MINUS" dbCreateTerm(io_net "MINUS" "inputOutput"))
+        dbCreateInstTerm(io_net inst dbFindTermByName(inst~>master "r1"))
+    )
+)
+
+; res_metal_4/mrm4
+pcDefinePCell(
+    list( lib_obj "res_metal_4" "schematic" "schematic")
+    ((w string "720n")
+     (l string "290n")
+    )
+    let((inst iopin_master io_net io_pin)
+        wval = cdfParseFloatString(w) * 1e6
+        lval = cdfParseFloatString(l) * 1e6
+        wstr = sprintf(nil "%0.3f" wval)
+        lstr = sprintf(nil "%0.3f" lval)
+        inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "res" "symbol"
+                                              "R0" 0.1:0 "R90" 1
+                                              list(list("resistorTypr" "string" "met4")
+                                                   list("rw" "string" wstr)
+                                                   list("rl" "string" lstr)
+                                                   list("model" "string" "mrm4")
+                                                  )
+                                            )
+
+        iopin_master = dbOpenCellViewByType("basic" "iopin" "symbolr" nil "r")
+        io_net = dbCreateNet(pcCellView "PLUS")
+        io_pin = dbCreatePin(io_net dbCreateInst(pcCellView iopin_master "PLUS" -0.15:0 "R0")
+                             "PLUS" dbCreateTerm(io_net "PLUS" "inputOutput"))
+        dbCreateInstTerm(io_net inst dbFindTermByName(inst~>master "r0"))
+        io_net = dbCreateNet(pcCellView "MINUS")
+        io_pin = dbCreatePin(io_net dbCreateInst(pcCellView iopin_master "MINUS" 1.15:0 "R0")
+                             "MINUS" dbCreateTerm(io_net "MINUS" "inputOutput"))
+        dbCreateInstTerm(io_net inst dbFindTermByName(inst~>master "r1"))
+    )
+)
+
+; res_metal_5/mrm5
+pcDefinePCell(
+    list( lib_obj "res_metal_5" "schematic" "schematic")
+    ((w string "720n")
+     (l string "290n")
+    )
+    let((inst iopin_master io_net io_pin)
+        wval = cdfParseFloatString(w) * 1e6
+        lval = cdfParseFloatString(l) * 1e6
+        wstr = sprintf(nil "%0.3f" wval)
+        lstr = sprintf(nil "%0.3f" lval)
+        inst = dbCreateParamInstByMasterName( pcCellView "s8phirs_10r" "res" "symbol"
+                                              "R0" 0.1:0 "R90" 1
+                                              list(list("resistorTypr" "string" "met5")
+                                                   list("rw" "string" wstr)
+                                                   list("rl" "string" lstr)
+                                                   list("model" "string" "mrm5")
+                                                  )
+                                            )
+
+        iopin_master = dbOpenCellViewByType("basic" "iopin" "symbolr" nil "r")
+        io_net = dbCreateNet(pcCellView "PLUS")
+        io_pin = dbCreatePin(io_net dbCreateInst(pcCellView iopin_master "PLUS" -0.15:0 "R0")
+                             "PLUS" dbCreateTerm(io_net "PLUS" "inputOutput"))
+        dbCreateInstTerm(io_net inst dbFindTermByName(inst~>master "r0"))
+        io_net = dbCreateNet(pcCellView "MINUS")
+        io_pin = dbCreatePin(io_net dbCreateInst(pcCellView iopin_master "MINUS" 1.15:0 "R0")
+                             "MINUS" dbCreateTerm(io_net "MINUS" "inputOutput"))
+        dbCreateInstTerm(io_net inst dbFindTermByName(inst~>master "r1"))
+    )
+)
+
 
 

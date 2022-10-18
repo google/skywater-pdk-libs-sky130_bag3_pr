@@ -54,6 +54,31 @@ MM0 D G S B phighvt l=l*1.0e6 w=w*1.0e6 m=nf mult=1
 MM0 D G S B pshort l=l*1.0e6 w=w*1.0e6 m=nf mult=1
 .ENDS
 
+.SUBCKT res_metal_1 MINUS PLUS
+*.PININFO MINUS:B PLUS:B
+RR0 PLUS MINUS mrm1  m=1 w=w*1.0e6 l=l*1.0e6
+.ENDS
+
+.SUBCKT res_metal_2 MINUS PLUS
+*.PININFO MINUS:B PLUS:B
+RR0 PLUS MINUS mrm2  m=1 w=w*1.0e6 l=l*1.0e6
+.ENDS
+
+.SUBCKT res_metal_3 MINUS PLUS
+*.PININFO MINUS:B PLUS:B
+RR0 PLUS MINUS mrm3  m=1 w=w*1.0e6 l=l*1.0e6
+.ENDS
+
+.SUBCKT res_metal_4 MINUS PLUS
+*.PININFO MINUS:B PLUS:B
+RR0 PLUS MINUS mrm4  m=1 w=w*1.0e6 l=l*1.0e6
+.ENDS
+
+.SUBCKT res_metal_5 MINUS PLUS
+*.PININFO MINUS:B PLUS:B
+RR0 PLUS MINUS mrm5  m=1 w=w*1.0e6 l=l*1.0e6
+.ENDS
+
 .SUBCKT res_standard BULK MINUS PLUS
 *.PININFO BULK:B MINUS:B PLUS:B
 xR0 PLUS MINUS BULK xhrpoly m=1 w=w*1.0e6 l=l*1.0e6

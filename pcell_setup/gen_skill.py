@@ -20,8 +20,8 @@ tech_lib = 's8phirs_10r'
 # mos_l_default = '150n'
 # res_w_default = '1u'
 # res_l_default = '2u'
-res_metal_w_default = '400n'
-res_metal_l_default = '1u'
+res_metal_w_default = '720n'
+res_metal_l_default = '290n'
 dio_w_default = '1u'
 dio_l_default = '1u'
 
@@ -45,6 +45,11 @@ res_list = [
 ]
 
 res_metal_list = [
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
 ]
 
 dio_list = [

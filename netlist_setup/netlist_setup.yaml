@@ -187,6 +187,61 @@ netlist_map:
       props:
         l: [3, '']
         w: [3, '']
+    res_metal_1:
+      cell_name: res_metal_1
+      in_terms: []
+      io_terms: [MINUS, PLUS]
+      is_prim: true
+      lib_name: BAG_prim
+      nets: []
+      out_terms: []
+      props:
+        l: [3, '']
+        w: [3, '']
+    res_metal_2:
+      cell_name: res_metal_2
+      in_terms: []
+      io_terms: [MINUS, PLUS]
+      is_prim: true
+      lib_name: BAG_prim
+      nets: []
+      out_terms: []
+      props:
+        l: [3, '']
+        w: [3, '']
+    res_metal_3:
+      cell_name: res_metal_3
+      in_terms: []
+      io_terms: [MINUS, PLUS]
+      is_prim: true
+      lib_name: BAG_prim
+      nets: []
+      out_terms: []
+      props:
+        l: [3, '']
+        w: [3, '']
+    res_metal_4:
+      cell_name: res_metal_4
+      in_terms: []
+      io_terms: [MINUS, PLUS]
+      is_prim: true
+      lib_name: BAG_prim
+      nets: []
+      out_terms: []
+      props:
+        l: [3, '']
+        w: [3, '']
+    res_metal_5:
+      cell_name: res_metal_5
+      in_terms: []
+      io_terms: [MINUS, PLUS]
+      is_prim: true
+      lib_name: BAG_prim
+      nets: []
+      out_terms: []
+      props:
+        l: [3, '']
+        w: [3, '']
     res_standard:
       cell_name: res_standard
       in_terms: []
