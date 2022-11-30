@@ -17,11 +17,11 @@ mos:
 
 # routing grid parameters
 routing_grid:
-  0: [y, 34,  34]
+  0: [y, 34,  52]
   1: [x, 58,  28]
-  2: [y, 56,  80]
+  2: [y, 56,  30]
   3: [x, 66,  106]
-  4: [y, 66,  70]
+  4: [y, 66,  106]
   5: [x, 320, 368]
 
 # MOM cap parameters

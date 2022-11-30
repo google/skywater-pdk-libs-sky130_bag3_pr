@@ -26,7 +26,7 @@ mos_lay_table:
   PO: !!python/tuple ['poly', 'drawing']
   # active
   OD:
-    active: !!python/tuple ['diff', 'drawing'] 
+    active: !!python/tuple ['diff', 'drawing']
     sub: !!python/tuple ['tap', 'drawing']
   # gate connection metal
   MP: !!python/tuple ['li1', 'drawing']
@@ -63,7 +63,7 @@ lay_purp_list: &lp_list
 
 dum_lay_purp_list: *lp_list
 
-width_intervals:  
+width_intervals:
   0:
     - [[28, 801]]   # horizontal
     - [[28, .inf]]  # vertical
@@ -121,9 +121,9 @@ via:
     - name: square
       dim: [34, 34]
       sp: [38, 38]
-      bot_enc: 
+      bot_enc:
         - [.inf, [[0, 0]]]
-      top_enc: 
+      top_enc:
         - [.inf, [[12, 12]]]
   M1M2_C:
     - name: square
@@ -160,7 +160,7 @@ via:
 # minimum wire spacing rule.  Space is measured orthogonal to wire direction.
 # should be in resolution units
 sp_min:
-  [li1, drawing]: 
+  [li1, drawing]:
     - [.inf, 34]
   [met1, drawing]: &sp_min_1x
     - [.inf, 28]
@@ -173,7 +173,7 @@ sp_min:
 
 # minimum line-end spacing rule.  Space is measured parallel to wire direction.
 sp_le_min:
-  [li1, drawing]: 
+  [li1, drawing]:
     - [.inf, 34]
   [met1, drawing]: &sp_le_min_1x
     - [.inf, 28]
@@ -183,7 +183,7 @@ sp_le_min:
   [met4, drawing]: *sp_le_min_2x
   [met5, drawing]:
     - [.inf, 320]
-  
+
 
 # minimum length/minimum area rules.
 len_min:
@@ -233,7 +233,7 @@ mos:
     bot_layer: 0
     # wire_w, is_horiz, v_w, v_h, v_sp, v_bot_enc, v_top_enc
     info_list:
-      - [34, False, 34, 34, 34, 8, 16] 
+      - [34, False, 34, 34, 34, 8, 16]
   # gate connection info
   g_wire_info:
     bot_layer: 0
@@ -291,10 +291,16 @@ mos:
   # might be redundant, well margin from edge to implant
   nwell_imp: 40
 
+  latchup: # rules relating to MOS latchup
+    # maximum distance from tap >=50u from signal diffusion in res units
+    max_distance_from_tap__far: 3000
+    # maximum distance from tap near signal diffusion in res units
+    max_distance_from_tap__near: 1200
+
   grid_info: # [layer, width, track width]
-    - [0, 34, 1]
-    - [2, 56, 1]
-    - [4, 66, 1]
+    - [0, 34, 52, 1]
+    - [2, 56, 30, 1]
+    - [4, 66, 106, 1]
 
 fill: {}
 
