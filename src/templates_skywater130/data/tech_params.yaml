@@ -227,7 +227,7 @@ mos:
   # source/drain pitch is computed as val[0] + val[1] * lch_unit
   sd_pitch_constants:
     lch: [30, .inf]
-    val: [[86, 0], [42, 1]]
+    val: [[86, 0]]
   # drain connection info
   d_wire_info:
     bot_layer: 0
@@ -331,14 +331,14 @@ res:
   # minimum length of unit resistor
   l_min: 100
   # w / h of minimum resistor unit
-  min_size: !!python/tuple [272, 1376]
+  min_size: !!python/tuple [172, 1376]
   # block x / y pitch
-  blk_pitch: !!python/tuple [68, 86]
+  blk_pitch: !!python/tuple [86, 86]
   # grid info of vertical metals
   grid_info:
-    - [0, 34, 34]
-    - [2, 56, 80]
-    - [4, 66, 70]
+    - [0, 34, 52]
+    - [2, 56, 30]
+    - [4, 66, 106]
   # horizontal margin for abutting with another ResTech or MosTech
   edge_margin: 68   # TODO: currently set to 1 pitch
   # vertical margin for abutting with another ResTech or MosTech
