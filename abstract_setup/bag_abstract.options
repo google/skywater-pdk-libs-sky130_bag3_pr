@@ -108,7 +108,7 @@ absSetOption( "numOfPointsInEllipseOrDonut" "64")
 
 absDeselectBin("Core" )
 absSetBinOption( "Core" "PinsTextPinMap"             "")
-absSetBinOption( "Core" "PinsPowerNames"             "^((V(DD|CC|DD_DCO))|(v(dd|cc)))(!)?$")
+absSetBinOption( "Core" "PinsPowerNames"             "^((V(DD|CC).*)|(v(dd|cc)))(!)?$")
 absSetBinOption( "Core" "PinsGroundNames"            "^((VSS|GND)|(vss|gnd))(!)?$")
 absSetBinOption( "Core" "PinsClockNames"             "")
 absSetBinOption( "Core" "PinsAnalogNames"            "")
@@ -842,3 +842,4 @@ absDeselectBin("Ignore" )
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; End Abstract Options File
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+

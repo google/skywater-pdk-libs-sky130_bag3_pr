@@ -71,7 +71,7 @@ database:
     # the SubProcessManager class
     # mgr_class: 'bag.concurrent.lsf.LSFSubProcessManager'  # runs jobs on the LSF
     # mgr_kwargs:
-    #   queue: bora  # LSF queue
+    #   queue: rhel7  # LSF queue
 
 # Simulation configurations
 simulation:
@@ -104,9 +104,9 @@ simulation:
   # Executable runs faster for smaller simulation data, pysrr runs faster for highly parameterized simulation data
   use_pysrr: False
   # the SubProcessManager class
-  mgr_class: 'bag.concurrent.lsf.LSFSubProcessManager'  # runs jobs on the LSF
-  mgr_kwargs:
-    queue: bora  # LSF queue
+  # mgr_class: 'bag.concurrent.lsf.LSFSubProcessManager'  # runs jobs on the LSF
+  # mgr_kwargs:
+  #   queue: rhel7  # LSF queue
 
   compress: True
   rtol: 1.0e-8
