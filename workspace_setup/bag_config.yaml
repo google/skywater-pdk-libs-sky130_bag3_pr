@@ -13,7 +13,8 @@ socket:
 # Right now only virtuoso is supported.
 database:
   # the python class that handles database interaction.
-  class: "bag.interface.oa.OAInterface"
+#  class: "bag.interface.oa.OAInterface"
+  class: "bag.interface.skill.SkillInterface"
   # default directory to create generated libraries in.
   default_lib_path: "${BAG_WORK_DIR}/gen_libs"
   # If true, then everytime we generate schematic/layout from BAG, all opened cellviews are closed
