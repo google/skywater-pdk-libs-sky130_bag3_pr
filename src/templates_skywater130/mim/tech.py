@@ -94,8 +94,8 @@ class MIMTechSkywater130(MIMTech):
             via_bnd = via_bot_enc
             bot_sp = bot_w
       
-        top_ext = 3 * top_w + cap_bound
-        bot_ext = 3 * bot_w + cap_bound
+        top_ext = 2 * top_w + cap_bound
+        bot_ext = 2 * bot_w + cap_bound
 
         builder = LayoutInfoBuilder()
 
@@ -112,7 +112,7 @@ class MIMTechSkywater130(MIMTech):
             block_w = unit_width
             base_y = bot_sp + cap_bound
             for ridx in range(0, tot_rows):
-                y_bot = base_y + ridx * (unit_height + cap_sp)
+                y_bot = base_y + ridx * (unit_height + cap_off_h) #cap_sp)
                 for cidx in range(0, tot_cols):
                     xl_cap = bot_ext + cidx * (block_w + cap_off_h)
                     xh_cap = xl_cap + block_w
@@ -132,12 +132,12 @@ class MIMTechSkywater130(MIMTech):
                 xl_top = width_total - width + dum_col_l * cap_off_h + bot_ext
                 xh_top = width_total + (tot_cols - 1) * cap_off_h + top_ext + bot_ext + cap_bound
                 yl_top = bot_sp + cap_bound
-                yh_top = height_total + (tot_rows - 1) * cap_sp + bot_sp + cap_bound
+                yh_top = height_total + (tot_rows - 1) * cap_off_h + bot_sp + cap_bound
 
                 xl_bot = width_total - width + dum_col_l * cap_off_h
                 xh_bot = width_total + (tot_cols - 1) * cap_off_h + bot_ext + cap_bound
                 yl_bot = bot_sp
-                yh_bot = height_total + (tot_rows - 1) * cap_sp + 2 * cap_bound + bot_sp
+                yh_bot = height_total + (tot_rows - 1) * cap_off_h + 2 * cap_bound + bot_sp
 
                 builder.add_rect_arr(bot_lp, BBox(xl_bot, yl_bot, xh_bot, yh_bot))
                 builder.add_rect_arr(top_lp, BBox(xl_top, yl_top, xh_top, yh_top))
@@ -146,12 +146,12 @@ class MIMTechSkywater130(MIMTech):
                 xl_dtop = bot_ext
                 xh_dtop = width_total - width + (dum_col_l - 1) * cap_off_h + bot_ext + cap_bound
                 yl_dtop = bot_sp + cap_bound
-                yh_dtop = height + (tot_rows - 1) * cap_sp + bot_sp + cap_bound
+                yh_dtop = height + (tot_rows - 1) * cap_off_h + bot_sp + cap_bound
 
                 xl_dbot = 0
                 xh_dbot = width_total - width + (dum_col_l - 1) * cap_off_h + bot_ext + cap_bound
                 yl_dbot = bot_sp
-                yh_dbot = height + (tot_rows - 1) * cap_sp + 2 * cap_bound + bot_sp
+                yh_dbot = height + (tot_rows - 1) * cap_off_h + 2 * cap_bound + bot_sp
 
                 builder.add_rect_arr(bot_lp, BBox(xl_dbot, yl_dbot, xh_dbot, yh_dbot))
                 builder.add_rect_arr(top_lp, BBox(xl_dtop, yl_dtop, xh_dtop, yh_dtop))
@@ -159,19 +159,19 @@ class MIMTechSkywater130(MIMTech):
                 xl_top = bot_ext
                 xh_top = width + (tot_cols - 1) * cap_off_h + top_ext + bot_ext
                 yl_top = bot_sp + cap_bound
-                yh_top = height + (tot_rows - 1) * cap_sp + bot_sp + cap_bound
+                yh_top = height + (tot_rows - 1) * cap_off_h + bot_sp + cap_bound
 
                 xl_bot = 0
                 xh_bot = width + (tot_cols - 1) * cap_off_h + bot_ext + cap_bound
                 yl_bot = bot_sp
-                yh_bot = height + (tot_rows - 1) * cap_sp + 2 * cap_bound + bot_sp
+                yh_bot = height + (tot_rows - 1) * cap_off_h + 2 * cap_bound + bot_sp
 
                 builder.add_rect_arr(bot_lp, BBox(xl_bot, yl_bot, xh_bot, yh_bot))
                 builder.add_rect_arr(top_lp, BBox(xl_top, yl_top, xh_top, yh_top))
 
             # add top metal and bottom 
             w_tot = xh_top
-            h_tot = bot_sp + cap_bound + height + tot_rows * cap_sp
+            h_tot = bot_sp + cap_bound + height + tot_rows * cap_off_h 
             
             pin_bot_yl = bot_sp
             pin_bot_yh = h_tot - cap_sp
