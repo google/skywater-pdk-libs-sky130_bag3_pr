@@ -108,7 +108,7 @@ absSetOption( "numOfPointsInEllipseOrDonut" "64")
 
 absDeselectBin("Core" )
 absSetBinOption( "Core" "PinsTextPinMap"             "")
-absSetBinOption( "Core" "PinsPowerNames"             "^((V(DD|CC))|(v(dd|cc)))(!)?$")
+absSetBinOption( "Core" "PinsPowerNames"             "^((V(DD|CC).*)|(v(dd|cc)))(!)?$")
 absSetBinOption( "Core" "PinsGroundNames"            "^((VSS|GND)|(vss|gnd))(!)?$")
 absSetBinOption( "Core" "PinsClockNames"             "")
 absSetBinOption( "Core" "PinsAnalogNames"            "")
@@ -207,8 +207,8 @@ absSetBinOption( "Core" "AbstractAdjustCreateClassBumpPort" "false")
 absSetBinOption( "Core" "AbstractAdjustPreserveViasPwr" "false")
 absSetBinOption( "Core" "AbstractAdjustDuplicatePinShapes" "false")
 absSetBinOption( "Core" "AbstractBlockageLayerOrder" "false")
-absSetBinOption( "Core" "AbstractBlockageDetailedLayers" "met1 met2 met3 met4 met5 via via2 via3 via4 ")
-absSetBinOption( "Core" "AbstractBlockageCoverLayers" "")
+absSetBinOption( "Core" "AbstractBlockageDetailedLayers" "met4 met5 via via2 via3 via4 ")
+absSetBinOption( "Core" "AbstractBlockageCoverLayers" "met1 met2 met3")
 absSetBinOption( "Core" "AbstractBlockageShrinkWrapLayers" "")
 absSetBinOption( "Core" "AbstractBlockageCoverLayersDist" "")
 absSetBinOption( "Core" "AbstractBlockageShrinkTracks" "")
@@ -842,3 +842,4 @@ absDeselectBin("Ignore" )
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; End Abstract Options File
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+

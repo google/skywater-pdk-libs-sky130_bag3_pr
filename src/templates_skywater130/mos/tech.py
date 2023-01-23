@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Tuple, FrozenSet, List, Mapping, Any
+from typing import Tuple, FrozenSet, List, Mapping, Any, Union
 
 from dataclasses import dataclass
 
@@ -154,6 +154,22 @@ class MOSTechSkywater130(MOSTech):
         nwell_imp: int = self.mos_config['nwell_imp']
         return -(self.sd_pitch - self.lch) // 2 + self.od_po_extx + nwell_imp + imp_od_encx
 
+    def get_max_col_spacing_from_tap(self, pad_prox: bool = True) -> int:
+        '''Gets maximum columns from nearest well tap rule.
+
+        Parameters
+        ----------
+        pad_prox:  Union[str, int, bool]
+            Proximity to signal pad to determine appropriate rule. Default True.
+            If True, cell is assumed close to pad diffusion. If False, cell is
+            assumed far from pad diffusion.
+        '''
+        max_dist_tap_far = self.mos_config['latchup']['max_distance_from_tap__far']
+        max_dist_tap_near = self.mos_config['latchup']['max_distance_from_tap__near']
+        dist = max_dist_tap_near if pad_prox else max_dist_tap_far
+        col_dist = dist // self.sd_pitch
+        return col_dist
+
     def get_conn_info(self, conn_layer: int, is_gate: bool) -> ConnInfo:
         mconf = self.mos_config
         wire_info = mconf['g_wire_info' if is_gate else 'd_wire_info']
@@ -177,13 +193,11 @@ class MOSTechSkywater130(MOSTech):
     def get_track_specs(self, conn_layer: int, top_layer: int) -> List[TrackSpec]:
         assert conn_layer == 0, 'currently only work for conn_layer = 0'
 
-        sd_pitch = self.sd_pitch
-
         grid_info = self.mos_config['grid_info']
 
         return [TrackSpec(layer=lay, direction=Orient2D.y, width=vm_w,
-                          space=num_sd * sd_pitch - vm_w, offset=(num_sd * sd_pitch) // 2)
-                for lay, vm_w, num_sd in grid_info if conn_layer <= lay <= top_layer]
+                          space=vm_sp, offset=(num_sd * (vm_w + vm_sp)) // 2)
+                for lay, vm_w, vm_sp, num_sd in grid_info if conn_layer <= lay <= top_layer]
 
     def get_edge_width(self, mos_arr_width: int, blk_pitch: int) -> int:
         w_edge_min = self.mos_config['imp_od_encx'] + self.sd_pitch // 2
