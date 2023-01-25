@@ -99,7 +99,9 @@ class MOSTechSkywater130(MOSTech):
 
     @property
     def end_h_min(self) -> int:
-        return self.mos_config['imp_h_min'] // 2
+        # return self.mos_config['imp_h_min'] // 2
+        end_margin: int = self.mos_config['end_margin']
+        return -(-end_margin//self.blk_h_pitch) * self.blk_h_pitch
 
     @property
     def min_sep_col(self) -> int:
@@ -152,7 +154,8 @@ class MOSTechSkywater130(MOSTech):
     def well_w_edge(self) -> int:
         imp_od_encx: int = self.mos_config['imp_od_encx']
         nwell_imp: int = self.mos_config['nwell_imp']
-        return -(self.sd_pitch - self.lch) // 2 + self.od_po_extx + nwell_imp + imp_od_encx
+        well_w_edge = -(self.sd_pitch - self.lch) // 2 + self.od_po_extx + nwell_imp + imp_od_encx
+        return -(-well_w_edge // self.sd_pitch) * self.sd_pitch
 
     def get_max_col_spacing_from_tap(self, pad_prox: bool = True) -> int:
         '''Gets maximum columns from nearest well tap rule.
@@ -200,8 +203,13 @@ class MOSTechSkywater130(MOSTech):
                 for lay, vm_w, vm_sp, num_sd in grid_info if conn_layer <= lay <= top_layer]
 
     def get_edge_width(self, mos_arr_width: int, blk_pitch: int) -> int:
-        w_edge_min = self.mos_config['imp_od_encx'] + self.sd_pitch // 2
-        return get_arr_edge_dim(mos_arr_width, w_edge_min, blk_pitch)
+        # w_edge_min = self.mos_config['imp_od_encx'] + self.sd_pitch // 2
+        # return = get_arr_edge_dim(mos_arr_width, w_edge_min, blk_pitch)
+        edge_margin: int = self.mos_config['edge_margin']
+        imp_od_encx: int = self.mos_config['imp_od_encx']
+        od_extx = self.od_po_extx - (self.sd_pitch - self.lch) // 2
+        num_sd = -(-(od_extx + imp_od_encx) // self.sd_pitch)
+        return -(-edge_margin // self.sd_pitch) * self.sd_pitch + num_sd * self.sd_pitch
 
     def get_mos_row_info(self, conn_layer: int, specs: MOSRowSpecs, bot_mos_type: MOSType,
                          top_mos_type: MOSType, global_options: Param) -> MOSRowInfo:
