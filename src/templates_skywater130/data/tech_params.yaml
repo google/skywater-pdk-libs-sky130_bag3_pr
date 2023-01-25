@@ -240,6 +240,10 @@ mos:
     # wire_w, is_horiz, v_w, v_h, v_sp, v_bot_enc, v_top_enc
     info_list:
       - [34, False, 34, 34, 34, 10, 16]
+  # horizontal margin for abutting with another ResTech or MosTech
+  edge_margin: 86   # TODO: currently sekt to 1 pitch
+  # vertical margin for abutting with another ResTech or MosTech
+  end_margin: 86    # TODO: currently set to 1 pitch
   # minimum horizontal space between OD, in resolution units
   od_spx: 54
   # minimum vertical space between OD, in resolution units
@@ -340,7 +344,7 @@ res:
     - [2, 56, 30]
     - [4, 66, 106]
   # horizontal margin for abutting with another ResTech or MosTech
-  edge_margin: 68   # TODO: currently set to 1 pitch
+  edge_margin: 86   # TODO: currently set to 1 pitch
   # vertical margin for abutting with another ResTech or MosTech
   end_margin: 86    # TODO: currently set to 1 pitch
   # poly vertical extension beyond resID layer
