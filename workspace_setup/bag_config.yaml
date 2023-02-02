@@ -31,6 +31,16 @@ database:
     # cells to exclude for modeling purposes
     model_exclude_cells:
       basic: ['noConn']
+    # symbol pin master
+    sympin: ["basic", "sympin", "symbolNN"]
+    # input pin master
+    ipin: ["basic", "ipin", "symbol"]
+    # output pin master
+    opin: ["basic", "opin", "symbol"]
+    # inout pin master
+    iopin: ["basic", "iopin", "symbolr"]
+    # simulators where termOrder CDF field should be filled
+    simulators: ["auLvs", "auCdl", "spectre", "hspiceD"]
   # configurations used to create a Checker object to run LVS/RCX
   checker:
     # the Checker class.
