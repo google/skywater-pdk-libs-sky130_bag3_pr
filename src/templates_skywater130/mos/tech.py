@@ -276,8 +276,11 @@ class MOSTechSkywater130(MOSTech):
         blk_yh = max(od_yh + imp_od_ency + imp_h_min2, po_yh + po_spy2)
         blk_yh = -(-blk_yh // blk_p) * blk_p
 
-        md_yl, md_yh, _ = self._get_conn_params(self.get_conn_info(0, False), od_yl, od_yh)
-        dmd_yl, dmd_yh, _ = self._get_conn_params(md_info, md_yl, md_yh)
+        dmd_yl, dmd_yh, _ = self._get_conn_params(md_info, od_yl, od_yh)
+
+        if guard_ring:
+            dmd_yl = min(dmd_yl, od_yl)
+            dmd_yh = max(dmd_yh, od_yh)
 
         if mos_type.is_substrate:
             gmd_yl, gmd_yh = dmd_yl, dmd_yh
@@ -544,6 +547,8 @@ class MOSTechSkywater130(MOSTech):
         d0_info = self.get_conn_info(0, False)
         md_yl, md_yh, num_vc = self._get_conn_params(d0_info, od_y[0], od_y[1])
         md_y = (md_yl, md_yh)
+        if guard_ring:
+            md_y = row_info.ds_conn_y
 
         # draws in vias connecting tap cell to metal 1
         self._draw_ds_conn(builder, d0_info, od_y, md_y, num_vc, 0, seg + 1, sd_pitch)
@@ -691,9 +696,11 @@ class MOSTechSkywater130(MOSTech):
             od_sd_dx = od_tap_extx + v_w // 2
 
             od_lp = self.tech_info.config['mos_lay_table']['OD']['sub']
+            md_lp = self.tech_info.config['mos_lay_table']['MD']
             od_xl = - od_sd_dx
             od_xr = sd_pitch * (num_cols - 1) + od_sd_dx
             builder.add_rect_arr(od_lp, BBox(od_xl, 0, od_xr, blk_h))
+            builder.add_rect_arr(md_lp, BBox(od_xl, 0, od_xr, blk_h))
             blk_xl = od_xl - (blk_w - od_xr)
             blk_rect = BBox(blk_xl, 0, blk_w, blk_h)
             imp_y = (0, blk_h)
@@ -840,20 +847,30 @@ class MOSTechSkywater130(MOSTech):
         builder.add_rect_arr(od_lp, BBox(od_xl, od_yl, od_xh, od_yh))
         imp_y = row_info['imp_y']
         if is_sub:
+            md_lp = self.tech_info.config['mos_lay_table']['MD']
             if guard_ring and stop - start > self.gr_edge_col:
                 if sub_type.is_n_plus:
                     imp_lp = ('nsdm', 'drawing')
                 else:
                     imp_lp = ('psdm', 'drawing')
                 imp_od_encx: int = mconf['imp_od_encx']
+                md_y = row_info.ds_conn_y
+                # OD, implant, li1 for left small rectangle
                 od_xh2 = start * sd_pitch + self.gr_edge_col * sd_pitch + od_sd_dx
                 builder.add_rect_arr(od_lp, BBox(od_xl, od_yh, od_xh2, blk_yh))
                 builder.add_rect_arr(imp_lp, BBox(od_xl - imp_od_encx, od_yh, od_xh2 + imp_od_encx, blk_yh))
+                builder.add_rect_arr(md_lp, BBox(od_xl, od_yh, od_xh2, blk_yh))
                 od_xl2 = stop * sd_pitch - self.gr_edge_col * sd_pitch - od_sd_dx
+                # OD, implant, li1 for right small rectangle
                 builder.add_rect_arr(od_lp, BBox(od_xl2, od_yh, od_xh, blk_yh))
                 builder.add_rect_arr(imp_lp, BBox(od_xl2 - imp_od_encx, od_yh, od_xh + imp_od_encx, blk_yh))
+                builder.add_rect_arr(md_lp, BBox(od_xl2, od_yh, od_xh, blk_yh))
+                # li1 for main OD
+                builder.add_rect_arr(md_lp, BBox(od_xl, md_y[0], od_xh, md_y[1]))
             if guard_ring_col and stop - start == self.gr_edge_col:
+                # OD, implant, li1 for entire height
                 builder.add_rect_arr(od_lp, BBox(od_xl, 0, od_xh, blk_yh))
+                builder.add_rect_arr(md_lp, BBox(od_xl, 0, od_xh, blk_yh))
                 imp_y = (0, blk_yh)
 
         # draw base
