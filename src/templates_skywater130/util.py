@@ -40,7 +40,8 @@ def add_base(builder: LayoutInfoBuilder, row_type: MOSType, threshold: str, imp_
 
 
 def add_base_mos(builder: LayoutInfoBuilder, row_type: MOSType, threshold: str, imp_y: Tuple[int, int],
-                 rect: BBox, well_x: Optional[Tuple[int, int]] = None, is_sub: bool = False) -> None:
+                 rect: BBox, well_x: Optional[Tuple[int, int]] = None, imp_x: Optional[Tuple[int, int]] = None,
+                 is_sub: bool = False) -> None:
     # new func draws nwell, n+ implant (ndsm) and p+ implant (pdsm)
     if rect.is_physical():
         # only draw nwells if not a tap cell and pch, or is tap cell and nch
@@ -52,11 +53,15 @@ def add_base_mos(builder: LayoutInfoBuilder, row_type: MOSType, threshold: str, 
                 builder.add_rect_arr(well_lp, BBox(well_x[0], rect.yl, well_x[1], rect.yh))
             
         # draw the respective implant
-        imp_bbox = BBox(rect.xl, imp_y[0], rect.xh, imp_y[1])
         if row_type.is_n_plus:
-            builder.add_rect_arr(('nsdm', 'drawing'),  imp_bbox)
+            imp_lp = ('nsdm', 'drawing')
         else:
-            builder.add_rect_arr(('psdm', 'drawing'),  imp_bbox)
+            imp_lp = ('psdm', 'drawing')
+        if imp_x is None:
+            imp_bbox = BBox(rect.xl, imp_y[0], rect.xh, imp_y[1])
+        else:
+            imp_bbox = BBox(imp_x[0], imp_y[0], imp_x[1], imp_y[1])
+        builder.add_rect_arr(imp_lp,  imp_bbox)
 
         thres_lp = _get_thres_lp(row_type, threshold)
         if thres_lp[0] != '':

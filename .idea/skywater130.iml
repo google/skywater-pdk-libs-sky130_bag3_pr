@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="xbase" />
     <orderEntry type="module" module-name="BAG_framework" />
+    <orderEntry type="module" module-name="xbase_bcad" />
   </component>
 </module>
