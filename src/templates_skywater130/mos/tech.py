@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Tuple, FrozenSet, List, Mapping, Any, Union
+from typing import Tuple, FrozenSet, List, Mapping, Any, Union, Optional
 
 from dataclasses import dataclass
 
@@ -94,6 +94,10 @@ class MOSTechSkywater130(MOSTech):
         return False
 
     @property
+    def has_double_guard_ring(self) -> bool:
+        return True
+
+    @property
     def blk_h_pitch(self) -> int:
         return self.mos_config['blk_h_pitch']
 
@@ -158,7 +162,7 @@ class MOSTechSkywater130(MOSTech):
         return -(-well_w_edge // self.sd_pitch) * self.sd_pitch
 
     def get_max_col_spacing_from_tap(self, pad_prox: bool = True) -> int:
-        '''Gets maximum columns from nearest well tap rule.
+        """Gets maximum columns from nearest well tap rule.
 
         Parameters
         ----------
@@ -166,7 +170,7 @@ class MOSTechSkywater130(MOSTech):
             Proximity to signal pad to determine appropriate rule. Default True.
             If True, cell is assumed close to pad diffusion. If False, cell is
             assumed far from pad diffusion.
-        '''
+        """
         max_dist_tap_far = self.mos_config['latchup']['max_distance_from_tap__far']
         max_dist_tap_near = self.mos_config['latchup']['max_distance_from_tap__near']
         dist = max_dist_tap_near if pad_prox else max_dist_tap_far
@@ -213,6 +217,9 @@ class MOSTechSkywater130(MOSTech):
 
     def get_mos_row_info(self, conn_layer: int, specs: MOSRowSpecs, bot_mos_type: MOSType,
                          top_mos_type: MOSType, global_options: Param) -> MOSRowInfo:
+        guard_ring: bool = specs.options.get('guard_ring', False)
+        guard_ring_col: bool = specs.options.get('guard_ring_col', False)
+
         assert conn_layer == 0, 'currently only work for conn_layer = 0'
 
         blk_p = self.blk_h_pitch
@@ -284,7 +291,9 @@ class MOSTechSkywater130(MOSTech):
                     od=(blk_yh - od_yh, od_spy),
                     po=(blk_yh - po_yh, po_spy),
                     md=(blk_yh - dmd_yh, md_spy),
-                )
+                ),
+                guard_ring=guard_ring,
+                guard_ring_col=guard_ring_col,
             )),
         )
         bot_einfo = RowExtInfo(
@@ -296,6 +305,8 @@ class MOSTechSkywater130(MOSTech):
                     po=(po_yl, po_spy),
                     md=(gmd_yl, md_spy),
                 ),
+                guard_ring=guard_ring,
+                guard_ring_col=guard_ring_col,
             )),
         )
         info = dict(
@@ -316,7 +327,7 @@ class MOSTechSkywater130(MOSTech):
             ds_m_y = (po_yh, blk_yh)
         return MOSRowInfo(self.lch, w, w_sub, mos_type, specs.threshold, blk_yh, specs.flip,
                           top_einfo, bot_einfo, ImmutableSortedDict(info), g_y, g_m_y, ds_y,
-                          ds_m_y, ds_g_y, sub_y, guard_ring=False)
+                          ds_m_y, ds_g_y, sub_y, guard_ring=guard_ring, guard_ring_col=guard_ring_col)
 
     def get_ext_width_info(self, bot_row_ext_info: RowExtInfo, top_row_ext_info: RowExtInfo,
                            ignore_vm_sp_le: bool = False) -> ExtWidthInfo:
@@ -339,7 +350,13 @@ class MOSTechSkywater130(MOSTech):
     # noinspection PyMethodMayBeStatic
     def get_extension_regions(self, bot_info: RowExtInfo, top_info: RowExtInfo, height: int
                               ) -> Tuple[MOSCutMode, int, int]:
-        if _get_extend_bot_implant(bot_info, top_info):
+        bot_gr = bot_info.info['guard_ring'] or bot_info.info['guard_ring_col']
+        top_gr = top_info.info['guard_ring'] or top_info.info['guard_ring_col']
+        if bot_gr and top_gr:
+            cut_mode = MOSCutMode.BOTH
+            bot_exty = 0
+            top_exty = 0
+        elif _get_extend_bot_implant(bot_info, top_info):
             # split at top
             cut_mode = MOSCutMode.TOP
             bot_exty = height
@@ -505,22 +522,23 @@ class MOSTechSkywater130(MOSTech):
         row_type = row_info.row_type
 
         guard_ring: bool = options.get('guard_ring', row_info.guard_ring)
-        if guard_ring:
+        guard_ring_col: bool = options.get('guard_ring_col', row_info.guard_ring_col)
+        gr = guard_ring or guard_ring_col
+        if gr:
             sub_type: MOSType = options.get('sub_type', row_type.sub_type)
         else:
             sub_type: MOSType = row_type.sub_type
 
-        sd_pitch = self.sd_pitch
+        sd_pitch: int = self.sd_pitch
 
-        w = row_info.sub_width
-        height = row_info.height
-        threshold = row_info.threshold
+        w: int = row_info.sub_width
+        height: int = row_info.height
         imp_y: Tuple[int, int] = row_info['imp_y']
 
         # draw device
         builder = LayoutInfoBuilder()
         # draws diffusion and tap
-        od_y = self._add_mos_active(builder, row_info, 0, seg, w, is_sub=True)
+        od_y = self._add_mos_active(builder, row_info, 0, seg, w, is_sub=True, sub_type=sub_type)
 
         # draw drain/source connections
         d0_info = self.get_conn_info(0, False)
@@ -530,14 +548,9 @@ class MOSTechSkywater130(MOSTech):
         # draws in vias connecting tap cell to metal 1
         self._draw_ds_conn(builder, d0_info, od_y, md_y, num_vc, 0, seg + 1, sd_pitch)
 
-        # draw base
-        # add extra imp_od_encx for ntap and ptap
-        imp_od_encx: int = self.mos_config['imp_od_encx']
-        bbox = BBox(-2 * imp_od_encx, 0, seg * sd_pitch + 2*imp_od_encx, height)
-        add_base_mos(builder, sub_type, threshold, imp_y, bbox, is_sub=True)
-
+        bbox = BBox(0, 0, seg * sd_pitch, height)
         edge_info = MOSEdgeInfo(mos_type=sub_type, imp_y=imp_y, has_od=True)
-        be = BlkExtInfo(row_type, row_info.threshold, guard_ring, ImmutableList([(seg, sub_type)]),
+        be = BlkExtInfo(row_type, row_info.threshold, gr, ImmutableList([(seg, sub_type)]),
                         ImmutableSortedDict())
         wire_info = (0, seg + 1, sd_pitch)
         return MOSLayInfo(builder.get_info(bbox), edge_info, edge_info, be, be,
@@ -574,6 +587,8 @@ class MOSTechSkywater130(MOSTech):
         else:
             typel = typer = row_type
 
+        guard_ring = row_info.guard_ring or row_info.guard_ring_col
+
         builder = LayoutInfoBuilder()
 
         # find dummy OD columns
@@ -582,6 +597,9 @@ class MOSTechSkywater130(MOSTech):
         delta_implant = -(-delta_implant // sd_pitch) * sd_pitch
         if typel == typer:
             # same implant on left and right
+            if guard_ring and typel.is_substrate:
+                raise ValueError('Cannot have empty spaces between guard ring edges.')
+
             be = BlkExtInfo(row_type, threshold, False, ImmutableList([(num_cols, typel)]),
                             ImmutableSortedDict())
             add_base(builder, typel, threshold, imp_y, bbox)
@@ -629,7 +647,7 @@ class MOSTechSkywater130(MOSTech):
             if fgr > 0:
                 fg_dev_list.append((fgr, typer))
 
-            be = BlkExtInfo(row_type, threshold, False, ImmutableList(fg_dev_list),
+            be = BlkExtInfo(row_type, threshold, guard_ring, ImmutableList(fg_dev_list),
                             ImmutableSortedDict())
             edgel = MOSEdgeInfo(mos_type=typel, imp_y=imp_y, has_od=False)
             edger = edgel.copy_with(mos_type=typer)
@@ -640,12 +658,54 @@ class MOSTechSkywater130(MOSTech):
 
     def get_mos_ext_info(self, num_cols: int, blk_h: int, bot_einfo: RowExtInfo,
                          top_einfo: RowExtInfo, gr_info: Tuple[int, int]) -> ExtEndLayInfo:
-        raise ValueError('Not implemented.')
+        if _get_extend_bot_implant(bot_einfo, top_einfo):
+            row_type = bot_einfo.row_type
+            threshold = bot_einfo.threshold
+        else:
+            row_type = top_einfo.row_type
+            threshold = top_einfo.threshold
+        return self._get_mos_ext_info_helper(num_cols, blk_h, row_type, threshold)
 
     def get_mos_ext_gr_info(self, num_cols: int, edge_cols: int, blk_h: int, bot_einfo: RowExtInfo,
                             top_einfo: RowExtInfo, sub_type: MOSType, einfo: MOSEdgeInfo
                             ) -> ExtEndLayInfo:
-        raise ValueError('Not implemented.')
+        if _get_extend_bot_implant(bot_einfo, top_einfo):
+            threshold = bot_einfo.threshold
+        else:
+            threshold = top_einfo.threshold
+        return self._get_mos_ext_info_helper(num_cols, blk_h, sub_type, threshold, guard_ring=True)
+
+    def _get_mos_ext_info_helper(self, num_cols: int, blk_h: int, row_type: MOSType, threshold: str,
+                                 guard_ring: bool = False) -> ExtEndLayInfo:
+        sd_pitch = self.sd_pitch
+
+        blk_w = num_cols * sd_pitch
+        blk_rect = BBox(0, 0, blk_w, blk_h)
+
+        builder = LayoutInfoBuilder()
+
+        if guard_ring:
+            md_info = self.get_conn_info(0, False)
+            v_w = md_info.via_w
+            od_tap_extx = self.mos_config['od_tap_extx']  # determines the amount to extend material from licon
+            od_sd_dx = od_tap_extx + v_w // 2
+
+            od_lp = self.tech_info.config['mos_lay_table']['OD']['sub']
+            od_xl = - od_sd_dx
+            od_xr = sd_pitch * (num_cols - 1) + od_sd_dx
+            builder.add_rect_arr(od_lp, BBox(od_xl, 0, od_xr, blk_h))
+            blk_xl = od_xl - (blk_w - od_xr)
+            blk_rect = BBox(blk_xl, 0, blk_w, blk_h)
+            imp_y = (0, blk_h)
+            imp_od_encx: int = self.mos_config['imp_od_encx']
+            add_base_mos(builder, row_type, threshold, imp_y, blk_rect,
+                         imp_x=(od_xl - imp_od_encx, od_xr + imp_od_encx), is_sub=row_type.is_substrate)
+        else:
+            imp_y = (0, 0)
+            add_base(builder, row_type, threshold, imp_y, blk_rect)
+
+        edge_info = MOSEdgeInfo(blk_h=blk_h, row_type=row_type, mos_type=row_type, threshold=threshold, imp_y=imp_y)
+        return ExtEndLayInfo(builder.get_info(blk_rect), edge_info)
 
     def get_ext_geometries(self, re_bot: RowExtInfo, re_top: RowExtInfo,
                            be_bot: ImmutableList[BlkExtInfo], be_top: ImmutableList[BlkExtInfo],
@@ -745,10 +805,13 @@ class MOSTechSkywater130(MOSTech):
         return -(-(spx + lch + 2 * od_po_extx) // sd_pitch) - 1
 
     def _add_mos_active(self, builder: LayoutInfoBuilder, row_info: MOSRowInfo,
-                        start: int, stop: int, w: int, is_sub: bool = False
+                        start: int, stop: int, w: int, is_sub: bool = False, sub_type: Optional[MOSType] = None
                         ) -> Tuple[int, int]:
         po_yl: int = row_info['po_y'][0]
         od_yl: int = row_info['od_y'][0]
+        guard_ring: bool = row_info.guard_ring
+        guard_ring_col: bool = row_info.guard_ring_col
+        blk_yh: int = row_info.height
 
         sd_pitch = self.sd_pitch
 
@@ -775,22 +838,33 @@ class MOSTechSkywater130(MOSTech):
         od_xl = start * sd_pitch - od_sd_dx
         od_xh = stop * sd_pitch + od_sd_dx
         builder.add_rect_arr(od_lp, BBox(od_xl, od_yl, od_xh, od_yh))
+        imp_y = row_info['imp_y']
+        if is_sub:
+            if guard_ring and stop - start > self.gr_edge_col:
+                if sub_type.is_n_plus:
+                    imp_lp = ('nsdm', 'drawing')
+                else:
+                    imp_lp = ('psdm', 'drawing')
+                imp_od_encx: int = mconf['imp_od_encx']
+                od_xh2 = start * sd_pitch + self.gr_edge_col * sd_pitch + od_sd_dx
+                builder.add_rect_arr(od_lp, BBox(od_xl, od_yh, od_xh2, blk_yh))
+                builder.add_rect_arr(imp_lp, BBox(od_xl - imp_od_encx, od_yh, od_xh2 + imp_od_encx, blk_yh))
+                od_xl2 = stop * sd_pitch - self.gr_edge_col * sd_pitch - od_sd_dx
+                builder.add_rect_arr(od_lp, BBox(od_xl2, od_yh, od_xh, blk_yh))
+                builder.add_rect_arr(imp_lp, BBox(od_xl2 - imp_od_encx, od_yh, od_xh + imp_od_encx, blk_yh))
+            if guard_ring_col and stop - start == self.gr_edge_col:
+                builder.add_rect_arr(od_lp, BBox(od_xl, 0, od_xh, blk_yh))
+                imp_y = (0, blk_yh)
 
         # draw base
         imp_od_encx: int = self.mos_config['imp_od_encx']
-        bbox = BBox(od_xl-imp_od_encx, 0, od_xh+imp_od_encx, row_info.height)
+        bbox = BBox(od_xl-imp_od_encx, 0, od_xh+imp_od_encx, blk_yh)
 
         if is_sub:
-            # if drawing tap cells in mos row, flip the implant type so it's opposite of row
-            if row_info.row_type is MOSType.nch:
-                mos_type = MOSType.pch
-            elif row_info.row_type is MOSType.pch:
-                mos_type = MOSType.nch
-            else:   # drawing tap cells in tap row
-                mos_type = row_info.row_type
+            mos_type = sub_type
         else:
             mos_type = row_info.row_type
-        add_base_mos(builder, mos_type, row_info.threshold, row_info['imp_y'], bbox, is_sub=is_sub)
+        add_base_mos(builder, mos_type, row_info.threshold, imp_y, bbox, is_sub=is_sub)
 
         return od_yl, od_yh
 
