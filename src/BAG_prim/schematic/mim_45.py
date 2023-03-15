@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# 
 # BSD 3-Clause License
 #
 # Copyright (c) 2018, Regents of the University of California
