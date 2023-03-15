@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# 
 # Configuration file for ipython.
 import os
 c = get_config()
