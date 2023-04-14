@@ -2,6 +2,7 @@
 
 export BAG_WORK_DIR=$(pwd)
 export BAG_TOOLS_ROOT=/tools/commercial/bcanalog/bag/bag3d0_rhel60_64
+export BAG_PYTHON_ROOT=/tools/C/bag/miniconda3/envs/latest
 export BAG_FRAMEWORK=${BAG_WORK_DIR}/BAG_framework
 export BAG_TECH_CONFIG_DIR=${BAG_WORK_DIR}/skywater130
 export BAG_TEMP_DIR=/tools/scratch/${USER}/BAGTMP/skywater130
@@ -9,7 +10,7 @@ export IPYTHONDIR=${BAG_WORK_DIR}/.ipython
 # disable hash-salting. We need stable hashing across sessions for caching purposes.
 export PYTHONHASHSEED=0
 # set program locations
-export BAG_PYTHON=${BAG_TOOLS_ROOT}/bin/python3
+export BAG_PYTHON=${BAG_PYTHON_ROOT}/bin/python3
 
 # set location of BAG configuration file
 export BAG_CONFIG_PATH=${BAG_WORK_DIR}/bag_config.yaml
