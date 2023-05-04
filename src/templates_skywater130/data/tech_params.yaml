@@ -1,0 +1,779 @@
+# Copyright 2019-2021 SkyWater PDK Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# This code is *alternatively* available under a BSD-3-Clause license, see
+# details in the README.md at the top level and the license text at
+# https://github.com/google/skywater-pdk-libs-sky130_bag3_pr/blob/master/LICENSE.alternative
+#
+# SPDX-License-Identifier: BSD-3-Clause OR Apache 2.0
+# PDK library name.
+tech_lib: 'skywater130'
+# layout unit, in meters.
+layout_unit: 1.0e-6
+# layout resolution, in layout units.
+resolution: 0.005
+# GDS export layout resolution
+gds_resolution: 0.001
+# True if BAG needs to handle coloring metals.
+use_track_coloring: True
+# default purpose name
+default_purpose: drawing
+# pin purpose name
+pin_purpose: pin
+# True to create pin objects
+make_pin_obj: True
+
+imp_layers:
+  nch: !!python/tuple ['nsdm', 'drawing']
+  pch: !!python/tuple ['psdm', 'drawing']
+  ptap: !!python/tuple ['psdm', 'drawing']
+  ntap: !!python/tuple ['nsdm', 'drawing']
+
+mos_lay_table:
+  # poly
+  PO: !!python/tuple ['poly', 'drawing']
+  # active
+  OD:
+    active: !!python/tuple ['diff', 'drawing']
+    sub: !!python/tuple ['tap', 'drawing']
+  # gate connection metal
+  MP: !!python/tuple ['li1', 'drawing']
+  # OC connection metal
+  MD: !!python/tuple ['li1', 'drawing']
+
+# mapping from metal layer ID to layer/purpose pair that defines a metal resistor.
+res_metal_layer_table: {}
+#  1: [!!python/tuple ['met1', 'res']]
+#  2: [!!python/tuple ['met2', 'res']]
+#  3: [!!python/tuple ['met3', 'res']]
+#  4: [!!python/tuple ['met4', 'res']]
+#  5: [!!python/tuple ['met5', 'res']]
+
+# mapping from metal layer ID to layer/purpose pair that defines metal exclusion region.
+metal_exclude_table: {}
+#  1: !!python/tuple ['met1', 'drawing']
+#  2: !!python/tuple ['met2', 'drawing']
+#  3: !!python/tuple ['met3', 'drawing']
+#  4: !!python/tuple ['met4', 'drawing']
+#  5: !!python/tuple ['met5', 'drawing']
+
+exclude_is_blockage: true
+
+# mapping from metal layer ID to metal layer name.  Assume purpose is 'drawing'.
+lay_purp_list: &lp_list
+  0: [!!python/tuple ['li1', 'drawing']]
+  1: [!!python/tuple ['met1', 'drawing']]
+  2: [!!python/tuple ['met2', 'drawing']]
+  3: [!!python/tuple ['met3', 'drawing']]
+  4: [!!python/tuple ['met4', 'drawing']]
+  5: [!!python/tuple ['met5', 'drawing']]
+#  6: [!!python/tuple ['capm', 'drawing']]
+
+dum_lay_purp_list: *lp_list
+
+width_intervals:
+  0:
+    - [[28, 801]]   # horizontal
+    - [[28, .inf]]  # vertical
+  1:
+    - [[28, .inf]]  # horizontal
+    - [[28, 801]]   # vertical
+  2:
+    - [[28, 801]]
+    - [[28, .inf]]
+  3:
+    - [[60, .inf]]
+    - [[60, 801]]
+  4:
+    - [[60, 2001]]
+    - [[60, .inf]]
+  5:
+    - [[320, .inf]]
+    - [[320, .inf]]
+
+# mapping from tuple of via layers to via ID.
+via_id:
+  [!!python/tuple ['tap', 'drawing'], !!python/tuple ['li1', 'drawing']]: TPL1_C
+  [!!python/tuple ['poly', 'drawing'], !!python/tuple ['li1', 'drawing']]: PYL1_C
+  [!!python/tuple ['li1', 'drawing'], !!python/tuple ['met1', 'drawing']]: L1M1_C
+  [!!python/tuple ['met1', 'drawing'], !!python/tuple ['met2', 'drawing']]: M1M2_C
+  [!!python/tuple ['met2', 'drawing'], !!python/tuple ['met3', 'drawing']]: M2M3_C
+  [!!python/tuple ['met3', 'drawing'], !!python/tuple ['met4', 'drawing']]: M3M4_C
+  [!!python/tuple ['met4', 'drawing'], !!python/tuple ['met5', 'drawing']]: M4M5_C
+
+# table of electromigration temperature scale factor
+idc_em_scale:
+  # scale factor for resistor
+  # scale[idx] is used if temperature is less than or equal to temp[idx]
+  res:
+    temp: [100, .inf]
+    scale: [1.0, 0.5]
+  # scale factor for this metal layer type
+  ['met1', 'drawing']: &x_em_scale
+    temp: [100, .inf]
+    scale: [1.0, 0.5]
+  ['met2', 'drawing']: *x_em_scale
+  ['met3', 'drawing']: *x_em_scale
+  ['met4', 'drawing']: *x_em_scale
+  ['met5', 'drawing']: *x_em_scale
+  # default scale vector
+  default:
+    temp: [100, .inf]
+    scale: [1.0, 0.5]
+
+# via enclosure/spacing rules
+flipped_vias: [TPL1_C, PYL1_C, L1M1_C, M1M2_C, M2M3_C, M3M4_C, M4M5_C]
+via_square_list: [square]
+via:
+  L1M1_C:
+    - name: square
+      dim: [34, 34]
+      sp: [38, 38]
+      bot_enc:
+        - [.inf, [[0, 0]]]
+      top_enc:
+        - [.inf, [[12, 12]]]
+  M1M2_C:
+    - name: square
+      dim: [30, 30]
+      sp: [34, 34]
+      bot_enc: &square_1x_enc
+        - [.inf, [[17, 11], [11, 17]]]
+      top_enc: *square_1x_enc
+  M2M3_C:
+    - name: square
+      dim: [40, 40]
+      sp: [40, 40]
+      bot_enc:
+        - [.inf, [[17, 8], [8, 17]]]
+      top_enc:
+        - [.inf, [[17, 13], [13, 17]]]
+  M3M4_C:
+    - name: square
+      dim: [40, 40]
+      sp: [40, 40]
+      bot_enc:
+        - [.inf, [[18, 11], [11, 18]]] #x, y enclosure
+      top_enc:
+        - [.inf, [[13, 13]]]
+  M4M5_C:
+    - name: square
+      dim: [160, 160]
+      sp: [160, 160]
+      bot_enc:
+        - [.inf, [[38, 38]]]
+      top_enc:
+        - [.inf, [[62, 62]]]
+
+# minimum wire spacing rule.  Space is measured orthogonal to wire direction.
+# should be in resolution units
+sp_min:
+  [li1, drawing]:
+    - [.inf, 34]
+  [met1, drawing]: &sp_min_1x
+    - [.inf, 28]
+  [met2, drawing]: *sp_min_1x
+  [met3, drawing]: &sp_min_2x
+    - [.inf, 60]
+  [met4, drawing]: *sp_min_2x
+  [met5, drawing]:
+    - [.inf, 320]
+
+# minimum line-end spacing rule.  Space is measured parallel to wire direction.
+sp_le_min:
+  [li1, drawing]:
+    - [.inf, 34]
+  [met1, drawing]: &sp_le_min_1x
+    - [.inf, 28]
+  [met2, drawing]: *sp_le_min_1x
+  [met3, drawing]: &sp_le_min_2x
+    - [.inf, 60]
+  [met4, drawing]: *sp_le_min_2x
+  [met5, drawing]:
+    - [.inf, 320]
+
+
+# minimum length/minimum area rules.
+len_min:
+  [li1, drawing]:
+    w_al_list:
+      - [.inf, 2244, 0]
+    md_al_list: []
+  [met1, drawing]:
+    w_al_list:
+      - [.inf, 3320, 0]
+    md_al_list: []
+  [met2, drawing]:
+    w_al_list:
+      - [.inf, 2704, 0]
+    md_al_list: []
+  [met3, drawing]:
+    w_al_list:
+      - [.inf, 9600, 0]
+    md_al_list: []
+  [met4, drawing]:
+    w_al_list:
+      - [.inf, 9600, 0]
+    md_al_list: []
+  [met5, drawing]:
+    w_al_list:
+      - [.inf, 160000, 0]
+    md_al_list: []
+
+margins:
+  well: [40, 40]
+
+# transistor DRC rules.
+mos:
+  # MOSBase vertical connection layer
+  conn_layer: 0
+  # min/max transistor width.
+  mos_w_range: [84, 1400]
+  # transistor width resolution
+  mos_w_resolution: 1
+  # source/drain pitch related constants.
+  # source/drain pitch is computed as val[0] + val[1] * lch_unit
+  sd_pitch_constants:
+    lch: [30, .inf]
+    val: [[86, 0]]
+  # drain connection info
+  d_wire_info:
+    bot_layer: 0
+    # wire_w, is_horiz, v_w, v_h, v_sp, v_bot_enc, v_top_enc
+    info_list:
+      - [34, False, 34, 34, 34, 8, 16]
+  # gate connection info
+  g_wire_info:
+    bot_layer: 0
+    # wire_w, is_horiz, v_w, v_h, v_sp, v_bot_enc, v_top_enc
+    info_list:
+      - [34, False, 34, 34, 34, 10, 16]
+  # horizontal margin for abutting with another ResTech or MosTech
+  edge_margin: 86   # TODO: currently sekt to 1 pitch
+  # vertical margin for abutting with another ResTech or MosTech
+  end_margin: 86    # TODO: currently set to 1 pitch
+  # minimum horizontal space between OD, in resolution units
+  od_spx: 54
+  # minimum vertical space between OD, in resolution units
+  od_spy: 54
+  # guard ring vertical space
+  od_spy_gr: 4000
+  # maximum vertical space between OD, in resolution units
+  od_spy_max: 4000
+  # set by via enclosure, licon.5
+  # od_po_extx: 54 #96
+  od_po_extx: 76
+  # set by via enclosure for tap, licon.7
+  # This is in absolute resolution units of enclosure of licon, directly corresponds to licon.7 value
+  od_tap_extx: 24
+
+  # M1 pitch
+  blk_h_pitch: 86
+
+  # poly.2
+  po_spy: 42
+  # cannot find constrant, set to od_w_min
+  po_h_min: 84
+  # poly.10
+  po_od_exty: 26
+  # from RF transistor
+  po_h_gate: 70
+
+  # licon.9
+  mg_imp_spy: 22
+
+  npc_w: 74
+  # licon1 height + licon1 enclosure
+  npc_h: 74
+
+  md_area_min: 2244
+  md_spy: 34
+
+  # n/psdm.3, minimum spacing in x direction between same type OD implants in res units
+  imp_same_sp: 76
+  # n/psdm.7, minimum spacing in y direction between opposite OD implants in res units
+  imp_diff_sp: 26
+  # nsdm.7
+  imp_od_encx: 26
+  # nsdm.7
+  imp_od_ency: 26
+  # nsdm.1
+  imp_h_min: 86
+
+  # might be redundant, well margin from edge to implant
+  nwell_imp: 40
+
+  latchup: # rules relating to MOS latchup
+    # maximum distance from tap >=50u from signal diffusion in res units
+    max_distance_from_tap__far: 3000
+    # maximum distance from tap near signal diffusion in res units
+    max_distance_from_tap__near: 1200
+
+  grid_info: # [layer, width, track width]
+    - [0, 34, 52, 1]
+    - [2, 56, 30, 1]
+    - [4, 66, 106, 1]
+
+fill: {}
+
+res_metal: {}
+
+res_lay_table:
+  PO: !!python/tuple ['poly', 'drawing']
+  ID: !!python/tuple ['poly', 'res']
+  CUT: !!python/tuple ['poly', 'cut']
+  NPC: !!python/tuple ['npc', 'drawing']
+  IMP: !!python/tuple ['psdm', 'drawing']
+  OD_sub: !!python/tuple ['tap', 'drawing']
+
+# resistor DRC rules
+res:
+  # ArrayBase vertical connection layer
+  conn_layer: 0
+  # Default mos conn type (unused)
+  mos_type_default: 'pch'
+  # Default threshold (unused)
+  threshold_default: 'lvt'
+  # Has substrate port
+  has_substrate_port: True
+  # Default sub type
+  sub_type_default: 'ptap'
+  # minimum width of unit resistor
+  w_min: 66
+  # minimum length of unit resistor
+  l_min: 100
+  # w / h of minimum resistor unit
+  min_size: !!python/tuple [172, 1376]
+  # block x / y pitch
+  blk_pitch: !!python/tuple [86, 86]
+  # grid info of vertical metals
+  grid_info:
+    - [0, 34, 52]
+    - [2, 56, 30]
+    - [4, 66, 106]
+  # horizontal margin for abutting with another ResTech or MosTech
+  edge_margin: 86   # TODO: currently set to 1 pitch
+  # vertical margin for abutting with another ResTech or MosTech
+  end_margin: 86    # TODO: currently set to 1 pitch
+  # poly vertical extension beyond resID layer
+  po_id_exty: 416
+  # npc enclosure of poly in any direction
+  npc_po_enc: 19
+  # psdm enclosure of npc
+  imp_npc_enc: [3, 51]
+  # tap implant height
+  tap_imp_h: 134
+  # tap height
+  tap_h: 82
+  # resistor layer enclosure of npc in any direction
+  rlay_npc_enc: 21
+  # space between adjacent npc layers
+  npc_sp: 54
+  # resistor layer based on type
+  rlay:
+    standard: !!python/tuple ['rpm', 'drawing']
+    high_res: !!python/tuple ['urpm', 'drawing']
+  # specs for via from PO to conn_layer (li1)
+  po_via_specs:
+    name: PYL1_C
+    dim: [38, 400]
+    bot_enc: [11, 16]
+    top_enc: [16, 16]
+    spx: 102
+  # specs for via from tap to conn_layer (li1)
+  tap_via_specs:
+    name: TPL1_C
+    dim: [34, 34]
+    bot_enc: [24, 24]
+    top_enc: [16, 16]
+    spx: 45
+
+# mim cap DRC rules
+mim:
+  # capm.1 minimum width
+  min_width: 400
+  # capm.2b min bottom plate to bottom plate split
+  bot_bot_sp: 200
+  # capm.3 enclosure of top metal around capm
+  top_to_cap_sp: 28
+  # capm.4 space between via and capm edge
+  capvia_cap: 40
+  # capm.5 space between non-cap via & capm layer when connected by layer
+  cap_via2_sp: 254
+  # capm.6  width to length or length to width
+  max_ratio: 20
+  # capm.8 Minimum space between non-cap via and capm layer when no overlap
+  via_cap_sp: 28
+  # capm.11 Min space between capm to metal2
+  capm_met_sp: 100
+
+  cap_info: # top_layer: [(layer, purpose), width, spacing]
+    4: [!!python/tuple ['capm', 'drawing'], 400, 168]
+    5: [!!python/tuple ['cap2m', 'drawing'], 400, 168]
+  via_info: # bot layer: type, dimension, space, bot_enc, top_enc]
+    3: ['M3M4_C', 40, 40, 18, 13]
+    4: ['M4M5_C', 160, 160, 38, 62]
+
+layer:
+  nwell: 0
+  pwell: 1
+  diff: 2
+  tap: 3
+  poly: 4
+  mcon: 5
+  met1: 6
+  via: 7
+  met2: 8
+  via2: 9
+  met3: 10
+  pad: 11
+  via3: 12
+  met4: 13
+  via4: 14
+  met5: 15
+  prune: 21
+  li1: 22
+  dnwell: 23
+  inductor: 24
+  lvtn: 25
+  nsdm: 30
+  psdm: 31
+  hvntm: 36
+  cnsm: 37
+  r1v: 39
+  r1c: 40
+  tunm: 41
+  hvi: 42
+  licon1: 43
+  padCenter: 45
+  nsm: 47
+  cpwbm: 51
+  cfom: 52
+  ldntm: 53
+  cp1m: 55
+  cnsdm: 56
+  cpsdm: 57
+  cntm: 58
+  cctm1: 59
+  cmm1: 60
+  cviam: 61
+  cmm2: 62
+  cviam2: 63
+  cmm3: 64
+  cpdm: 66
+  cviam3: 67
+  cmm4: 68
+  cviam4: 69
+  cmm5: 70
+  capm: 75
+  pmm: 76
+  fom: 77
+  cdnm: 79
+  urpm: 81
+  crrpm: 82
+  cli1m: 83
+  curpm: 84
+  chvtpm: 85
+  cap2m: 86
+  crpm: 87
+  vhvi: 88
+  clvom: 89
+  cncm: 90
+  ctunm: 91
+  hvtp: 92
+  conom: 93
+  clicm1: 95
+  ncm: 96
+  cpmm: 97
+  overlap: 99
+  rrpm: 100
+  pnp: 101
+  chvntm: 102
+  capacitor: 103
+  rpm: 106
+  target: 107
+  cnwm: 109
+  areaid: 110
+  npn: 111
+  hvtr: 113
+  cpmm2: 114
+  npc: 115
+  cnpc: 116
+  pmm2: 117
+  chvtrm: 118
+  cpbo: 119
+  clvtnm: 120
+  pwelliso: 122
+  blanking: 123
+  cldntm: 126
+  rdl: 136
+  ubm: 140
+  bump: 141
+  ccu1m: 142
+  cubm: 143
+  cbump: 144
+  cpwdem: 169
+  pwde: 170
+  pwbm: 173
+  uhvi: 174
+  Unrouted: 200
+  Row: 201
+  Group: 202
+  Cannotoccupy: 203
+  Canplace: 204
+  hardFence: 205
+  softFence: 206
+  y0: 207
+  y1: 208
+  y2: 209
+  y3: 210
+  y4: 211
+  y5: 212
+  y6: 213
+  y7: 214
+  y8: 215
+  y9: 216
+  designFlow: 217
+  stretch: 218
+  edgeLayer: 219
+  changedLayer: 220
+  unset: 221
+  unknown: 222
+  spike: 223
+  hiz: 224
+  resist: 225
+  drive: 226
+  supply: 227
+  wire: 228
+  pin: 229
+  text: 230
+  device: 231
+  border: 232
+  snap: 233
+  align: 234
+  prBoundary: 235
+  instance: 236
+  annotate: 237
+  marker: 238
+  select: 239
+  substrate: 240
+  solderMaskBottom: 241
+  beginGenericLayer: 242
+  internalGenericLayer: 243
+  endGenericLayer: 244
+  solderMaskTop: 245
+  drill: 246
+  wirebond: 247
+  wirebondFingerGuide: 248
+  assemblyBoundary: 249
+  grid: 251
+  axis: 252
+  hilite: 253
+  background: 254
+purpose:
+  seal: 1
+  core: 2
+  frame: 3
+  waffleDrop: 4
+  standardc: 5
+  sigPadDiff: 6
+  sigPadWell: 7
+  sigPadMetNtr: 8
+  ferro: 9
+  moduleCut: 10
+  dieCut: 11
+  frameRect: 12
+  zener: 13
+  extDrain20: 14
+  cut: 15
+  res: 16
+  esd: 17
+  tmppnp: 18
+  short: 19
+  mask: 20
+  maskAdd: 21
+  maskDrop: 22
+  diode: 23
+  fuse: 24
+  gate: 25
+  hvnwell: 26
+  rdlprobepad: 27
+  hv: 28
+  probe: 29
+  extFab: 30
+  option1: 31
+  option2: 32
+  option3: 33
+  option4: 34
+  option5: 35
+  option6: 36
+  option7: 37
+  option8: 38
+  precres: 39
+  silicon: 40
+  vlc: 41
+  met3: 42
+  met2: 43
+  met1: 44
+  li1: 45
+  poly: 46
+  injection: 47
+  nodnw: 49
+  deadZon: 50
+  critCorner: 51
+  critSid: 52
+  substrateCut: 53
+  opcDrop: 54
+  cuPillar: 55
+  techCd: 56
+  term1: 57
+  term2: 58
+  term3: 59
+  scr: 60
+  port: 61
+  port1: 62
+  region: 63
+  ppath: 65
+  ppath1: 66
+  macro: 67
+  nwellIsolation: 68
+  waffleWindow: 69
+  block: 70
+  waffleAdd1: 71
+  waffleAdd2: 72
+  cuDrop: 74
+  extendedDrain: 75
+  subcktDevice: 76
+  pixel: 77
+  capacitor: 78
+  analog: 79
+  lvdnw: 80
+  photo: 81
+  guardring: 82
+  model: 83
+  ipExempt: 84
+  pitch: 85
+  HighVt: 86
+  lvNative: 87
+  psa1: 88
+  psa2: 89
+  psa3: 90
+  psa4: 91
+  psa5: 92
+  psa6: 93
+  hole: 94
+  select: 95
+  dummy: 96
+  umconly: 97
+  opc: 98
+  nodummy: 99
+  drc: 100
+  etest: 101
+  vss: 102
+  fc: 103
+  fix: 104
+  mim: 105
+  nmim: 106
+  pad: 107
+  per: 108
+  cvs: 109
+  ext: 110
+  ip: 111
+  low_vt: 112
+  cis_array: 113
+  imagers: 114
+  t3: 115
+  logic: 116
+  dio: 117
+  cap: 118
+  res1: 119
+  bjt: 120
+  efuseMark: 121
+  slotBlock: 122
+  fuseMark: 123
+  umcIP: 124
+  rfdiode: 125
+  lowTapDensity: 126
+  notCritSide: 127
+  fabBlock: 128
+  dynamic: 222
+  fatal: 223
+  critical: 224
+  soCritical: 225
+  soError: 226
+  ackWarn: 227
+  info: 228
+  track: 229
+  blockage: 230
+  grid: 231
+  warning: 234
+  tool1: 235
+  tool0: 236
+  label: 237
+  flight: 238
+  error: 239
+  annotate: 240
+  drawing1: 241
+  drawing2: 242
+  drawing3: 243
+  drawing4: 244
+  drawing5: 245
+  drawing6: 246
+  drawing7: 247
+  drawing8: 248
+  drawing9: 249
+  boundary: 250
+  pin: 251
+  net: 253
+  cell: 254
+  all: 255
+  customFill: 4294967284
+  fillOPC: 4294967285
+  redundant: 4294967288
+  gapFill: 4294967289
+  annotation: 4294967290
+  OPCAntiSerif: 4294967291
+  OPCSerif: 4294967292
+  slot: 4294967293
+  fill: 4294967294
+  drawing: 4294967295
+via_layers:
+  TPL1_C:
+    - [22, 4294967295]
+    - [43, 4294967295]
+    - [3, 4294967295]
+  PYL1_C:
+    - [4, 4294967295]
+    - [43, 4294967295]
+    - [22, 4294967295]
+  L1M1_C:
+    - [6, 4294967295]
+    - [5, 4294967295]
+    - [22, 4294967295]
+  M1M2_C:
+    - [8, 4294967295]
+    - [7, 4294967295]
+    - [6, 4294967295]
+  M2M3_C:
+    - [10, 4294967295]
+    - [9, 4294967295]
+    - [8, 4294967295]
+  M3M4_C:
+    - [13, 4294967295]
+    - [12, 4294967295]
+    - [10, 4294967295]
+  M4M5_C:
+    - [15, 4294967295]
+    - [14, 4294967295]
+    - [13, 4294967295]

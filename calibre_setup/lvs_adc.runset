@@ -1,0 +1,40 @@
+*lvsRulesFile: ${PDK_HOME}/LVS/Calibre/lvs_s8_opts
+*lvsRunDir: $BAG_WORK_DIR/calibre_run/lvs/AAA_SAR_lay/AAA_Slice
+*lvsLayoutPaths: /tools/B/felicia_guo/bag3-sky130-2/calibre_run/lvs/AAA_SAR_lay/AAA_Slice/layout.gds
+*lvsLayoutPrimary: AAA_Slice
+*lvsLayoutLibrary: AAA_SAR_lay
+*lvsLayoutView: layout
+*lvsSourcePath: /tools/B/felicia_guo/bag3-sky130-2/gen_outputs/bag_sar/AAA_Slice.cdl
+*lvsSourcePrimary: AAA_Slice
+*lvsSourceLibrary: AAA_SAR_lay
+*lvsSourceView: schematic
+*lvsSpiceFile: AAA_Slice.sp
+*lvsPowerNames: VDD
+*lvsGroundNames: VSS
+*lvsRecognizeGates: NONE
+*lvsConfigureSplitGates: 1
+*lvsReduceSplitGates: 0
+*lvsERCDatabase: AAA_Slice.erc.results
+*lvsERCSummaryFile: AAA_Slice.erc.summary
+*lvsIncludeSVRFCmds: 1
+*lvsSVRFCmds: {LVS FILTER R(SH) SHORT SOURCE} {}
+*lvsReportFile: AAA_Slice.lvs.report
+*lvsViewReport: 0
+*lvsSVDBxcal: 1
+*lvsSVDBcci: 1
+*lvsSVDBtxref: 1
+*lvsSVDBnopinloc: 1
+*lvsMaskDBFile: AAA_Slice.maskdb
+*cmnWarnLayoutOverwrite: 0
+*cmnWarnSourceOverwrite: 0
+*cmnPromptSaveRunset: 0
+*cmnShowOptions: 1
+*cmnSaveRunsetChanges: 0
+*cmnVConnectColon: 1
+*cmnTemplate_RN: $BAG_WORK_DIR/calibre_run/lvs/%L/%l
+*cmnSlaveHosts: {use {}} {hostName {}} {cpuCount {}} {a32a64 {}} {rsh {}} {maxMem {}} {workingDir {}} {layerDir {}} {mgcLibPath {}} {launchName {}}
+*cmnLSFSlaveTbl: {use 1} {totalCpus 1} {minCpus 1} {architecture {{}}} {minMemory {{}}} {resourceOptions {{}}} {submitOptions {{}}}
+*cmnGridSlaveTbl: {use 1} {totalCpus 1} {minCpus 1} {architecture {{}}} {minMemory {{}}} {resourceOptions {{}}} {submitOptions {{}}}
+*cmnFDILayoutLibrary: AAA_SAR_lay
+*cmnFDILayoutView: layout
+*cmnFDIDEFLayoutPath: AAA_Slice.def
