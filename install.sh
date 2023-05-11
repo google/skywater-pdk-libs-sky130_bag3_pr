@@ -1,5 +1,4 @@
-#!/bin/bash
-#
+#!/usr/bin/env bash
 # Copyright 2019-2021 SkyWater PDK Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +18,6 @@
 # https://github.com/google/skywater-pdk-libs-sky130_bag3_pr/blob/master/LICENSE.alternative
 #
 # SPDX-License-Identifier: BSD-3-Clause OR Apache 2.0
-#!/usr/bin/env bash
 
 export TECH_DIR="skywater130"
 export ROOT_DIR="${TECH_DIR}/workspace_setup"
@@ -33,7 +31,7 @@ cp_files=( ".cdsenv.personal"
 ln_files=( "bag_config.yaml"
            ".cdsenv"
            ".cdsinit"
-	         ".simrc"
+	       ".simrc"
            ".bashrc"
            ".bashrc_bag"
            "cds.lib.core"

@@ -1,6 +1,24 @@
-# skywater130
+# BAG (BAG AMS Generator) Primitives Library for [SKY130](https://github.com/google/skywater-pdk)
 
-Skywater130 primitives for [BAG](https://github.com/ucb-art/bag).
+This repository contains the required primitives to use the BAG3 framework with the SkyWater proprietary S8 130nm PDK. You can get access to this PDK through
+signing an NDA and legal agreement with
+[SkyWater Technologies](https://www.skywatertechnology.com/).
+
+This repository also contains a **work in progress** to make these primitives
+and the BAG3 framework compatible with
+[the Google skywater-pdk, a fully open source, manufacturable PDK for SkyWater's 130nm (SKY130) process node](https://github.com/google/skywater-pdk).
+
+When combined with appropriate generator code, the primitives enables the
+creation of analog integrated circuits that are manufacturable at
+[SkyWater Technologies](https://www.skywatertechnology.com/) commercially or
+through programs like
+[Google's no-cost MPW shuttle program for open source designs, done in collaboration with efabless](https://efabless.com/open_shuttle_program).
+
+## What is BAG?
+
+[BAG AMS Generator (BAG)](https://github.com/ucb-art/bag) is the 3rd generation
+of the Berkeley Analog Generator framework (see also
+[BAG v2 framework](https://github.com/ucb-art/bag)).
 
 These primitives are updated for V2.0.0 of the PDK. It currently support layout generation and LVS using Virtuoso pcells, which was previously not supported. Simulations using BAG is also supported.
 

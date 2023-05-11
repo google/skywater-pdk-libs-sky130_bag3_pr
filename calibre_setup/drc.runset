@@ -17,6 +17,7 @@
 // https://github.com/google/skywater-pdk-libs-sky130_bag3_pr/blob/master/LICENSE.alternative
 //
 // SPDX-License-Identifier: BSD-3-Clause OR Apache 2.0
+
 *drcRulesFile: ${PDK_HOME}/DRC/Calibre/s8_drcRules
 *drcRunDir: ${BAG_WORK_DIR}/calibre_run/drc/myLib/myCell
 *drcLayoutPaths: myCell.calibre.db
