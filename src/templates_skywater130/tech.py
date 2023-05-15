@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-#
+# 
 # Copyright 2019-2021 SkyWater PDK Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,6 +21,7 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause OR Apache 2.0
 
+
 from typing import Tuple, Optional, Mapping
 
 from pybag.core import BBox
@@ -34,8 +35,9 @@ from xbase.layout.enum import DeviceType
 from . import config as _config
 from . import config_fname as _config_fname
 from .mos.tech import MOSTechSkywater130
+from .mim.tech import MIMTechSkywater130
 # from .fill.tech import FillTechSkywater130
-# from .res.tech import ResTechSkywater130
+from .res.tech import ResTechSkywater130
 
 
 class TechInfoSkywater130(TechInfo):
@@ -43,8 +45,9 @@ class TechInfoSkywater130(TechInfo):
         TechInfo.__init__(self, process_params, _config, _config_fname)
 
         self.register_device_tech('mos', MOSTechSkywater130)
-        # self.register_device_tech('fill', FillTechCDSFFMPT)
-        # self.register_device_tech('res', ResTechCDSFFMPT)
+        self.register_device_tech('mim', MIMTechSkywater130)
+        self.register_device_tech('res', ResTechSkywater130)
+        # self.register_device_tech('fill', FillTechSkywater130)
 
     def get_margin(self, is_vertical: bool, edge1: Param, edge2: Optional[Param]) -> int:
         if edge2 is None:

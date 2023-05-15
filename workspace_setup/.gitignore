@@ -4,57 +4,72 @@ __pycache__
 venv
 
 # Pycharm files
-.idea/workspace.xml
-.idea/usage.statistics.xml
 .idea/tasks.xml
+.idea/usage.statistics.xml
+.idea/workspace.xml
 
 # misc edit/log files
 *~
 *.log
+core.*
 IPOPT.out
 lsyncd.status
 
 # misc BAG files
 bag_sim
 bag_stimuli
-gen_outputs
 BAG_server_port.txt
 BAG_sim_server_port.txt
+gen_outputs
+gen_outputs_scratch
 pytest_output
 
 
 # misc configuration/history files
+.ipynb_checkpoints
 .ipython
 .jupyter
-.ipynb_checkpoints
 
 # generated files/directories
-calibre_run
-gen_libs
-pvs_run
-cds.lib
 BAGTMP
-spectre_run
+calibre_run
 cdl_netlist
+cds.lib
+gen_libs
 netlist
+pvs_run
 sim
-gen_output
+simulation
+spectre_run
 
 # cadence files
 .abstract
+abstract*
+beol.drc.*
 .cadence
+cadence_libs
 *.cdslck
 .calibreviewsetup
-.tmp_*
+gui.tcl
+hdl.var
+lefout.list
 libManager.log.*
-abstract*
+PIPO.*
+si.env
+.tmp_*
+xOasisOut_cellMap.txt
 
 # calibre files
 .cgidrcdb
 .cgilvsdb
 calibreview.setup
+ihnl
+map
+.stimulusFile.auCdl
 
 # pvs files
-.QRC.run
 .preRcx.Last.State
+.QRC.run
 .qrc.Last.state
+
+.nfs*

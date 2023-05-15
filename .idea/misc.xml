@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
+<!-- 
 Copyright 2019-2021 SkyWater PDK Authors
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,6 +19,7 @@ https://github.com/google/skywater-pdk-libs-sky130_bag3_pr/blob/master/LICENSE.a
 
 SPDX-License-Identifier: BSD-3-Clause OR Apache 2.0
 -->
+<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="PreferredVcsStorage">
     <preferredVcsName>ApexVCS</preferredVcsName>

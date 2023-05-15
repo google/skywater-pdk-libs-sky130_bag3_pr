@@ -17,17 +17,16 @@
 # https://github.com/google/skywater-pdk-libs-sky130_bag3_pr/blob/master/LICENSE.alternative
 #
 # SPDX-License-Identifier: BSD-3-Clause OR Apache 2.0
-
 BAG_framework:
-  url: https://github.com/bluecheetah/bag.git
-  branch: master
+  url: git@10.8.0.1:bag/BAG_framework.git
+  branch: sim_refactor
 bag3_digital:
-  url: https://github.com/bluecheetah/bag3_digital.git
-  branch: master
+  url: git@10.8.0.1:bag/bag3_digital.git
+  branch: sim_refactor
 bag3_testbenches:
-  url: https://github.com/bluecheetah/bag3_testbenches.git
-  branch: master
+  url: git@10.8.0.1:bag/bag3_testbenches.git
+  branch: sim_refactor
 xbase_bcad:
-  url: https://github.com/bluecheetah/xbase.git
-  branch: master
+  url: git@10.8.0.1:bag/xbase_bcad.git
+  branch: sim_refactor
 

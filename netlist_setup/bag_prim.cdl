@@ -72,3 +72,53 @@ MM0 D G S B phighvt l=l*1.0e6 w=w*1.0e6 m=nf mult=1
 *.PININFO B:B D:B G:B S:B
 MM0 D G S B pshort l=l*1.0e6 w=w*1.0e6 m=nf mult=1
 .ENDS
+
+.SUBCKT res_metal_1 MINUS PLUS
+*.PININFO MINUS:B PLUS:B
+RR0 PLUS MINUS mrm1  m=1 w=w*1.0e6 l=l*1.0e6
+.ENDS
+
+.SUBCKT res_metal_2 MINUS PLUS
+*.PININFO MINUS:B PLUS:B
+RR0 PLUS MINUS mrm2  m=1 w=w*1.0e6 l=l*1.0e6
+.ENDS
+
+.SUBCKT res_metal_3 MINUS PLUS
+*.PININFO MINUS:B PLUS:B
+RR0 PLUS MINUS mrm3  m=1 w=w*1.0e6 l=l*1.0e6
+.ENDS
+
+.SUBCKT res_metal_4 MINUS PLUS
+*.PININFO MINUS:B PLUS:B
+RR0 PLUS MINUS mrm4  m=1 w=w*1.0e6 l=l*1.0e6
+.ENDS
+
+.SUBCKT res_metal_5 MINUS PLUS
+*.PININFO MINUS:B PLUS:B
+RR0 PLUS MINUS mrm5  m=1 w=w*1.0e6 l=l*1.0e6
+.ENDS
+
+.SUBCKT res_standard BULK MINUS PLUS
+*.PININFO BULK:B MINUS:B PLUS:B
+xR0 PLUS MINUS BULK xhrpoly m=1 w=w*1.0e6 l=l*1.0e6
+.ENDS
+
+.SUBCKT res_high_res BULK MINUS PLUS
+*.PININFO BULK:B MINUS:B PLUS:B
+xR0 PLUS MINUS BULK xuhrpoly m=1 w=w*1.0e6 l=l*1.0e6
+.ENDS
+
+.SUBCKT mim_standard BOT TOP
+*.PININFO BOT:B TOP:B
+CC0 TOP BOT xcmimc2 w=unit_width*1.0e6 l=unit_height*1.0e6 m=num_rows*num_cols
+.ENDS
+
+.SUBCKT mim_45 BOT TOP
+*.PININFO BOT:B TOP:B
+CC0 TOP BOT xcmimc2 w=unit_width*1.0e6 l=unit_height*1.0e6 m=num_rows*num_cols
+.ENDS
+
+.SUBCKT mim_34 BOT TOP
+*.PININFO BOT:B TOP:B
+CC0 TOP BOT xcmimc1 w=unit_width*1.0e6 l=unit_height*1.0e6 m=num_rows*num_cols
+.ENDS

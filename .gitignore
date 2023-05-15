@@ -1,7 +1,9 @@
 # Misc files
 *~
+workplace_setup/tutorial_files/*
 
 # Python files
+#
 *.pyc
 __pycache__
 

@@ -1,0 +1,59 @@
+// Copyright 2019-2021 SkyWater PDK Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// This code is *alternatively* available under a BSD-3-Clause license, see
+// details in the README.md at the top level and the license text at
+// https://github.com/google/skywater-pdk-libs-sky130_bag3_pr/blob/master/LICENSE.alternative
+//
+// SPDX-License-Identifier: BSD-3-Clause OR Apache 2.0
+*lvsRulesFile: ${PDK_HOME}/LVS/Calibre/lvs_s8_opts
+*lvsRunDir: $BAG_WORK_DIR/calibre_run/lvs/AAA_SAR_lay/AAA_Slice
+*lvsLayoutPaths: /tools/B/felicia_guo/bag3-sky130-2/calibre_run/lvs/AAA_SAR_lay/AAA_Slice/layout.gds
+*lvsLayoutPrimary: AAA_Slice
+*lvsLayoutLibrary: AAA_SAR_lay
+*lvsLayoutView: layout
+*lvsSourcePath: /tools/B/felicia_guo/bag3-sky130-2/gen_outputs/bag_sar/AAA_Slice.cdl
+*lvsSourcePrimary: AAA_Slice
+*lvsSourceLibrary: AAA_SAR_lay
+*lvsSourceView: schematic
+*lvsSpiceFile: AAA_Slice.sp
+*lvsPowerNames: VDD
+*lvsGroundNames: VSS
+*lvsRecognizeGates: NONE
+*lvsConfigureSplitGates: 1
+*lvsReduceSplitGates: 0
+*lvsERCDatabase: AAA_Slice.erc.results
+*lvsERCSummaryFile: AAA_Slice.erc.summary
+*lvsIncludeSVRFCmds: 1
+*lvsSVRFCmds: {LVS FILTER R(SH) SHORT SOURCE} {}
+*lvsReportFile: AAA_Slice.lvs.report
+*lvsViewReport: 0
+*lvsSVDBxcal: 1
+*lvsSVDBcci: 1
+*lvsSVDBtxref: 1
+*lvsSVDBnopinloc: 1
+*lvsMaskDBFile: AAA_Slice.maskdb
+*cmnWarnLayoutOverwrite: 0
+*cmnWarnSourceOverwrite: 0
+*cmnPromptSaveRunset: 0
+*cmnShowOptions: 1
+*cmnSaveRunsetChanges: 0
+*cmnVConnectColon: 1
+*cmnTemplate_RN: $BAG_WORK_DIR/calibre_run/lvs/%L/%l
+*cmnSlaveHosts: {use {}} {hostName {}} {cpuCount {}} {a32a64 {}} {rsh {}} {maxMem {}} {workingDir {}} {layerDir {}} {mgcLibPath {}} {launchName {}}
+*cmnLSFSlaveTbl: {use 1} {totalCpus 1} {minCpus 1} {architecture {{}}} {minMemory {{}}} {resourceOptions {{}}} {submitOptions {{}}}
+*cmnGridSlaveTbl: {use 1} {totalCpus 1} {minCpus 1} {architecture {{}}} {minMemory {{}}} {resourceOptions {{}}} {submitOptions {{}}}
+*cmnFDILayoutLibrary: AAA_SAR_lay
+*cmnFDILayoutView: layout
+*cmnFDIDEFLayoutPath: AAA_Slice.def

@@ -17,7 +17,6 @@
 # https://github.com/google/skywater-pdk-libs-sky130_bag3_pr/blob/master/LICENSE.alternative
 #
 # SPDX-License-Identifier: BSD-3-Clause OR Apache 2.0
-
 header:
   CDL:
     includes: ["${BAG_TECH_CONFIG_DIR}/calibre_setup/source.added"]
@@ -64,8 +63,53 @@ diode:
   port_order: {}
 
 res_metal:
-  CDL: []
-  SPECTRE: []
+  CDL:
+    - [m, 1]
+    - [w, w*1.0e6]
+    - [l, l*1.0e6]
+  SPECTRE:
+    - [w, w * 1.0e6]
+    - [l, l * 1.0e6]
+    - [m, 1]
   VERILOG: []
   SYSVERILOG: []
-  types: []
+  types:
+    - [res_metal_1, mrm1]
+    - [res_metal_2, mrm2]
+    - [res_metal_3, mrm3]
+    - [res_metal_4, mrm4]
+    - [res_metal_5, mrm5]
+
+res:
+  CDL:
+    - [m, 1]
+    - [w, w*1.0e6]
+    - [l, l*1.0e6]
+  SPECTRE:
+    - [w, w * 1.0e6]
+    - [l, l * 1.0e6]
+    - [m, 1]
+    - [mult, 1]
+  VERILOG: []
+  SYSVERILOG: []
+  types:
+    - [res_standard, xhrpoly]
+    - [res_high_res, xuhrpoly]
+  prefix:
+    CDL: 'x'
+
+mim:
+  CDL:
+    - [w, unit_width*1.0e6]
+    - [l, unit_height*1.0e6]
+    - [m, num_rows*num_cols]
+  SPECTRE:
+    - [w, unit_width * 1.0e6]
+    - [l, unit_height * 1.0e6]
+    - [m, num_rows * num_cols]
+  VERILOG: []
+  SYSVERILOG: []
+  types:
+    - [mim_standard, xcmimc2]
+    - [mim_45, xcmimc2]
+    - [mim_34, xcmimc1]
