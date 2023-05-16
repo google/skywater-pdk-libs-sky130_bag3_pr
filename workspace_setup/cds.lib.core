@@ -31,8 +31,10 @@ DEFINE	   technology_library		$BAG_TECH_CONFIG_DIR/workspace_setup/PDK/VirtuosoO
 DEFINE	   s8rf		$BAG_TECH_CONFIG_DIR/workspace_setup/PDK/VirtuosoOA/libs/s8rf 
 DEFINE	   s8rf2	$BAG_TECH_CONFIG_DIR/workspace_setup/PDK/VirtuosoOA/libs/s8rf2 
 DEFINE	   s8rf2_dv	$BAG_TECH_CONFIG_DIR/workspace_setup/PDK/VirtuosoOA/libs/s8rf2_dv
-DEFINE	   scs8hd	/tools/commercial/skywater/swtech130/skywater-src-nda/scs8hd/V0.0.2/oa/scs8hd
-DEFINE	   scs8hd_dv	/tools/commercial/skywater/swtech130/skywater-src-nda/scs8hd/V0.0.2/oa/scs8hd_dv
+
+# UPDATE WITH YOUR OWN PATH
+DEFINE	   scs8hd	/path/to/swtech130/skywater-src-nda/scs8hd/V0.0.2/oa/scs8hd
+DEFINE	   scs8hd_dv	/path/to/swtech130/skywater-src-nda/scs8hd/V0.0.2/oa/scs8hd_dv
 
 ASSIGN tech DISPLAY Invisible 
 ASSIGN technology_library DISPLAY Invisible 

@@ -18,15 +18,15 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause OR Apache 2.0
 BAG_framework:
-  url: git@10.8.0.1:bag/BAG_framework.git
-  branch: sim_refactor
+  url: git@github.com:ucb-art/BAG_framework.git
+  branch: without_OA
 bag3_digital:
-  url: git@10.8.0.1:bag/bag3_digital.git
-  branch: sim_refactor
+  url: git@github.com:ucb-art/bag3_digital.git
+  branch: without_OA
 bag3_testbenches:
-  url: git@10.8.0.1:bag/bag3_testbenches.git
-  branch: sim_refactor
+  url: git@github.com:ucb-art/bag3_testbenches.git
+  branch: develop
 xbase_bcad:
-  url: git@10.8.0.1:bag/xbase_bcad.git
-  branch: sim_refactor
+  url: git@github.com:ucb-art/xbase.git
+  branch: without_OA
 
